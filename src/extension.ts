@@ -1,26 +1,73 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
+export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "kaas-vscode" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from K as a Service!');
-	});
+	context.subscriptions.push(
+		vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
+			vscode.window.showInformationMessage('Hello World from K as a Service!');
+		})
+	);
 
-	context.subscriptions.push(disposable);
+	const testController = vscode.tests.createTestController('kaas-vscode.testController', 'KaaS Proofs');
+	
+	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
+	const client = new KaaSClient(apiKey || '');
+
+	const orgs = await client.orgs();
+	for (const org of orgs) {
+		const orgItem = testController.createTestItem(org.name, org.name);
+		const orgName = org.name;
+		const jobs = await client.jobs(orgName);
+		for (const job of jobs) {
+			const jobItem = testController.createTestItem(job.id, job.id);
+			orgItem.children.add(jobItem);
+		}
+		testController.items.add(orgItem);
+	}
+
 }
 
-// This method is called when your extension is deactivated
+type Org = {
+	id: string;
+	name: string;
+}
+
+type Job = {
+	id: string;
+	status: string;
+}
+
+class KaaSClient {
+
+	baseUrl: string = 'https://kaas.runtimeverification.com/api';
+
+	constructor(private apiKey: string) {
+	}
+
+	async orgs() : Promise<Org[]> {
+		const response = await fetch(`${this.baseUrl}/orgs`, {
+			headers: {
+				'Authorization': `Bearer ${this.apiKey}`
+			}
+		});
+		if (!response.ok) {
+			throw new Error(`Error fetching orgs: ${response.statusText}`);
+		}
+		return await response.json() as Org[];
+	}
+
+	async jobs(orgName: string) : Promise<Job[]> {
+		const response = await fetch(`${this.baseUrl}/orgs/${orgName}/jobs?page=1&per_page=10`, {
+			headers: {
+				'Authorization': `Bearer ${this.apiKey}`
+			},
+		});
+		if (!response.ok) {
+			throw new Error(`Error fetching jobs for org ${orgName}: ${response.statusText}`);
+		}
+		return await response.json() as Job[];
+	}
+
+}
+
 export function deactivate() {}

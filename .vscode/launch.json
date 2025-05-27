@@ -11,7 +11,7 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"${workspaceFolder}/demo"
+				"${workspaceFolder}/audit-kontrol-template"
 			],
 			"outFiles": [
 				"${workspaceFolder}/dist/**/*.js"

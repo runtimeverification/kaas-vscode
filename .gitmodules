@@ -1,0 +1,3 @@
+[submodule "audit-kontrol-template"]
+	path = audit-kontrol-template
+	url = https://github.com/runtimeverification/audit-kontrol-template.git

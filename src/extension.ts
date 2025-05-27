@@ -13,18 +13,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
 	const client = new KaaSClient(apiKey || '');
 
-	const orgs = await client.orgs();
-	for (const org of orgs) {
-		const orgItem = testController.createTestItem(org.name, org.name);
-		const orgName = org.name;
-		const jobs = await client.jobs(orgName);
-		for (const job of jobs) {
-			const jobItem = testController.createTestItem(job.id, job.id);
-			orgItem.children.add(jobItem);
-		}
-		testController.items.add(orgItem);
-	}
 
+	await fetchComputeJobs(client, testController);
 }
 
 type Org = {
@@ -35,6 +25,51 @@ type Org = {
 type Job = {
 	id: string;
 	status: string;
+	repo: string;
+	kind: string; // e.g. "kontrol"
+	type: string; // e.g. "build", "prove"
+	duration: number; // in seconds
+	organizationName: string;
+	vaultName: string;
+}
+
+async function fetchComputeJobs(client: KaaSClient, testController: vscode.TestController) {
+	const allJobs: [Job, vscode.TestItem][] = []; // List of all discovered computed jobs
+
+	const orgs = await client.orgs();
+	for (const org of orgs) {
+		const orgItem = testController.createTestItem(org.name, org.name);
+		const orgName = org.name;
+		const jobs = await client.jobs(orgName);
+		for (const job of jobs) {
+			const name = jobName(job);
+			const jobItem = testController.createTestItem(job.id, name, jobUri(job));
+			allJobs.push([job, jobItem]);
+			orgItem.children.add(jobItem);
+		}
+		testController.items.add(orgItem);
+	}
+	const testRunRequest = new vscode.TestRunRequest(allJobs.map(([_, item]) => item), []);
+	const testRun = testController.createTestRun(testRunRequest);
+
+	for (const [job, testItem] of allJobs) {
+		if (job.status === 'success') {
+			testRun.passed(testItem, job.duration);
+		} else if (job.status === 'cancelled') {
+			testRun.errored(testItem, new vscode.TestMessage(`Job ${jobName(job)} was cancelled`), job.duration);
+		} else {
+			testRun.failed(testItem, new vscode.TestMessage(`Job ${jobName(job)} failed`), job.duration);
+		}
+	}
+	testRun.end();
+}
+
+function jobName(job: Job): string {
+	return `${job.kind}/${job.type}/${job.repo}`;
+}
+
+function jobUri(job: Job) : vscode.Uri {
+	return vscode.Uri.parse(`https://kaas.runtimeverification.com/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`);
 }
 
 class KaaSClient {

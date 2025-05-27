@@ -2,35 +2,29 @@ import * as vscode from 'vscode';
 export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "kaas-vscode" is now active!');
 
+	const testController = vscode.tests.createTestController('kaas-vscode.testController', 'KaaS Proofs');
+	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
+	const client = new KaaSClient(apiKey || '');
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
 			vscode.window.showInformationMessage('Hello World from K as a Service!');
 		})
 	);
 
-	const testController = vscode.tests.createTestController('kaas-vscode.testController', 'KaaS Proofs');
-	
-	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-	const client = new KaaSClient(apiKey || '');
+	context.subscriptions.push(
+		vscode.commands.registerCommand('kaas-vscode.refreshComputeJobs', async () => {
+			testController.items.replace([]);
+			await fetchComputeJobs(client, testController);
+		})
+	);
 
+	testController.refreshHandler = async () => {
+		testController.items.replace([]);
+		await fetchComputeJobs(client, testController);
+	};
 
 	await fetchComputeJobs(client, testController);
-}
-
-type Org = {
-	id: string;
-	name: string;
-}
-
-type Job = {
-	id: string;
-	status: string;
-	repo: string;
-	kind: string; // e.g. "kontrol"
-	type: string; // e.g. "build", "prove"
-	duration: number; // in seconds
-	organizationName: string;
-	vaultName: string;
 }
 
 async function fetchComputeJobs(client: KaaSClient, testController: vscode.TestController) {
@@ -54,11 +48,11 @@ async function fetchComputeJobs(client: KaaSClient, testController: vscode.TestC
 
 	for (const [job, testItem] of allJobs) {
 		if (job.status === 'success') {
-			testRun.passed(testItem, job.duration);
+			testRun.passed(testItem, job.duration * 1000);
 		} else if (job.status === 'cancelled') {
-			testRun.errored(testItem, new vscode.TestMessage(`Job ${jobName(job)} was cancelled`), job.duration);
+			testRun.errored(testItem, new vscode.TestMessage(`Job ${jobName(job)} was cancelled`), job.duration * 1000);
 		} else {
-			testRun.failed(testItem, new vscode.TestMessage(`Job ${jobName(job)} failed`), job.duration);
+			testRun.failed(testItem, new vscode.TestMessage(`Job ${jobName(job)} failed`), job.duration * 1000);
 		}
 	}
 	testRun.end();
@@ -71,6 +65,24 @@ function jobName(job: Job): string {
 function jobUri(job: Job) : vscode.Uri {
 	return vscode.Uri.parse(`https://kaas.runtimeverification.com/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`);
 }
+
+
+type Org = {
+	id: string;
+	name: string;
+}
+
+type Job = {
+	id: string;
+	status: string;
+	repo: string;
+	kind: string; // e.g. "kontrol"
+	type: string; // e.g. "build", "prove"
+	duration: number; // in seconds
+	organizationName: string;
+	vaultName: string;
+}
+
 
 class KaaSClient {
 

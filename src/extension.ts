@@ -1,305 +1,119 @@
 import * as vscode from 'vscode';
-import { parse, stringify } from 'smol-toml'
-import createClient, { Client } from "openapi-fetch";
-import { JobKind, JobStatus, type components, type paths } from "./kaas-api";
-import { ClientRequest } from 'http';
+import createClient from "openapi-fetch";
+import { type paths } from "./kaas-api";
+import * as path from 'path';
+import * as ChildProcess from 'child_process';
+import { fetchComputeJobs } from './kaas_jobs';
+import { runTests } from './kaas_run';
+import { discoverFoundryTestsAndPopulate, discoverFoundryProfiles } from './foundry';
+import { kontrolProfiles } from './kontrol';
+import { TestRunState } from './test_run_state';
+import { KAAS_BASE_URL } from './config';
 
-const KAAS_BASE_URL = 'https://kaas.runtimeverification.com/';
-const KAAS_JOB_POLL_INTERVAL = 5000; // Polling interval for job status updates in milliseconds
+interface KontrolProfile {
+	'match-test': string;
+	[key: string]: any;
+}
+
+interface KontrolToml {
+	prove: {
+		[key: string]: KontrolProfile;
+	};
+	[key: string]: any;
+}
+
+interface FoundryTest {
+	filePath: string;
+	testName: string;
+	contractName: string;
+}
 
 export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "kaas-vscode" is now active!');
 
 	const testController = vscode.tests.createTestController('kaas-vscode.testController', 'KaaS Proofs');
 	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-	const client = createClient<paths>({ baseUrl: KAAS_BASE_URL, headers: { 'Authorization': `Bearer ${apiKey}` } });
+	let client = createClient<paths>({ baseUrl: KAAS_BASE_URL, headers: { 'Authorization': `Bearer ${apiKey}` } });
+    
+	// Lets make sure we update the client if the api key changes
+	vscode.workspace.onDidChangeConfiguration(event => {
+		if (event.affectsConfiguration('kaas-vscode.apiKey')) {
+			const newApiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
+			client = createClient<paths>({ baseUrl: KAAS_BASE_URL, headers: { 'Authorization': `Bearer ${newApiKey}` } });
+		}
+	});
+
+	const testRunState = new TestRunState(context);
+
+	// Create root items for Kontrol and Foundry if their respective config files exist.
+	const workspaceFolders = vscode.workspace.workspaceFolders;
+	if (workspaceFolders && workspaceFolders.length > 0) {
+		const rootPath = workspaceFolders[0].uri;
+		
+		try {
+			await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'kontrol.toml'));
+			const kontrolRoot = testController.createTestItem('kontrol', 'Kontrol');
+			testController.items.add(kontrolRoot);
+			const kontrolProfilesRoot = testController.createTestItem('kontrolProfiles', 'Profiles');
+			kontrolRoot.children.add(kontrolProfilesRoot);
+			const kontrolProveRoot = testController.createTestItem('kontrolProve', 'Prove');
+			kontrolProfilesRoot.children.add(kontrolProveRoot);
+			const kontrolTestsRoot = testController.createTestItem('kontrolTests', 'Tests');
+			kontrolRoot.children.add(kontrolTestsRoot);
+
+			await kontrolProfiles(client, testController, testRunState, kontrolProveRoot);
+			await discoverFoundryTestsAndPopulate(testController, kontrolTestsRoot);
+
+		} catch (e) {
+			// kontrol.toml not found
+		}
+
+		try {
+			await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'foundry.toml'));
+			const foundryRoot = testController.createTestItem('foundry', 'Foundry');
+			testController.items.add(foundryRoot);
+			const foundryProfilesRoot = testController.createTestItem('foundryProfiles', 'Profiles');
+			foundryRoot.children.add(foundryProfilesRoot);
+			const foundryTestsRoot = testController.createTestItem('foundryTests', 'Tests');
+			foundryRoot.children.add(foundryTestsRoot);
+
+			await discoverFoundryProfiles(testController, foundryProfilesRoot);
+			await discoverFoundryTestsAndPopulate(testController, foundryTestsRoot);
+
+		} catch (e) {
+			// foundry.toml not found
+		}
+	}
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
-			vscode.window.showInformationMessage('Hello World from K as a Service!');
+			vscode.window.showInformationMessage('Welcome to Simbolik powered by KaaS!');
 		})
 	);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('kaas-vscode.refreshComputeJobs', async () => {
 			testController.items.replace([]);
-			await fetchComputeJobs(client, testController);
+			// This command is now less relevant, as discovery happens on start.
+			// Could be re-purposed to re-run discovery.
 		})
 	);
 
+	// The refresh handler should re-run the discovery logic
 	testController.refreshHandler = async () => {
-		testController.items.replace([]);
-		await fetchComputeJobs(client, testController);
+		// This needs to be implemented to clear and re-populate the roots
 	};
 
-	await kontrolProfiles(client, testController);
-	await fetchComputeJobs(client, testController);
-
-
-	const testRunProfile = testController.createRunProfile(
-		'Run All',
+	const runProfile = testController.createRunProfile(
+		'Run KaaS Tests',
 		vscode.TestRunProfileKind.Run,
-		runTest.bind(null, client, testController),
+		(request, token) => {
+			runTests(client, testController, request, token, testRunState);
+		},
 		true
 	);
-	
-}
 
-async function kontrolProfiles(
-	client: Client<paths>,
-	testController: vscode.TestController
-) : Promise<void> {
-	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders) {
-		const queue : Promise<void>[] = [];
-		for (const folder of workspaceFolders) {
-			// Does the folder contain a kontrol.toml file?
-			const kontrolTomlPath = vscode.Uri.joinPath(folder.uri, 'kontrol.toml');
-			try {
-				const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
-				if (kontrolTomlExists) {
-
-					// Create a test item for the folder
-					const folderItem = testController.createTestItem(folder.name, folder.name, folder.uri);
-					testController.items.add(folderItem);
-
-					// If it exists, parse the file
-					const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
-					const kontrolToml = parse(kontrolTomlContent.toString());
-					// Create a test item for each profile in the kontrol.toml
-					const proveProfiles = Object.entries(kontrolToml.prove);
-					for (const [profileName, profile] of proveProfiles) {
-						const testName = profile['match-test'];
-						const testItem = testController.createTestItem(profileName, testName, kontrolTomlPath);
-						folderItem.children.add(testItem);
-						queue.push(fetchLatestRun(
-							client,
-							testController,
-							'runtimeverification',
-							'audit-kontrol-template',
-							profileName,
-							testItem
-						));
-					}
-				}
-			} catch (error) {
-				console.error(`Error reading kontrol.toml in ${folder.uri.fsPath}:`, error);
-			}
-		}
-		await Promise.all(queue);
-	}
-	return;
-}
-
-async function runTest(
-	client: Client<paths>,
-	testController: vscode.TestController,
-	request: vscode.TestRunRequest,
-	token: vscode.CancellationToken
-) : Promise<void> {
-	const testRun = testController.createTestRun(request);
-	for (const test of request.include ?? []) {
-		test.busy = true; // Mark the test as busy
-		const profileName = test.id;
-		const parent = test.parent;
-		if (!parent) {
-			continue;
-		}
-		const organizationName = 'runtimeverification'; // This should be dynamically determined based on the test item
-		const vaultName = 'audit-kontrol-template'; // This should also be dynamically determined based on the test item
-		const jobResponse = await client.POST('/api/orgs/{organizationName}/vaults/{vaultName}/jobs', {
-			params: {
-				path: {
-					organizationName,
-					vaultName
-				}
-			},
-			body: {
-				"kind": JobKind.kontrol,
-				"branch": "master",
-				"workflowBranch": "",
-				"kaasServerUrl": "",
-				"extraBuildArgs": "",
-				"kontrolVersion": "",
-				"kontrolDockerImage": "",
-				"kaasCliBranch": "",
-				"kaasTestRoot": ".",
-				"commitSha": "",
-				"foundryProfile": "default",
-				"profiles": [
-					{
-						"profileName": profileName,
-						"extraProveArgs": "",
-						"tag": "default"
-					}
-				],
-				"kontrolTomlProfiles": 2,
-				"executionTimeout": 480,
-				"regenMode": false,
-				"rekompile": false,
-				"debugMode": false,
-				"disableCache": false,
-				"extraTestArgs": ""
-			}
-		});
-		if (jobResponse.response.status !== 201) {
-			vscode.window.showErrorMessage(`Failed to create job: ${jobResponse.response.statusText}`);
-			continue;
-		}
-		const job = jobResponse.data;
-		if (job === undefined) {
-			vscode.window.showErrorMessage(`Job creation returned no data`);
-			continue;
-		}
-		while (true) {
-			await new Promise(resolve => setTimeout(resolve, KAAS_JOB_POLL_INTERVAL));
-			try {
-				const jobDetails = await getJobStatusByJobId(client, job.jobId);
-				if (jobDetails === undefined) {
-					vscode.window.showErrorMessage(`Job with ID ${job.jobId} not found`);
-					break;
-				}
-				if (jobDetails.status === JobStatus.success) {
-					test.busy = false;
-					testRun.passed(test, jobDetails.duration * 1000);
-					break;
-				}
-				if (jobDetails.status === JobStatus.cancelled) {
-					test.busy = false;
-					testRun.errored(test, new vscode.TestMessage(`Job ${jobDetails.id} was cancelled`), jobDetails.duration * 1000);
-					break;
-				}
-				if (jobDetails.status === JobStatus.failure || jobDetails.status === JobStatus.processing_failed) {
-					test.busy = false;
-					testRun.failed(test, new vscode.TestMessage(`Job ${jobDetails.id} failed`), jobDetails.duration * 1000);
-					break;
-				}
-			} catch (error) {
-				vscode.window.showErrorMessage(`Error fetching job status: ${error}`);
-				continue;
-			}
-		}
-	}
-	testRun.end();
-}
-
-async function fetchLatestRun(
-	client: Client<paths>,
-	testController: vscode.TestController,
-	organizationName: string,
-	vaultName: string,
-	profileName: string,
-	testItem: vscode.TestItem
-): Promise<void> {
-	let job : components["schemas"]["IJob"] | undefined;
-	try {
-		job = await getLatestJobStatusFor(client, organizationName, vaultName, profileName);
-	} catch (error) {
-		return;
-	}
-	if (job === undefined) {
-		return;
-	}
-	const testRun = testController.createTestRun(new vscode.TestRunRequest([testItem], []));
-	if (job.status === JobStatus.success) {
-		testRun.passed(testItem, job.duration * 1000);
-	} else if (job.status === JobStatus.cancelled) {
-		testRun.errored(testItem, new vscode.TestMessage(`Job ${job.id} was cancelled`), job.duration * 1000);
-	} else if (job.status === JobStatus.failure || job.status === JobStatus.processing_failed) {
-		testRun.failed(testItem, new vscode.TestMessage(`Job ${job.id} failed`), job.duration * 1000);
-	} else if (job.status === JobStatus.pending || job.status === JobStatus.running) {
-		testRun.enqueued(testItem);
-		// Todo: Keep polling for job status
-	}
-	testRun.end();
-
-}
-
-async function getJobStatusByJobId(client: Client<paths>, jobId: string): Promise<components["schemas"]["IJob"]> {
-	const job = await client.GET('/api/jobs/{jobId}', {
-		params: {
-			path: {
-				jobId
-			}
-		}
-	});
-	if (job.response.status !== 200) {
-		throw new Error(`Job with ID ${jobId} not found`);
-	}
-	if (job.data === undefined) {
-		throw new Error(`Job with ID ${jobId} returned no data`);
-	}
-	return job.data;
-}
-
-async function getLatestJobStatusFor(client: Client<paths>, organizationName: string, vaultName: string, profileName: string): Promise<components["schemas"]["IJob"]> {
-	
-	const job = await client.GET('/api/orgs/{organizationName}/vaults/{vaultName}/jobs', {
-		params: {
-			path: {
-				organizationName,
-				vaultName
-			},
-			query: {
-				profile: profileName, // TODO: Look like the endpoint filtering does not work
-				page: 1,
-				per_page: 1
-			}
-		}
-	});
-	if (job.response.status !== 200) {
-		throw new Error(`Failed to fetch jobs for organization ${organizationName} and vault ${vaultName}: ${job.response.statusText}`);
-	}
-	if (job.data === undefined) {
-		throw new Error(`No jobs found for organization ${organizationName} and vault ${vaultName}`);
-	}
-	for (const jobItem of job.data) {
-		return jobItem;
-	}
-	throw new Error(`No jobs found for profile ${profileName} in organization ${organizationName} and vault ${vaultName}`);
-}
-
-async function fetchComputeJobs(client: Client<paths>, testController: vscode.TestController) {
-	const allJobs: [components["schemas"]["IJob"], vscode.TestItem][] = []; // List of all discovered computed jobs
-
-	const orgsResponse = await client.GET('/api/orgs');
-	const orgs = orgsResponse.data ?? [];
-	for (const org of orgs) {
-		const orgItem = testController.createTestItem(org.name, org.name);
-		const orgName = org.name;
-		const jobsResponse = await client.GET('/api/orgs/{organizationName}/jobs', {
-			params: { path: { organizationName: orgName }, query: { page: 1, per_page: 10 } },	
-		});
-		const jobs = jobsResponse.data ?? [];
-		for (const job of jobs) {
-			const name = jobName(job);
-			const jobItem = testController.createTestItem(job.id, name, jobUri(job));
-			allJobs.push([job, jobItem]);
-			orgItem.children.add(jobItem);
-		}
-		testController.items.add(orgItem);
-	}
-	const testRunRequest = new vscode.TestRunRequest(allJobs.map(([_, item]) => item), []);
-	const testRun = testController.createTestRun(testRunRequest);
-
-	for (const [job, testItem] of allJobs) {
-		if (job.status === 'success') {
-			testRun.passed(testItem, job.duration * 1000);
-		} else if (job.status === 'cancelled') {
-			testRun.errored(testItem, new vscode.TestMessage(`Job ${jobName(job)} was cancelled`), job.duration * 1000);
-		} else {
-			testRun.failed(testItem, new vscode.TestMessage(`Job ${jobName(job)} failed`), job.duration * 1000);
-		}
-	}
-	testRun.end();
-}
-
-function jobName(job: components["schemas"]["IJob"]): string {
-	return `${job.kind}/${job.type}/${job.repo}`;
-}
-
-function jobUri(job: components["schemas"]["IJob"]) : vscode.Uri {
-	return vscode.Uri.parse(`${KAAS_BASE_URL}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`);
+	context.subscriptions.push(testController);
 }
 
 export function deactivate() {}

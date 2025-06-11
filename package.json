@@ -3,6 +3,11 @@
   "displayName": "K as a Service",
   "description": "",
   "version": "0.0.1",
+  "publisher": "runtimeverification",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runtimeverification/kaas-vscode"
+  },
   "engines": {
     "vscode": "^1.90.0"
   },

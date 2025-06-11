@@ -4,6 +4,7 @@ import * as child_process from 'child_process';
 
 export
 function gitApi() : API {
+    // Active the Git extension and get its API.
 	const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git');
 	if (!gitExtension) {
         // The Git extension is distributed with VS Code, so it should always be available.
@@ -27,6 +28,24 @@ export
 async function getRemoteOrigin(repository: Repository): Promise<Remote | undefined> {
 	const remote = repository.state.remotes.find((r: Remote) => r.name === 'origin');
 	return remote ?? undefined;
+}
+
+export
+async function getRemoteBranch(repository: Repository): Promise<{ owner: string, repo: string, branch: string} | undefined> {
+    const remote = await getRemoteOrigin(repository);
+    if (remote && remote.pushUrl) {
+        const upstream = repository.state.HEAD?.upstream;
+        if (upstream) {
+            const match = remote.pushUrl.match(/github\.com[/:]([\w-]+)\/([\w.-]+)(?:\.git)?/);
+            if (match && match[1] && match[2]) {
+                const owner = match[1];
+                const repo = match[2].replace(/\.git$/, '');
+                const branch = upstream.name;
+                return { owner, repo, branch };
+            }
+        }
+    }
+    return undefined;
 }
 
 export

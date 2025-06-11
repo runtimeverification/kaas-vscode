@@ -34,16 +34,13 @@ export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "kaas-vscode" is now active!');
 
 	const testController = vscode.tests.createTestController('kaas-vscode.testController', 'KaaS Proofs');
-	const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-	let client = createClient<paths>({ baseUrl: KAAS_BASE_URL, headers: { 'Authorization': `Bearer ${apiKey}` } });
-    
-	// Lets make sure we update the client if the api key changes
-	vscode.workspace.onDidChangeConfiguration(event => {
-		if (event.affectsConfiguration('kaas-vscode.apiKey')) {
-			const newApiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-			client = createClient<paths>({ baseUrl: KAAS_BASE_URL, headers: { 'Authorization': `Bearer ${newApiKey}` } });
+	const client = createClient<paths>({ baseUrl: KAAS_BASE_URL });
+	client.use({
+		onRequest: (request) => {
+			const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
+			request.request.headers.set('Authorization', `Bearer ${apiKey}`);
 		}
-	});
+	})
 
 	const testRunState = new TestRunState(context);
 
@@ -118,7 +115,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(testController);
 
 	// Add Remote Sync View
-	const view = await createRemoteSyncView(context);
+	const view = await createRemoteSyncView(context, client);
 	context.subscriptions.push(view);
 }
 

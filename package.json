@@ -18,6 +18,23 @@
       {
         "command": "kaas-vscode.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "kaas-vscode.refreshEntry",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "kaas-vscode.addEntry",
+        "title": "Add KaaS Entry"
+      },
+      {
+        "command": "kaas-vscode.editEntry",
+        "title": "Edit KaaS Entry"
+      },
+      {
+        "command": "kaas-vscode.deleteEntry",
+        "title": "Delete KaaS Entry"
       }
     ],
     "configuration": {
@@ -29,10 +46,45 @@
           "description": "API Key for KaaS"
         }
       }
+    },
+    "views": {
+      "test": [
+        {
+          "id": "kaas-vscode.remote-sync-view",
+          "name": "Remote Sync"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "kaas-vscode.refreshEntry",
+          "when": "view == kaas-vscode.remote-sync-view",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "git.init",
+          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-init",
+          "group": "inline"
+        },
+        {
+          "command": "git.publish",
+          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-publish",
+          "group": "inline"
+        },
+        {
+          "command": "git.commit",
+          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-commit",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "build": "npm run compile",
     "compile": "webpack --config webpack.config.js",
     "watch": "webpack --watch --config webpack.config.js",
     "package": "webpack --mode production --devtool hidden-source-map --config webpack.config.js",

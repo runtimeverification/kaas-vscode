@@ -1,7 +1,7 @@
 import { components, paths } from "./kaas-api";
 import { Client } from "openapi-fetch";
 import * as vscode from 'vscode';
-import { getGitInfo } from './git';
+import { gitApi, getGitInfo } from './git';
 import { parse } from 'smol-toml';
 import { getJobStatusByJobId } from './kaas_jobs';
 import { TestRunState } from "./test_run_state";
@@ -30,6 +30,10 @@ export async function kontrolProfiles(
 	testRunState: TestRunState,
 	proveRoot: vscode.TestItem
 ) : Promise<void> {
+	const git = await gitApi();
+	if (!git) {
+
+	}
 	const workspaceFolders = vscode.workspace.workspaceFolders;
 	if (workspaceFolders) {
 		const queue : Promise<void>[] = [];

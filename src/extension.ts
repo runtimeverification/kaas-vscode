@@ -9,6 +9,8 @@ import { discoverFoundryTestsAndPopulate, discoverFoundryProfiles } from './foun
 import { kontrolProfiles } from './kontrol';
 import { TestRunState } from './test_run_state';
 import { KAAS_BASE_URL } from './config';
+import { create } from 'domain';
+import { createRemoteSyncView } from './remote_sync_view';
 
 interface KontrolProfile {
 	'match-test': string;
@@ -114,6 +116,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(testController);
+
+	// Add Remote Sync View
+	const view = await createRemoteSyncView(context);
+	context.subscriptions.push(view);
 }
 
 export function deactivate() {}

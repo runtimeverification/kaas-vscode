@@ -111,7 +111,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		},
 		true
 	);
-
+  
 	context.subscriptions.push(testController);
 
 	// Add Remote Sync View

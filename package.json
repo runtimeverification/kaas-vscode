@@ -3,6 +3,7 @@
   "displayName": "K as a Service",
   "description": "",
   "version": "0.0.3",
+
   "engines": {
     "vscode": "^1.90.0"
   },

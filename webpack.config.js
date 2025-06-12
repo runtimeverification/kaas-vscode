@@ -1,13 +1,8 @@
 //@ts-check
 
-'use strict';
-
 const path = require('path');
 
-//@ts-check
-/** @typedef {import('webpack').Configuration} WebpackConfig **/
-
-/** @type WebpackConfig */
+/** @type {import('webpack').Configuration} */
 const extensionConfig = {
   target: 'node', // VS Code extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
 	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
@@ -25,7 +20,10 @@ const extensionConfig = {
   },
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    extensionAlias: {
+      '.js': ['.ts', '.js']
+    }
   },
   module: {
     rules: [
@@ -45,4 +43,5 @@ const extensionConfig = {
     level: "log", // enables logging required for problem matchers
   },
 };
+
 module.exports = [ extensionConfig ];

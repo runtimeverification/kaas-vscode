@@ -1,10 +1,16 @@
 {
   "name": "kaas-vscode",
   "displayName": "K as a Service",
-  "description": "",
-  "version": "0.0.1",
+  "description": "K as a Service (KaaS) extension for VS Code providing K framework integration and tooling",
+  "license": "BSD-3-Clause",
+  "version": "0.0.3",
+  "publisher": "runtimeverification",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runtimeverification/kaas-vscode"
+  },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.100.0"
   },
   "categories": [
     "Other"

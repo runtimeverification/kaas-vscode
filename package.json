@@ -2,7 +2,7 @@
   "name": "kaas-vscode",
   "displayName": "K as a Service",
   "description": "",
-  "version": "0.0.2`",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.90.0"
   },

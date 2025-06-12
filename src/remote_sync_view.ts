@@ -14,11 +14,8 @@ async function createRemoteSyncView(context: vscode.ExtensionContext, client: Cl
 
     view.message = 'Ensure your changes are synced with GitHub before starting a proof.';
 
-    vscode.commands.registerCommand('kaas-vscode.refreshEntry', () => {
+    vscode.commands.registerCommand('kaas-vscode.refreshSyncView', () => {
         treeDataProvider.update();
-    });
-    vscode.commands.registerCommand('kaas-vscode.addEntry', () => {
-        vscode.window.showInformationMessage('Adding Entry to Remote Sync View');
     });
 
         

@@ -44,7 +44,7 @@ export async function kontrolProfiles(
 				const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
 				if (kontrolTomlExists) {
 
-					const gitInfo = await getGitInfo(folder.uri.fsPath);
+					const gitInfo = await getGitInfo(folder);
 
 					// If it exists, parse the file
 					const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
@@ -76,6 +76,7 @@ export async function kontrolProfiles(
 }
 
 export async function runKontrolProfileViaKaaS(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	testRun: vscode.TestRun,
@@ -93,7 +94,7 @@ export async function runKontrolProfileViaKaaS(
 		return;
 	}
 
-	const gitInfo = await getGitInfo(path.dirname(test.uri.fsPath));
+	const gitInfo = await getGitInfo(worksaceFolder);
 	if (!gitInfo) {
 		console.error(`Could not get git info for ${test.uri.fsPath}`);
 		test.busy = false;

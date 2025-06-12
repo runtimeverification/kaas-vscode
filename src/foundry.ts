@@ -182,6 +182,7 @@ export async function discoverFoundryProfiles(
 }
 
 export async function runFoundryTestViaKaaS(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	testRun: vscode.TestRun,
@@ -199,7 +200,7 @@ export async function runFoundryTestViaKaaS(
 		return;
 	}
 
-	const gitInfo = await getGitInfo(path.dirname(test.uri.fsPath));
+	const gitInfo = await getGitInfo(worksaceFolder);
 	if (!gitInfo) {
 		console.error(`Could not get git info for ${test.uri.fsPath}`);
 		test.busy = false;

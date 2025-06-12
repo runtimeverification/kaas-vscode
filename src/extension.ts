@@ -46,8 +46,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// Create root items for Kontrol and Foundry if their respective config files exist.
 	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders && workspaceFolders.length > 0) {
-		const rootPath = workspaceFolders[0].uri;
+	for (const workspaceFolder of workspaceFolders || []) {
+		const rootPath = workspaceFolder.uri;
 		
 		try {
 			await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'kontrol.toml'));
@@ -103,14 +103,17 @@ export async function activate(context: vscode.ExtensionContext) {
 		// This needs to be implemented to clear and re-populate the roots
 	};
 
-	const runProfile = testController.createRunProfile(
-		'Run KaaS Tests',
-		vscode.TestRunProfileKind.Run,
-		(request, token) => {
-			runTests(client, testController, request, token, testRunState);
-		},
-		true
-	);
+	for (const workspaceFolder of workspaceFolders || []) {
+		const runProfile = testController.createRunProfile(
+			'Run KaaS Tests',
+			vscode.TestRunProfileKind.Run,
+			(request, token) => {
+				runTests(workspaceFolder, client, testController, request, token, testRunState);
+			},
+			true
+		);
+	}
+
   
 	context.subscriptions.push(testController);
 

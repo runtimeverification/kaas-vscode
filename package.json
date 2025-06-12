@@ -26,21 +26,9 @@
         "title": "Hello World"
       },
       {
-        "command": "kaas-vscode.refreshEntry",
+        "command": "kaas-vscode.refreshSyncView",
         "title": "Refresh",
         "icon": "$(refresh)"
-      },
-      {
-        "command": "kaas-vscode.addEntry",
-        "title": "Add KaaS Entry"
-      },
-      {
-        "command": "kaas-vscode.editEntry",
-        "title": "Edit KaaS Entry"
-      },
-      {
-        "command": "kaas-vscode.deleteEntry",
-        "title": "Delete KaaS Entry"
       }
     ],
     "configuration": {
@@ -67,23 +55,6 @@
           "command": "kaas-vscode.refreshEntry",
           "when": "view == kaas-vscode.remote-sync-view",
           "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "git.init",
-          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-init",
-          "group": "inline"
-        },
-        {
-          "command": "git.publish",
-          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-publish",
-          "group": "inline"
-        },
-        {
-          "command": "git.commit",
-          "when": "view == kaas-vscode.remote-sync-view && viewItem == git-commit",
-          "group": "inline"
         }
       ]
     }

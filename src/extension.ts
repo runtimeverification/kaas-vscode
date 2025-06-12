@@ -48,11 +48,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	const workspaceFolders = vscode.workspace.workspaceFolders;
 	for (const workspaceFolder of workspaceFolders || []) {
 		const rootPath = workspaceFolder.uri;
+
+		const worrkspaceItem = testController.createTestItem(workspaceFolder.name, workspaceFolder.name);
+		testController.items.add(worrkspaceItem);
 		
 		try {
 			await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'kontrol.toml'));
 			const kontrolRoot = testController.createTestItem('kontrol', 'Kontrol');
-			testController.items.add(kontrolRoot);
+			worrkspaceItem.children.add(kontrolRoot);
 			const kontrolProfilesRoot = testController.createTestItem('kontrolProfiles', 'Profiles');
 			kontrolRoot.children.add(kontrolProfilesRoot);
 			const kontrolProveRoot = testController.createTestItem('kontrolProve', 'Prove');
@@ -60,8 +63,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			const kontrolTestsRoot = testController.createTestItem('kontrolTests', 'Tests');
 			kontrolRoot.children.add(kontrolTestsRoot);
 
-			await kontrolProfiles(client, testController, testRunState, kontrolProveRoot);
-			await discoverFoundryTestsAndPopulate(testController, kontrolTestsRoot);
+			await kontrolProfiles(workspaceFolder, client, testController, testRunState, kontrolProveRoot);
+			await discoverFoundryTestsAndPopulate(workspaceFolder, testController, kontrolTestsRoot);
 
 		} catch (e) {
 			// kontrol.toml not found
@@ -70,14 +73,14 @@ export async function activate(context: vscode.ExtensionContext) {
 		try {
 			await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'foundry.toml'));
 			const foundryRoot = testController.createTestItem('foundry', 'Foundry');
-			testController.items.add(foundryRoot);
+			worrkspaceItem.children.add(foundryRoot);
 			const foundryProfilesRoot = testController.createTestItem('foundryProfiles', 'Profiles');
 			foundryRoot.children.add(foundryProfilesRoot);
 			const foundryTestsRoot = testController.createTestItem('foundryTests', 'Tests');
 			foundryRoot.children.add(foundryTestsRoot);
 
-			await discoverFoundryProfiles(testController, foundryProfilesRoot);
-			await discoverFoundryTestsAndPopulate(testController, foundryTestsRoot);
+			await discoverFoundryProfiles(workspaceFolder, testController, foundryProfilesRoot);
+			await discoverFoundryTestsAndPopulate(workspaceFolder, testController, foundryTestsRoot);
 
 		} catch (e) {
 			// foundry.toml not found

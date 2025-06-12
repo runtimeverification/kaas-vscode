@@ -65,49 +65,46 @@ export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.Test
 }
 
 export async function discoverFoundryTestsAndPopulate(
+	workspaceFolder: vscode.WorkspaceFolder,
 	testController: vscode.TestController,
 	testsRoot: vscode.TestItem
 ) {
-	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders) {
-		for (const folder of workspaceFolders) {
-			// Check if there is a 'test' directory
-			const testDir = path.join(folder.uri.fsPath, 'test');
-			try {
-				await vscode.workspace.fs.stat(vscode.Uri.file(testDir));
-			} catch {
-				continue; // No test directory, so skip this folder
-			}
 
-			const foundryTests = await discoverFoundryTests(folder);
-			
-			// Group tests by contract
-			const testsByContract: { [key: string]: FoundryTest[] } = {};
-			for (const test of foundryTests) {
-				if (!testsByContract[test.contractName]) {
-					testsByContract[test.contractName] = [];
-				}
-				testsByContract[test.contractName].push(test);
-			}
+	// Check if there is a 'test' directory
+	const testDir = path.join(workspaceFolder.uri.fsPath, 'test');
+	try {
+		await vscode.workspace.fs.stat(vscode.Uri.file(testDir));
+	} catch {
+		return; // No test directory, so skip this folder
+	}
 
-			for (const contractName in testsByContract) {
-				const contractTests = testsByContract[contractName];
-				// Use the file path of the first test for the contract item URI.
-				const contractUri = vscode.Uri.file(contractTests[0].filePath); 
-				const contractItem = testController.createTestItem(contractName, contractName, contractUri);
-				testsRoot.children.add(contractItem);
+	const foundryTests = await discoverFoundryTests(workspaceFolder);
+	
+	// Group tests by contract
+	const testsByContract: { [key: string]: FoundryTest[] } = {};
+	for (const test of foundryTests) {
+		if (!testsByContract[test.contractName]) {
+			testsByContract[test.contractName] = [];
+		}
+		testsByContract[test.contractName].push(test);
+	}
 
-				for (const test of contractTests) {
-					const testItem = testController.createTestItem(
-						`${test.contractName}.${test.testName}`,
-						test.testName,
-						vscode.Uri.file(test.filePath)
-					);
-					// maybe set range here if I can find it easily
-					testItem.range = new vscode.Range(0, 0, 0, 0); // placeholder
-					contractItem.children.add(testItem);
-				}
-			}
+	for (const contractName in testsByContract) {
+		const contractTests = testsByContract[contractName];
+		// Use the file path of the first test for the contract item URI.
+		const contractUri = vscode.Uri.file(contractTests[0].filePath); 
+		const contractItem = testController.createTestItem(contractName, contractName, contractUri);
+		testsRoot.children.add(contractItem);
+
+		for (const test of contractTests) {
+			const testItem = testController.createTestItem(
+				`${test.contractName}.${test.testName}`,
+				test.testName,
+				vscode.Uri.file(test.filePath)
+			);
+			// maybe set range here if I can find it easily
+			testItem.range = new vscode.Range(0, 0, 0, 0); // placeholder
+			contractItem.children.add(testItem);
 		}
 	}
 }
@@ -151,33 +148,30 @@ export async function discoverFoundryTests(workspaceFolder: vscode.WorkspaceFold
 }
 
 export async function discoverFoundryProfiles(
+	worksaceFolder: vscode.WorkspaceFolder,
 	testController: vscode.TestController,
 	profilesRoot: vscode.TestItem
 ) {
-	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders) {
-		for (const folder of workspaceFolders) {
-			const foundryTomlPath = vscode.Uri.joinPath(folder.uri, 'foundry.toml');
-			try {
-				const foundryTomlExists = await vscode.workspace.fs.stat(foundryTomlPath);
-				if (foundryTomlExists) {
-					const foundryTomlContent = await vscode.workspace.fs.readFile(foundryTomlPath);
-					const foundryToml = parse(foundryTomlContent.toString()) as unknown as FoundryToml;
 
-					if (foundryToml.profile) {
-						const profiles = Object.keys(foundryToml.profile);
-						for (const profileName of profiles) {
-							// These profiles are not runnable via KaaS in the current implementation
-							// We create them so the user can see them, but they won't have a play button.
-							const testItem = testController.createTestItem(profileName, profileName, foundryTomlPath);
-							profilesRoot.children.add(testItem);
-						}
-					}
+	const foundryTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'foundry.toml');
+	try {
+		const foundryTomlExists = await vscode.workspace.fs.stat(foundryTomlPath);
+		if (foundryTomlExists) {
+			const foundryTomlContent = await vscode.workspace.fs.readFile(foundryTomlPath);
+			const foundryToml = parse(foundryTomlContent.toString()) as unknown as FoundryToml;
+
+			if (foundryToml.profile) {
+				const profiles = Object.keys(foundryToml.profile);
+				for (const profileName of profiles) {
+					// These profiles are not runnable via KaaS in the current implementation
+					// We create them so the user can see them, but they won't have a play button.
+					const testItem = testController.createTestItem(profileName, profileName, foundryTomlPath);
+					profilesRoot.children.add(testItem);
 				}
-			} catch (error) {
-				// We expect an error if the file doesn't exist, so we can ignore it.
 			}
 		}
+	} catch (error) {
+		// We expect an error if the file doesn't exist, so we can ignore it.
 	}
 }
 

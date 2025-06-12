@@ -25,6 +25,7 @@ interface KontrolProfile {
 }
 
 export async function kontrolProfiles(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	testRunState: TestRunState,
@@ -34,45 +35,39 @@ export async function kontrolProfiles(
 	if (!git) {
 
 	}
-	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders) {
-		const queue : Promise<void>[] = [];
-		for (const folder of workspaceFolders) {
-			// Does the folder contain a kontrol.toml file?
-			const kontrolTomlPath = vscode.Uri.joinPath(folder.uri, 'kontrol.toml');
-			try {
-				const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
-				if (kontrolTomlExists) {
+	const queue : Promise<void>[] = [];
+	// Does the folder contain a kontrol.toml file?
+	const kontrolTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'kontrol.toml');
+	try {
+		const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
+		if (kontrolTomlExists) {
 
-					const gitInfo = await getGitInfo(folder);
+			const gitInfo = await getGitInfo(worksaceFolder);
 
-					// If it exists, parse the file
-					const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
-					const kontrolToml = parse(kontrolTomlContent.toString()) as KontrolToml;
-					// Create a test item for each profile in the kontrol.toml
-					const proveProfiles = Object.entries(kontrolToml.prove);
-					for (const [profileName, profile] of proveProfiles) {
-						const testName = profile['match-test'];
-						const testItem = testController.createTestItem(profileName, profileName, kontrolTomlPath);
-						proveRoot.children.add(testItem);
+			// If it exists, parse the file
+			const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
+			const kontrolToml = parse(kontrolTomlContent.toString()) as KontrolToml;
+			// Create a test item for each profile in the kontrol.toml
+			const proveProfiles = Object.entries(kontrolToml.prove);
+			for (const [profileName, profile] of proveProfiles) {
+				const testName = profile['match-test'];
+				const testItem = testController.createTestItem(profileName, profileName, kontrolTomlPath);
+				proveRoot.children.add(testItem);
 
-						const storedJobId = testRunState.getJobId(testItem);
-						if (storedJobId) {
-							queue.push(updateTestFromJobId(client, testController, testItem, storedJobId, true));
-						}
-					}
-					
-					if (!gitInfo) {
-						proveRoot.description = "Could not determine git origin. Make sure you are in a git repository with a remote named 'origin'.";
-					}
+				const storedJobId = testRunState.getJobId(testItem);
+				if (storedJobId) {
+					queue.push(updateTestFromJobId(client, testController, testItem, storedJobId, true));
 				}
-			} catch (error) {
-				// We expect an error if the file doesn't exist, so we can ignore it.
+			}
+			
+			if (!gitInfo) {
+				proveRoot.description = "Could not determine git origin. Make sure you are in a git repository with a remote named 'origin'.";
 			}
 		}
-		await Promise.all(queue);
+	} catch (error) {
+		// We expect an error if the file doesn't exist, so we can ignore it.
 	}
-	return;
+	await Promise.all(queue);
 }
 
 export async function runKontrolProfileViaKaaS(

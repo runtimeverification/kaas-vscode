@@ -1,15 +1,11 @@
 import * as vscode from 'vscode';
 import createClient from "openapi-fetch";
 import { type paths } from "./kaas-api";
-import * as path from 'path';
-import * as ChildProcess from 'child_process';
-import { fetchComputeJobs } from './kaas_jobs';
 import { runTests } from './kaas_run';
 import { discoverFoundryTestsAndPopulate, discoverFoundryProfiles } from './foundry';
 import { kontrolProfiles } from './kontrol';
 import { TestRunState } from './test_run_state';
 import { KAAS_BASE_URL } from './config';
-import { create } from 'domain';
 import { createRemoteSyncView } from './remote_sync_view';
 
 interface KontrolProfile {

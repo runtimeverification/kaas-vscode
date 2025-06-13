@@ -10,7 +10,6 @@ import { JobKind } from "./kaas-api";
 import { verifyVaultExists } from "./kaas_vault";
 import { pollForJobStatus } from "./kaas_jobs";
 import { KAAS_BASE_URL } from "./config";
-import * as path from 'path';
 
 interface KontrolToml {
 	prove: {

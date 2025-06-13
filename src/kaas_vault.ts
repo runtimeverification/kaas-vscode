@@ -1,5 +1,5 @@
 import { components, paths } from "./kaas-api";
-import createClient, { Client } from "openapi-fetch";
+import { Client } from "openapi-fetch";
 
 export async function verifyVaultExists(
     client: Client<paths>,

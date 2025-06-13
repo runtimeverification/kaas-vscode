@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { API, GitExtension, Repository, Remote } from './git-api';
-import * as child_process from 'child_process';
 
 export
 function gitApi() : API {

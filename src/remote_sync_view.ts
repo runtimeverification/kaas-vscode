@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { getGitRepository, getRemoteBranch, getRemoteOrigin, gitApi, hasUnpushedChanges, hasWorkingTreeChanges } from './git';
-import { Repository } from './git-api';
 import { verifyVaultExists } from './kaas_vault';
 import { Client } from 'openapi-fetch';
 import { paths } from './kaas-api';

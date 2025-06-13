@@ -10,7 +10,7 @@
     "url": "https://github.com/runtimeverification/kaas-vscode"
   },
   "engines": {
-    "vscode": "^1.98.2"
+    "vscode": "^1.96.0"
   },
   "categories": [
     "Other"

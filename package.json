@@ -1,11 +1,16 @@
 {
   "name": "kaas-vscode",
   "displayName": "K as a Service",
-  "description": "",
-  "version": "0.0.3",
-
+  "description": "K as a Service (KaaS) extension for VS Code providing K framework integration and tooling",
+  "license": "BSD-3-Clause",
+  "version": "0.0.4",
+  "publisher": "runtimeverification",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/runtimeverification/kaas-vscode"
+  },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.96.0"
   },
   "categories": [
     "Other"
@@ -19,6 +24,11 @@
       {
         "command": "kaas-vscode.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "kaas-vscode.refreshSyncView",
+        "title": "Refresh",
+        "icon": "$(refresh)"
       }
     ],
     "configuration": {
@@ -30,10 +40,28 @@
           "description": "API Key for KaaS"
         }
       }
+    },
+    "views": {
+      "test": [
+        {
+          "id": "kaas-vscode.remote-sync-view",
+          "name": "Remote Sync"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "kaas-vscode.refreshSyncView",
+          "when": "view == kaas-vscode.remote-sync-view",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "build": "npm run compile",
     "compile": "webpack --config webpack.config.js",
     "watch": "webpack --watch --config webpack.config.js",
     "package": "webpack --mode production --devtool hidden-source-map --config webpack.config.js",
@@ -60,5 +88,8 @@
   "dependencies": {
     "openapi-fetch": "^0.14.0",
     "smol-toml": "^1.3.4"
-  }
+  },
+  "extensionDependencies": [
+    "vscode.git"
+  ]
 }

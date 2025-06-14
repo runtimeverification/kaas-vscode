@@ -1,7 +1,7 @@
 import { components, paths } from "./kaas-api";
 import { Client } from "openapi-fetch";
 import * as vscode from 'vscode';
-import { getGitInfo } from './git';
+import { gitApi, getGitInfo } from './git';
 import { parse } from 'smol-toml';
 import { getJobStatusByJobId } from './kaas_jobs';
 import { TestRunState } from "./test_run_state";
@@ -10,7 +10,6 @@ import { JobKind } from "./kaas-api";
 import { verifyVaultExists } from "./kaas_vault";
 import { pollForJobStatus } from "./kaas_jobs";
 import { KAAS_BASE_URL } from "./config";
-import * as path from 'path';
 
 interface KontrolToml {
 	prove: {
@@ -25,53 +24,53 @@ interface KontrolProfile {
 }
 
 export async function kontrolProfiles(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	testRunState: TestRunState,
 	proveRoot: vscode.TestItem
 ) : Promise<void> {
-	const workspaceFolders = vscode.workspace.workspaceFolders;
-	if (workspaceFolders) {
-		const queue : Promise<void>[] = [];
-		for (const folder of workspaceFolders) {
-			// Does the folder contain a kontrol.toml file?
-			const kontrolTomlPath = vscode.Uri.joinPath(folder.uri, 'kontrol.toml');
-			try {
-				const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
-				if (kontrolTomlExists) {
+	const git = await gitApi();
+	if (!git) {
 
-					const gitInfo = await getGitInfo(folder.uri.fsPath);
+	}
+	const queue : Promise<void>[] = [];
+	// Does the folder contain a kontrol.toml file?
+	const kontrolTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'kontrol.toml');
+	try {
+		const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
+		if (kontrolTomlExists) {
 
-					// If it exists, parse the file
-					const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
-					const kontrolToml = parse(kontrolTomlContent.toString()) as KontrolToml;
-					// Create a test item for each profile in the kontrol.toml
-					const proveProfiles = Object.entries(kontrolToml.prove);
-					for (const [profileName, profile] of proveProfiles) {
-						const testName = profile['match-test'];
-						const testItem = testController.createTestItem(profileName, profileName, kontrolTomlPath);
-						proveRoot.children.add(testItem);
+			const gitInfo = await getGitInfo(worksaceFolder);
 
-						const storedJobId = testRunState.getJobId(testItem);
-						if (storedJobId) {
-							queue.push(updateTestFromJobId(client, testController, testItem, storedJobId, true));
-						}
-					}
-					
-					if (!gitInfo) {
-						proveRoot.description = "Could not determine git origin. Make sure you are in a git repository with a remote named 'origin'.";
-					}
+			// If it exists, parse the file
+			const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
+			const kontrolToml = parse(kontrolTomlContent.toString()) as KontrolToml;
+			// Create a test item for each profile in the kontrol.toml
+			const proveProfiles = Object.entries(kontrolToml.prove);
+			for (const [profileName, profile] of proveProfiles) {
+				const testName = profile['match-test'];
+				const testItem = testController.createTestItem(profileName, profileName, kontrolTomlPath);
+				proveRoot.children.add(testItem);
+
+				const storedJobId = testRunState.getJobId(testItem);
+				if (storedJobId) {
+					queue.push(updateTestFromJobId(client, testController, testItem, storedJobId, true));
 				}
-			} catch (error) {
-				// We expect an error if the file doesn't exist, so we can ignore it.
+			}
+			
+			if (!gitInfo) {
+				proveRoot.description = "Could not determine git origin. Make sure you are in a git repository with a remote named 'origin'.";
 			}
 		}
-		await Promise.all(queue);
+	} catch (error) {
+		// We expect an error if the file doesn't exist, so we can ignore it.
 	}
-	return;
+	await Promise.all(queue);
 }
 
 export async function runKontrolProfileViaKaaS(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	testRun: vscode.TestRun,
@@ -89,7 +88,7 @@ export async function runKontrolProfileViaKaaS(
 		return;
 	}
 
-	const gitInfo = await getGitInfo(path.dirname(test.uri.fsPath));
+	const gitInfo = await getGitInfo(worksaceFolder);
 	if (!gitInfo) {
 		console.error(`Could not get git info for ${test.uri.fsPath}`);
 		test.busy = false;

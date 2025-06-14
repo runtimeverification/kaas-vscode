@@ -22,6 +22,7 @@ function gatherLeafTests(test: vscode.TestItem, collection: Set<vscode.TestItem>
 }
 
 export async function runTests(
+	worksaceFolder: vscode.WorkspaceFolder,
 	client: Client<paths>,
 	testController: vscode.TestController,
 	request: vscode.TestRunRequest,
@@ -49,9 +50,9 @@ export async function runTests(
 		const rootId = getRootTestId(test);
 
 		if (rootId === 'kontrol') {
-			await runKontrolProfileViaKaaS(client, testController, testRun, test, testRunState);
+			await runKontrolProfileViaKaaS(worksaceFolder, client, testController, testRun, test, testRunState);
 		} else {
-			await runFoundryTestViaKaaS(client, testController, testRun, test, testRunState);
+			await runFoundryTestViaKaaS(worksaceFolder, client, testController, testRun, test, testRunState);
 		}
 	}
 

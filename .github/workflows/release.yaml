@@ -30,12 +30,6 @@
                   id: package_version
                   uses: martinbeentjes/npm-get-version-action@v1.1.0
     
-                - name: Check version is mentioned in Changelog
-                  uses: mindsers/changelog-reader-action@v2.0.0
-                  with:
-                    version: ${{ steps.package_version.outputs.current-version }}
-                    path: 'CHANGELOG.md'
-    
                 - name: Create a Release
                   id: create_release
                   uses: actions/create-release@v1

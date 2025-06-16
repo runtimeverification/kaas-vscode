@@ -55,6 +55,15 @@ export async function kontrolProfiles(
 
 				const storedJobId = testRunState.getJobId(testItem);
 				if (storedJobId) {
+					testItem.contextValue = 'kaasTestWithJob';
+					if (gitInfo) {
+						// Store org/repo/jobId as JSON in description for retrieval by the command
+						testItem.description = JSON.stringify({
+							organization: gitInfo.owner,
+							repo: gitInfo.repo,
+							jobId: storedJobId
+						});
+					}
 					queue.push(updateTestFromJobId(client, testController, testItem, storedJobId, true));
 				}
 			}

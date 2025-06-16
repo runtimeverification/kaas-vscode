@@ -97,6 +97,29 @@ export async function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
+	// Register the Open Job in Browser command
+	context.subscriptions.push(
+		vscode.commands.registerCommand('kaas-vscode.openJobInBrowser', (testItem: vscode.TestItem) => {
+			if (!testItem || !testItem.description) {
+				vscode.window.showErrorMessage('No job information found for this test.');
+				return;
+			}
+			let info;
+			try {
+				info = JSON.parse(testItem.description);
+			} catch (e) {
+				vscode.window.showErrorMessage('Failed to parse job information.');
+				return;
+			}
+			if (!info.organization || !info.repo || !info.jobId) {
+				vscode.window.showErrorMessage('Incomplete job information.');
+				return;
+			}
+			const url = `https://kaas.runtimeverification.com/app/organization/${info.organization}/${info.repo}/job/${info.jobId}`;
+			vscode.env.openExternal(vscode.Uri.parse(url));
+		})
+	);
+
 	// The refresh handler should re-run the discovery logic
 	testController.refreshHandler = async () => {
 		// This needs to be implemented to clear and re-populate the roots

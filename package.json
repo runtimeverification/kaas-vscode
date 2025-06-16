@@ -29,6 +29,10 @@
         "command": "kaas-vscode.refreshSyncView",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "kaas-vscode.openJobInBrowser",
+        "title": "Open Job in Browser"
       }
     ],
     "configuration": {
@@ -55,6 +59,13 @@
           "command": "kaas-vscode.refreshSyncView",
           "when": "view == kaas-vscode.remote-sync-view",
           "group": "navigation"
+        }
+      ],
+      "testing/item/context": [
+        {
+          "command": "kaas-vscode.openJobInBrowser",
+          "when": "testItemContext == kaasTestWithJob",
+          "group": "inline"
         }
       ]
     }

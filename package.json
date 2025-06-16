@@ -3,7 +3,7 @@
   "displayName": "K as a Service",
   "description": "K as a Service (KaaS) extension for VS Code providing K framework integration and tooling",
   "license": "BSD-3-Clause",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "runtimeverification",
   "repository": {
     "type": "git",
@@ -74,7 +74,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.9",
     "@types/node": "^20.17.58",
-    "@types/vscode": "^1.100.0",
+    "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",

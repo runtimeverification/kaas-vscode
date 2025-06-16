@@ -4,6 +4,6 @@ All notable changes to the "kaas-vscode" extension will be documented in this fi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.0.2] - Jun 11 2025
-### Added
+## [0.0.6] - Jun 11 2025
+### Updating docs 
 - Initial release of K as a Service (KaaS) extension.

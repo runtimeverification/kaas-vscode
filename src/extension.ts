@@ -7,6 +7,7 @@ import { kontrolProfiles } from './kontrol';
 import { TestRunState } from './test_run_state';
 import { KAAS_BASE_URL } from './config';
 import { createRemoteSyncView } from './remote_sync_view';
+import { downloadKcfgFile } from './kaas_jobs';
 
 interface KontrolProfile {
 	'match-test': string;
@@ -117,6 +118,32 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 			const url = `https://kaas.runtimeverification.com/app/organization/${info.organization}/${info.repo}/job/${info.jobId}`;
 			vscode.env.openExternal(vscode.Uri.parse(url));
+		})
+	);
+
+	// Register a VSCode command to download kcfg files for a job. Add UI integration to trigger download from job/test context.
+	context.subscriptions.push(
+		vscode.commands.registerCommand('kaas-vscode.downloadKcfg', async (testItem: vscode.TestItem) => {
+			if (!testItem || !testItem.description) {
+				vscode.window.showErrorMessage('No job information found for this test.');
+				return;
+			}
+			let info;
+			try {
+				info = JSON.parse(testItem.description);
+			} catch (e) {
+				vscode.window.showErrorMessage('Failed to parse job information.');
+				return;
+			}
+			if (!info.jobId) {
+				vscode.window.showErrorMessage('No jobId found for this test.');
+				return;
+			}
+			const fileName = await vscode.window.showInputBox({ prompt: 'Enter the kcfg file name to download (e.g. proof.kcfg)' });
+			if (!fileName) return;
+			const saveUri = await vscode.window.showSaveDialog({ defaultUri: vscode.Uri.file(fileName), saveLabel: 'Save kcfg file' });
+			if (!saveUri) return;
+			await downloadKcfgFile(client, info.jobId, fileName, saveUri);
 		})
 	);
 

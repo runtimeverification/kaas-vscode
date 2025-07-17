@@ -3,7 +3,7 @@
   "displayName": "K as a Service",
   "description": "K as a Service (KaaS) extension for VS Code providing K framework integration and tooling",
   "license": "BSD-3-Clause",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "runtimeverification",
   "repository": {
     "type": "git",

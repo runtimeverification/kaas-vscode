@@ -4,4409 +4,4409 @@
  */
 
 export interface paths {
-    "/api/hello": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a greeting message */
-        get: operations["AppController_getHello"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  '/api/hello': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/user": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the authenticated user */
-        get: operations["UserController_user"];
-        put?: never;
-        post?: never;
-        /** Delete the authenticated user */
-        delete: operations["UserController_deleteUser"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a greeting message */
+    get: operations['AppController_getHello'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/user': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all users */
-        get: operations["UserController_listUsers"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the authenticated user */
+    get: operations['UserController_user'];
+    put?: never;
+    post?: never;
+    /** Delete the authenticated user */
+    delete: operations['UserController_deleteUser'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/users/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a user by ID */
-        get: operations["UserController_getUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all users */
+    get: operations['UserController_listUsers'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/users/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/users/{id}/vaults": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a user vaults by ID */
-        get: operations["UserController_getUserVaults"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a user by ID */
+    get: operations['UserController_getUser'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/users/{id}/vaults': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/keys": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all admin keys for the authenticated user */
-        get: operations["UserController_getAdminKeys"];
-        put?: never;
-        /** Create a new admin key */
-        post: operations["UserController_createAdminKey"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a user vaults by ID */
+    get: operations['UserController_getUserVaults'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/keys': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/user/keys": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all keys for the authenticated user */
-        get: operations["UserController_getUserKeys"];
-        put?: never;
-        /** Create a new key */
-        post: operations["UserController_createKey"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all admin keys for the authenticated user */
+    get: operations['UserController_getAdminKeys'];
+    put?: never;
+    /** Create a new admin key */
+    post: operations['UserController_createAdminKey'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/user/keys': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admins/keys": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all admin keys */
-        get: operations["UserController_getAllAdminKeys"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all keys for the authenticated user */
+    get: operations['UserController_getUserKeys'];
+    put?: never;
+    /** Create a new key */
+    post: operations['UserController_createKey'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admins/keys': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/keys/{keyId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete an admin key */
-        delete: operations["UserController_deleteAdminKey"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all admin keys */
+    get: operations['UserController_getAllAdminKeys'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/keys/{keyId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/user/keys/{keyId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a key */
-        delete: operations["UserController_deleteUserKey"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete an admin key */
+    delete: operations['UserController_deleteAdminKey'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/user/keys/{keyId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/user-suggestions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Search for users */
-        get: operations["UserController_userSuggestions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a key */
+    delete: operations['UserController_deleteUserKey'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/user-suggestions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Add a user to an organization */
-        post: operations["UserController_addUserToOrganization"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Search for users */
+    get: operations['UserController_userSuggestions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/users/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Remove a user from an organization */
-        delete: operations["UserController_removeUserFromOrganization"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Add a user to an organization */
+    post: operations['UserController_addUserToOrganization'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/users/{userId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all users in a vault */
-        get: operations["UserController_getVaultUsers"];
-        put?: never;
-        /** Add a user to a vault */
-        post: operations["UserController_addUserToVault"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Remove a user from an organization */
+    delete: operations['UserController_removeUserFromOrganization'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/users/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Remove a user from a vault */
-        delete: operations["UserController_removeUserFromVault"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all users in a vault */
+    get: operations['UserController_getVaultUsers'];
+    put?: never;
+    /** Add a user to a vault */
+    post: operations['UserController_addUserToVault'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/users/{userId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/vaults": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all vaults that the current user has access to */
-        get: operations["VaultController_getVaults"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Remove a user from a vault */
+    delete: operations['UserController_removeUserFromVault'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/vaults': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a vault by name */
-        get: operations["VaultController_getVaultByName"];
-        put?: never;
-        /**
-         * Link a vault to an organization
-         * @description Links a vault to an organization, setting up access to the associated GitHub repository and its commits.
-         */
-        post: operations["VaultController_linkVault"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all vaults that the current user has access to */
+    get: operations['VaultController_getVaults'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/vaults": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all vaults */
-        get: operations["VaultController_listAllVaults"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a vault by name */
+    get: operations['VaultController_getVaultByName'];
+    put?: never;
+    /**
+     * Link a vault to an organization
+     * @description Links a vault to an organization, setting up access to the associated GitHub repository and its commits.
+     */
+    post: operations['VaultController_linkVault'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/vaults': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all vaults for an organization */
-        get: operations["VaultController_getVault"];
-        put?: never;
-        /** Create a vault for an organization */
-        post: operations["VaultController_createVaultForOrganization"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all vaults */
+    get: operations['VaultController_listAllVaults'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/vaults/{vaultId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a vault by ID */
-        get: operations["VaultController_getVaultById"];
-        put?: never;
-        post?: never;
-        /** Delete a vault by ID */
-        delete: operations["VaultController_deleteVault"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all vaults for an organization */
+    get: operations['VaultController_getVault'];
+    put?: never;
+    /** Create a vault for an organization */
+    post: operations['VaultController_createVaultForOrganization'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/vaults/{vaultId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the role of the current user for a vault */
-        get: operations["VaultController_getUserVaultLevelRole"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a vault by ID */
+    get: operations['VaultController_getVaultById'];
+    put?: never;
+    post?: never;
+    /** Delete a vault by ID */
+    delete: operations['VaultController_deleteVault'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/role': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/report-severities": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the report severities for a vault */
-        get: operations["VaultController_getReportSeverities"];
-        put?: never;
-        /** Upsert report severity for a vault */
-        post: operations["VaultController_upsertReportSeverity"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the role of the current user for a vault */
+    get: operations['VaultController_getUserVaultLevelRole'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/report-severities': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/caches": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List all caches */
-        get: operations["CacheController_listAllCaches"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the report severities for a vault */
+    get: operations['VaultController_getReportSeverities'];
+    put?: never;
+    /** Upsert report severity for a vault */
+    post: operations['VaultController_upsertReportSeverity'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/caches': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/tests": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get cache tests */
-        get: operations["CacheController_getCacheTests"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List all caches */
+    get: operations['CacheController_listAllCaches'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/tests': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/url": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get cache presigned link */
-        get: operations["CacheController_getFilePresignedLink"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get cache tests */
+    get: operations['CacheController_getCacheTests'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/url': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete cache */
-        delete: operations["CacheController_deleteCache"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get cache presigned link */
+    get: operations['CacheController_getFilePresignedLink'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/caches": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get vault caches */
-        get: operations["CacheController_getVaultCaches"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete cache */
+    delete: operations['CacheController_deleteCache'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/caches': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/public/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["PublicController_healthCheck"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get vault caches */
+    get: operations['CacheController_getVaultCaches'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/public/health': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/public/error": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["PublicController_sentryError"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['PublicController_healthCheck'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/public/error': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/credits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all credits */
-        get: operations["CreditsController_findAll"];
-        put?: never;
-        /** Add credits for a organization */
-        post: operations["CreditsController_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['PublicController_sentryError'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/credits': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/credits/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get organization's credits statistics */
-        get: operations["CreditsController_getStats"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all credits */
+    get: operations['CreditsController_findAll'];
+    put?: never;
+    /** Add credits for a organization */
+    post: operations['CreditsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/credits/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/credits/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get vault's credits statistics */
-        get: operations["CreditsController_getVaultStats"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get organization's credits statistics */
+    get: operations['CreditsController_getStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/credits/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/usages": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Add usage record for a vault
-         * @description Replace VaultID with the actual Vault ID
-         */
-        post: operations["CreditsController_createUsage"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get vault's credits statistics */
+    get: operations['CreditsController_getVaultStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/usages': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/tags": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["OrganizationController_findVaultOrgTags"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Add usage record for a vault
+     * @description Replace VaultID with the actual Vault ID
+     */
+    post: operations['CreditsController_createUsage'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/tags': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List organizations for the current user */
-        get: operations["OrganizationController_findUserOrganizations"];
-        put?: never;
-        /** Create a new organization */
-        post: operations["OrganizationController_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['OrganizationController_findVaultOrgTags'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/orgs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List all organizations */
-        get: operations["OrganizationController_findAllOrganizations"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List organizations for the current user */
+    get: operations['OrganizationController_findUserOrganizations'];
+    put?: never;
+    /** Create a new organization */
+    post: operations['OrganizationController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/orgs': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get organization by name */
-        get: operations["OrganizationController_findOne"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List all organizations */
+    get: operations['OrganizationController_findAllOrganizations'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/subscription": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Change organization subscription */
-        post: operations["OrganizationController_subscribe"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get organization by name */
+    get: operations['OrganizationController_findOne'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/subscription': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the role of the current user for an organization */
-        get: operations["OrganizationController_getUserOrganizationLevelRole"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Change organization subscription */
+    post: operations['OrganizationController_subscribe'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/role': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/auth": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Initiate Slack OAuth flow */
-        get: operations["SlackController_authorize"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the role of the current user for an organization */
+    get: operations['OrganizationController_getUserOrganizationLevelRole'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/auth': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/callback": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["SlackController_oauthCallback"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Initiate Slack OAuth flow */
+    get: operations['SlackController_authorize'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/callback': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/orgs/{organizationName}/send-test-message": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Send a test message to Slack */
-        get: operations["SlackController_sendTestMessage"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['SlackController_oauthCallback'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/orgs/{organizationName}/send-test-message': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/orgs/{organizationName}/subscriptions/{subscriptionId}/unsubscribe": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["SlackController_unsubscribeChannel"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Send a test message to Slack */
+    get: operations['SlackController_sendTestMessage'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/orgs/{organizationName}/subscriptions/{subscriptionId}/unsubscribe': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/orgs/{organizationName}/subscriptions/{subscriptionId}/send-test-message": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["SlackController_sendTestMessageSubscriptionId"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['SlackController_unsubscribeChannel'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/orgs/{organizationName}/subscriptions/{subscriptionId}/send-test-message': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/orgs/{organizationName}/subscriptions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["SlackController_getSubscriptions"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['SlackController_sendTestMessageSubscriptionId'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/orgs/{organizationName}/subscriptions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/slack/commands": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["SlackController_handleSlashCommand"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['SlackController_getSubscriptions'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/slack/commands': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get the statuses of compute jobs
-         * @description Retrieves the status of compute jobs by organization and vault.
-         */
-        get: operations["JobController_getVaultJobs"];
-        put?: never;
-        /**
-         * Initiate a compute job
-         * @description Initiates a new compute job for the specified organization and vault.
-         */
-        post: operations["JobController_createJob"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post: operations['SlackController_handleSlashCommand'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/jobs': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/cancel": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel a compute job
-         * @description Cancels a compute job by its ID. The job must be in a cancellable state (e.g., pending or running). Only authorized users can cancel jobs they have access to.
-         */
-        post: operations["JobController_cancelJob"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get the statuses of compute jobs
+     * @description Retrieves the status of compute jobs by organization and vault.
+     */
+    get: operations['JobController_getVaultJobs'];
+    put?: never;
+    /**
+     * Initiate a compute job
+     * @description Initiates a new compute job for the specified organization and vault.
+     */
+    post: operations['JobController_createJob'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/cancel': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Organization Jobs
-         * @description Retrieves all compute jobs associated with a specific organization.
-         */
-        get: operations["JobController_getOrganizationJobs"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /**
+     * Cancel a compute job
+     * @description Cancels a compute job by its ID. The job must be in a cancellable state (e.g., pending or running). Only authorized users can cancel jobs they have access to.
+     */
+    post: operations['JobController_cancelJob'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/jobs': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/job": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the job associated with this cache */
-        get: operations["JobController_getCacheJob"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get Organization Jobs
+     * @description Retrieves all compute jobs associated with a specific organization.
+     */
+    get: operations['JobController_getOrganizationJobs'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/vaults/{vaultName}/caches/{cacheHash}/job': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/orgs/{organizationName}/stats": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get organization usage stats */
-        get: operations["JobController_getOrganizationStats"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the job associated with this cache */
+    get: operations['JobController_getCacheJob'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/orgs/{organizationName}/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/admin/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all jobs */
-        get: operations["JobController_getAllJobs"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get organization usage stats */
+    get: operations['JobController_getOrganizationStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/admin/jobs': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get Job Details
-         * @description Retrieves detailed information about a specific compute job.
-         */
-        get: operations["JobController_getJob"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get all jobs */
+    get: operations['JobController_getAllJobs'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/files/{fileName}/url": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a presigned URL to download a file from a job */
-        get: operations["JobController_getJobFileS3DownloadPresignedUrl"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /**
+     * Get Job Details
+     * @description Retrieves detailed information about a specific compute job.
+     */
+    get: operations['JobController_getJob'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/files/{fileName}/url': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/pdf-report": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Generate and download a PDF report from a job */
-        post: operations["JobController_getJobPdfReportDownload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get a presigned URL to download a file from a job */
+    get: operations['JobController_getJobFileS3DownloadPresignedUrl'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/pdf-report': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the role of the current user for a job */
-        get: operations["JobController_getUserJobLevelRole"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Generate and download a PDF report from a job */
+    post: operations['JobController_getJobPdfReportDownload'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/role': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/publish": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Publish a job for public access */
-        post: operations["JobController_publishJob"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get the role of the current user for a job */
+    get: operations['JobController_getUserJobLevelRole'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/publish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/{jobId}/unpublish": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Unpublish a job for public access */
-        post: operations["JobController_unpublishJob"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Publish a job for public access */
+    post: operations['JobController_publishJob'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/{jobId}/unpublish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/jobs/callback": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Callback endpoint for updating job status */
-        post: operations["JobCallbackController_jobCallback"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Unpublish a job for public access */
+    post: operations['JobController_unpublishJob'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/jobs/callback': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/gpt/report-failures": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["GptController_askGptReportFailures"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Callback endpoint for updating job status */
+    post: operations['JobCallbackController_jobCallback'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/gpt/report-failures': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    post: operations['GptController_askGptReportFailures'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        /** @enum {string} */
-        LoginProvider: LoginProvider;
-        IUser: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Username of the user.
-             * @example john_doe
-             */
-            username?: string | null;
-            /**
-             * @description Email of the user.
-             * @example XXX@gmail.com
-             */
-            email: string | null;
-            /**
-             * @description Avatar of the user.
-             * @example https://example.com/avatar.png
-             */
-            avatar: string | null;
-            /**
-             * @description Whether the user is an admin.
-             * @example true
-             */
-            isAdmin: boolean;
-            /**
-             * @description Date and time the user reset their password.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            provider: components["schemas"]["LoginProvider"];
-        };
-        IUserAdmin: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Username of the user.
-             * @example john_doe
-             */
-            username?: string | null;
-            /**
-             * @description Email of the user.
-             * @example xxx@gmail.com
-             */
-            email: string | null;
-            /**
-             * @description Avatar of the user.
-             * @example https://example.com/avatar.png
-             */
-            avatar: string | null;
-            /**
-             * @description Whether the user is an admin.
-             * @example true
-             */
-            isAdmin: boolean;
-            /**
-             * @description Date and time the user was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the user was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the user was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-            /**
-             * @description Date and time the user signed up.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            signedUp: string | null;
-            /**
-             * @description The user provider.
-             * @example github
-             */
-            provider: components["schemas"]["LoginProvider"];
-        };
-        IOrganizationNameAndId: {
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the organization.
-             * @example my-organization
-             */
-            name: string;
-        };
-        ICache: {
-            /**
-             * @description The cache file stored in S3 `orgName/vaultName`
-             * @example cache.zip
-             */
-            fileName: string;
-            /**
-             * @description The hash is the `cacheHash` part of `orgName/vaultName/cacheHash`
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            hash: string;
-            /**
-             * @description The unique identifier for the cache.
-             * @example 1
-             */
-            shortId?: string | null;
-            /**
-             * @description The tag of the cache
-             * @example latest
-             */
-            tag?: string | null;
-            /**
-             * @description The date and time the cache was last modified.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            lastModified?: string | null;
-            /**
-             * @description The vault ID the cache belongs to.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            vaultId: string;
-            /**
-             * @description Whether the cache has an XML report associated with it.
-             * @example true
-             */
-            hasXmlReport: boolean;
-            /**
-             * Format: int64
-             * @description The total file size of the cache in bytes.
-             * @example 100
-             */
-            totalFileSize: number;
-        };
-        IVault: {
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the vault.
-             * @example my-vault
-             */
-            name: string;
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            organizationId: string;
-            /**
-             * @description GitHub repository owner.
-             * @example runtimeverification
-             */
-            owner: string;
-            /**
-             * @description GitHub repository name.
-             * @example kaas
-             */
-            repo: string;
-            /**
-             * @description Date and time the vault was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the vault was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the vault was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-            /**
-             * @description Date and time the vault was initialized.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            initializedAt: string | null;
-            /** @description The organization the vault belongs to. */
-            organization?: components["schemas"]["IOrganizationNameAndId"];
-            /** @description The vault caches. */
-            caches?: components["schemas"]["ICache"][];
-            /** @description Number of caches in the vault. */
-            cacheCount?: number;
-        };
-        CreateKeyDto: {
-            /**
-             * @description Name of the key
-             * @example my-key
-             */
-            name?: string | null;
-            /**
-             * Format: date-time
-             * @description Expiration date of the key
-             * @example 2022-01-01T00:00:00.000Z
-             */
-            expiresAt?: string | null;
-            /**
-             * @description Allow remote compute
-             * @example true
-             */
-            allowRemoteCompute?: boolean;
-            /**
-             * @description Allow usage tracking
-             * @example true
-             */
-            allowUsageTracking?: boolean;
-        };
-        IAdminKey: {
-            /**
-             * @description Unique identifier for the key.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Key value.
-             * @example key_value
-             */
-            key: string;
-            /**
-             * @description Name of the key.
-             * @example key
-             */
-            name: string | null;
-            /**
-             * @description The user ID.
-             * @example 1
-             */
-            userId: string;
-            /**
-             * @description Whether the key allows remote compute.
-             * @example true
-             */
-            allowRemoteCompute: boolean;
-            /**
-             * @description Whether the key allows usage tracking.
-             * @example true
-             */
-            allowUsageTracking: boolean;
-            /**
-             * @description When the key was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description When the key was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description When the key expires.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            expiresAt: string | null;
-            /** @description The user details. */
-            user?: components["schemas"]["IUser"];
-        };
-        IKey: {
-            /**
-             * @description Unique identifier for the key.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the key.
-             * @example key
-             */
-            name: string | null;
-            /**
-             * @description Key value.
-             * @example key_value
-             */
-            key: string;
-            /**
-             * @description When the key was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description When the key expires.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            expiresAt: string | null;
-        };
-        IUserSuggestion: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Username of the user.
-             * @example john_doe
-             */
-            username: string | null;
-            /**
-             * @description Email of the user.
-             * @example xxx@gmail.com
-             */
-            email: string | null;
-            /**
-             * @description Avatar of the user.
-             * @example https://example.com/avatar.png
-             */
-            avatar: string | null;
-        };
-        /** @enum {string} */
-        UserRole: UserRole;
-        AddUserToOrganizationDto: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            userId: string;
-            /** @description Unique identifier for the organization. */
-            role: components["schemas"]["UserRole"];
-        };
-        IOrganizationUserUser: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Username of the user.
-             * @example john_doe
-             */
-            username?: string | null;
-            /**
-             * @description Email of the user.
-             * @example XXX@gmail.com
-             */
-            email: string | null;
-            /**
-             * @description Avatar of the user.
-             * @example https://example.com/avatar.png
-             */
-            avatar: string | null;
-        };
-        IOrganizationUser: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            userId: string;
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            organizationId: string;
-            /** @description Role of the user in the organization. */
-            role: components["schemas"]["UserRole"];
-            /** @description User details. */
-            user: components["schemas"]["IOrganizationUserUser"];
-        };
-        AddUserToVaultDto: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            userId: string;
-            /** @description Unique identifier for the organization. */
-            role: components["schemas"]["UserRole"];
-        };
-        IVaultUser: {
-            /**
-             * @description Unique identifier for the user.
-             * @example 1
-             */
-            userId: string;
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            vaultId: string;
-            /** @description Role of the user in the organization. */
-            role: components["schemas"]["UserRole"];
-            /** @description User details. */
-            user: components["schemas"]["IOrganizationUserUser"];
-        };
-        IVaultWithoutCachesAndOrganization: {
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the vault.
-             * @example my-vault
-             */
-            name: string;
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            organizationId: string;
-            /**
-             * @description GitHub repository owner.
-             * @example runtimeverification
-             */
-            owner: string;
-            /**
-             * @description GitHub repository name.
-             * @example kaas
-             */
-            repo: string;
-            /**
-             * @description Date and time the vault was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the vault was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the vault was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-            /**
-             * @description Date and time the vault was initialized.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            initializedAt: string | null;
-            /** @description Number of caches in the vault. */
-            cacheCount?: number;
-        };
-        IVaultAdmin: {
-            /** @description The vault. */
-            vault: components["schemas"]["IVaultWithoutCachesAndOrganization"];
-            /** @description The organization. */
-            organization: components["schemas"]["IOrganizationNameAndId"];
-            /**
-             * @description The number of the vault's caches.
-             * @example 1
-             */
-            cacheCount: number;
-        };
-        CreateVaultDto: {
-            /**
-             * @description Name of the vault
-             * @example my-vault
-             */
-            name: string;
-            /**
-             * @description owner part of the GitHub repository: owner/repo. Leave it empty to mean it's not the GitHub repository.
-             * @example runtimeverification
-             */
-            owner: string;
-            /**
-             * @description repo part of the GitHub repository: owner/repo. Leave it empty to mean it's not the GitHub repository.
-             * @example kaas
-             */
-            repo: string;
-        };
-        /** @enum {string} */
-        SeverityLevel: SeverityLevel;
-        ISeverity: {
-            /**
-             * @description The testsuite name
-             * @example CounterTest
-             */
-            testSuiteName: string;
-            /**
-             * @description The testcase name
-             * @example setUp()
-             */
-            testCaseName: string;
-            /**
-             * @description The testcase class name
-             * @example CounterTest
-             */
-            testCaseClassName: string;
-            /**
-             * @description The testcase file
-             * @example test/kontrol/Counter.t.sol
-             */
-            testCaseFile: string;
-            /**
-             * @description The severity level.
-             * @example high
-             */
-            severity: components["schemas"]["SeverityLevel"];
-        };
-        UpsertReportSeverityDto: {
-            /**
-             * @description The testsuite name
-             * @example CounterTest
-             */
-            testSuiteName: string;
-            /**
-             * @description The testcase name
-             * @example setUp()
-             */
-            testCaseName: string;
-            /**
-             * @description The testcase class name
-             * @example CounterTest
-             */
-            testCaseClassName: string;
-            /**
-             * @description The testcase file
-             * @example test/kontrol/Counter.t.sol
-             */
-            testCaseFile: string;
-            /**
-             * @description The severity level.
-             * @example high
-             */
-            severity: components["schemas"]["SeverityLevel"];
-            /**
-             * @description The job ID that this severity is associated with
-             * @example my-job
-             */
-            jobId?: string | null;
-        };
-        IVaultNameAndId: {
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the vault.
-             * @example my-vault
-             */
-            name: string;
-        };
-        ICacheAdmin: {
-            /** @description The cache. */
-            cache: components["schemas"]["ICache"];
-            /** @description The organization. */
-            organization: components["schemas"]["IOrganizationNameAndId"];
-            /** @description The vault. */
-            vault: components["schemas"]["IVaultNameAndId"];
-        };
-        ITest: {
-            /**
-             * @description The test name.
-             * @example test
-             */
-            name: string;
-            /**
-             * @description The test version.
-             * @example 0
-             */
-            version: string;
-        };
-        ICacheWithUrl: {
-            /**
-             * @description The cache file stored in S3 `orgName/vaultName`
-             * @example cache.zip
-             */
-            fileName: string;
-            /**
-             * @description The hash is the `cacheHash` part of `orgName/vaultName/cacheHash`
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            hash: string;
-            /**
-             * @description The unique identifier for the cache.
-             * @example 1
-             */
-            shortId?: string | null;
-            /**
-             * @description The tag of the cache
-             * @example latest
-             */
-            tag?: string | null;
-            /**
-             * @description The date and time the cache was last modified.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            lastModified?: string | null;
-            /**
-             * @description The vault ID the cache belongs to.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            vaultId: string;
-            /**
-             * @description Whether the cache has an XML report associated with it.
-             * @example true
-             */
-            hasXmlReport: boolean;
-            /**
-             * Format: int64
-             * @description The total file size of the cache in bytes.
-             * @example 100
-             */
-            totalFileSize: number;
-            /**
-             * @description The presigned URL to the cache file.
-             * @example https://example.com/cache.zip
-             */
-            url: string;
-        };
-        IMessage: {
-            /**
-             * @description Message to be displayed.
-             * @example OK!
-             */
-            message: string;
-        };
-        IError: {
-            /**
-             * @description Message to be displayed.
-             * @example OK!
-             */
-            message: string;
-            /**
-             * @description Error message.
-             * @example Internal server error.
-             */
-            statusCode: number;
-        };
-        IOrganizationVault: {
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the vault.
-             * @example my-vault
-             */
-            name: string;
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the vault was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            initializedAt: string | null;
-            /**
-             * @description Date and time the vault was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the vault was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-            /** @description Number of caches in the vault. */
-            cacheCount: number;
-        };
-        /** @enum {string} */
-        SubscriptionType: SubscriptionType;
-        ISubscription: {
-            /**
-             * @description Unique identifier for the subscription.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            organizationId: string;
-            /**
-             * @description Type of subscription plan.
-             * @example free
-             */
-            plan: components["schemas"]["SubscriptionType"];
-            /**
-             * @description Date and time the subscription was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the subscription was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-        };
-        IOrganization: {
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the organization.
-             * @example my-organization
-             */
-            name: string;
-            /**
-             * @description Date and time the organization was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the organization was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the organization was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-            /** @description Users in the organization. */
-            users?: components["schemas"]["IOrganizationUser"][];
-            /** @description Vaults in the organization. */
-            vaults?: components["schemas"]["IOrganizationVault"][];
-            /** @description Subscriptions in the organization. */
-            subscription?: components["schemas"]["ISubscription"] | null;
-        };
-        ICredit: {
-            /**
-             * @description The organization's unique identifier.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            organizationId: string;
-            /**
-             * @description The number of credits added.
-             * @example 1
-             */
-            credits: number;
-            /** @description The organization. */
-            organization?: components["schemas"]["IOrganization"];
-            /**
-             * @description The reason for adding credits.
-             * @example reason
-             */
-            reason: string;
-            /**
-             * @description The date and time the credits were added.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description The date and time the credits were last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-        };
-        ICreditsTopUp: {
-            /**
-             * @description The number of credits added.
-             * @example 1
-             */
-            credits: number;
-            /** @description The organization. */
-            organization: components["schemas"]["IOrganization"];
-            /**
-             * @description The reason for adding credits.
-             * @example reason
-             */
-            reason: string;
-            /**
-             * @description When the credits were added.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description When the credits were last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-        };
-        /** @enum {string} */
-        NodeSize: NodeSize;
-        IUsage: {
-            /**
-             * @description Unique identifier for the usage.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Unique identifier for the vault.
-             * @example 1
-             */
-            vaultId: string;
-            /**
-             * @description Credits consumed.
-             * @example 1
-             */
-            creditsConsumed: number;
-            /**
-             * @description Number of CPUs used.
-             * @example 1
-             */
-            cpu: number;
-            /**
-             * @description Amount of memory used.
-             * @example 1
-             */
-            memory: number;
-            /**
-             * @description Node size used.
-             * @example small
-             */
-            nodeSize: components["schemas"]["NodeSize"];
-            /**
-             * @description Duration of the usage.
-             * @example 1
-             */
-            duration: number;
-            /**
-             * @description Date and time the usage was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the usage was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the usage was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-        };
-        IOrganizationStats: {
-            /** @description The credits' top-up records. */
-            creditsTopUp: components["schemas"]["ICreditsTopUp"][];
-            /**
-             * @description The total credits added.
-             * @example 100
-             */
-            totalCreditsAdded?: number;
-            /**
-             * @description The total credits available.
-             * @example 100
-             */
-            totalCreditsAvailable?: number;
-            /**
-             * @description The total credits used.
-             * @example 100
-             */
-            totalCreditsUsed?: number;
-            /**
-             * @description The storage utilization.
-             * @example 100
-             */
-            storageUtilization: number;
-            /** @description The usages. */
-            usages: components["schemas"]["IUsage"][];
-        };
-        AddCreditsDto: {
-            /**
-             * @description Number of credits to add
-             * @example 10
-             */
-            credits: number;
-            /**
-             * @description Organization name
-             * @example runtimeverification
-             */
-            organizationName: string;
-            /**
-             * @description Reason for adding credits
-             * @example For testing
-             */
-            reason: string;
-        };
-        CreateUsageDto: {
-            /**
-             * @description Size of the node
-             * @example small
-             */
-            NodeSize: string;
-            /**
-             * @description Maximum CPU usage
-             * @example 10
-             */
-            MaxCPUUsage: number;
-            /**
-             * @description Maximum Memory usage
-             * @example 10
-             */
-            MaxMemoryUsage: number;
-            /**
-             * @description Duration in seconds
-             * @example 10
-             */
-            Duration: number;
-            /**
-             * @description Vault ID
-             * @example orgName/vaultName:optionalTag
-             */
-            VaultId: string;
-        };
-        CreateUserOrganizationDto: {
-            /**
-             * @description Name of the organization
-             * @example @my-organization
-             */
-            name: string;
-        };
-        IOrganizationSummary: {
-            /**
-             * @description Unique identifier for the organization.
-             * @example 1
-             */
-            id: string;
-            /**
-             * @description Name of the organization.
-             * @example my-organization
-             */
-            name: string;
-            /**
-             * @description Number of users in the organization.
-             * @example 1
-             */
-            userCount: number;
-            /**
-             * @description Number of vaults in the organization.
-             * @example 1
-             */
-            vaultCount: number;
-            /**
-             * @description Date and time the organization was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description Date and time the organization was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /**
-             * @description Date and time the organization was deleted.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            deletedAt: string | null;
-        };
-        ChangeSubscriptionDto: {
-            /**
-             * @description The new subscription plan.
-             * @example professional
-             */
-            plan: components["schemas"]["SubscriptionType"];
-        };
-        SlackOAuthCallbackResponse: {
-            /**
-             * @description The URL to redirect to after OAuth callback.
-             * @example https://example.com
-             */
-            url: string;
-        };
-        SendMessageResponse: {
-            /** @example Slack is not connected for this user. */
-            error?: string;
-            /** @example Test message sent successfully. */
-            message?: string;
-        };
-        /** @enum {string} */
-        EventType: EventType;
-        IOrganizationEventSubscription: {
-            /**
-             * @description The unique identifier for the organization event subscription.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            id: string;
-            /**
-             * @description The unique identifier for the organization.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            organizationId: string;
-            /**
-             * @description The event type to subscribe to.
-             * @example JobCompleted
-             */
-            event: components["schemas"]["EventType"];
-            /**
-             * @description The unique identifier for the vault.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            vaultId: string | null;
-            /**
-             * @description The unique identifier for the job.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            jobId: string | null;
-            /**
-             * @description The unique identifier for the Slack channel.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            slackChannelId: string;
-            /**
-             * @description When the organization event subscription was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description When the organization event subscription was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-        };
-        /** @enum {string} */
-        JobKind: JobKind;
-        CreateProveProfileDto: {
-            /**
-             * @description The profile name
-             * @example default
-             */
-            profileName: string;
-            /**
-             * @description Extra prove arguments to pass to Kontrol. See the Kontrol cheatsheet for more details: https://docs.runtimeverification.com/kontrol/cheatsheets/kontrol-cheatsheet.html#command-line-options
-             * @example --depth 3
-             */
-            extraProveArgs?: string;
-            /**
-             * @description The tag of the cache to upload to.
-             * @example latest
-             */
-            tag?: string;
-        };
-        CreateJobDto: {
-            /**
-             * @description The kind of the job.
-             * @example kontrol
-             */
-            kind: components["schemas"]["JobKind"];
-            /**
-             * @description Branch Name of Clients code to Clone.
-             * @example main
-             */
-            branch: string;
-            /**
-             * @description Commit SHA of Clients code to Clone. If not provided, the latest commit will be used.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            commitSha?: string;
-            /**
-             * @description The timeout for the job in minutes.
-             * @example 480
-             */
-            executionTimeout?: number;
-            /**
-             * @description Foundry Version to use in the docker image tag. Leave empty to use the "latest" version.
-             * @example v0.0.0
-             */
-            foundryVersion?: string;
-            /**
-             * @description The foundry docker image being run.
-             * @example ghcr.io/foundry-rs/foundry:latest
-             */
-            foundryDockerImage?: string;
-            /**
-             * @description Kontrol Version to use. In the format of 'vX.Y.Z'. Leave empty to use the latest version.
-             * @example v0.0.0
-             */
-            kontrolVersion?: string;
-            /**
-             * @description The kontrol docker image being run.
-             * @example runtimeverification/kontrol:ubuntu-jammy-1.0.82
-             */
-            kontrolDockerImage?: string;
-            /**
-             * @description The branch of `runtimeverification/kaas` repository to use for building the kaas-cli. If not provided, then the latest published kaas-cli will be used.
-             * @example master
-             */
-            kaasCliBranch?: string;
-            /**
-             * @description Extra build arguments to pass to Kontrol. See the Kontrol cheatsheet for more details: https://docs.runtimeverification.com/kontrol/cheatsheets/kontrol-cheatsheet.html#command-line-options
-             * @example --require test/myproject-lemmas.k
-             */
-            extraBuildArgs?: string;
-            /**
-             * @description The root directory to run the tests from. This will be relative to the client repository project root.
-             * @example .
-             */
-            kaasTestRoot?: string;
-            /**
-             * @description The FOUNDRY_PROFILE to use. If not provided, the 'default' profile will be used.
-             * @example default
-             */
-            foundryProfile?: string;
-            /** @description List of the profiles to prove. If not provided, the 'default' profile will be used. */
-            profiles: components["schemas"]["CreateProveProfileDto"][];
-            /**
-             * @description The branch of `kaas-compute-template` repository to trigger the github workflow.
-             * @example main
-             */
-            workflowBranch?: string;
-            /**
-             * @description The URL of the Kaas Server.
-             * @example https://kaas.runtimeverification.com
-             */
-            kaasServerUrl?: string;
-            /**
-             * @description The number of profiles found in kontrol.toml file.
-             * @example 1
-             */
-            kontrolTomlProfiles?: number;
-            /** @description Whether is running "kontrol build" with "--regen" flag. This will invalidate the old cache. */
-            regenMode?: boolean;
-            /** @description Whether is running "kontrol build" with "--rekompile" flag. This will invalidate the old cache. */
-            rekompile?: boolean;
-            /** @description Whether is running job with --debug flag. */
-            debugMode?: boolean;
-            /** @description Whether to disable the cache or not. */
-            disableCache?: boolean;
-            /**
-             * @description The extra arguments to pass to the "forge test" command.
-             * @example --verbose
-             */
-            extraTestArgs?: string;
-        };
-        /** @enum {string} */
-        JobStatus: JobStatus;
-        JobStatusResponse: {
-            /**
-             * @description Unique identifier for the compute job.
-             * @example 1234567890abcdef
-             */
-            jobId: string;
-            /**
-             * @description Current status of the compute job.
-             * @example running
-             */
-            status: components["schemas"]["JobStatus"];
-        };
-        /** @enum {string} */
-        JobType: JobType;
-        IJobUser: {
-            /**
-             * @description Username of the user.
-             * @example john_doe
-             */
-            username?: string | null;
-            /**
-             * @description Avatar of the user.
-             * @example https://example.com/avatar.png
-             */
-            avatar: string | null;
-        };
-        IJob: {
-            /**
-             * @description The unique job ID.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            id: string;
-            /**
-             * @description The kind of the job.
-             * @example kontrol
-             */
-            kind: components["schemas"]["JobKind"];
-            /**
-             * @description The type of the job.
-             * @example build
-             */
-            type: components["schemas"]["JobType"];
-            /**
-             * @description The status of the job.
-             * @example pending
-             */
-            status: components["schemas"]["JobStatus"];
-            /**
-             * @description The unique github run ID.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            githubRunId: string | null;
-            /**
-             * @description The unique vault ID.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            vaultId: string;
-            /**
-             * @description GitHub repository owner.
-             * @example runtimeverification
-             */
-            owner: string;
-            /**
-             * @description GitHub repository name.
-             * @example kaas
-             */
-            repo: string;
-            /**
-             * @description Organization name.
-             * @example runtimeverification
-             */
-            organizationName: string;
-            /**
-             * @description Vault name.
-             * @example kaas
-             */
-            vaultName: string;
-            /**
-             * @description GitHub repository branch.
-             * @example main
-             */
-            branch: string | null;
-            /**
-             * @description The user ID.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            userId: string;
-            /** @description The user details. */
-            user: components["schemas"]["IJobUser"];
-            /**
-             * @description The commit SHA.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            commitSha: string | null;
-            /**
-             * @description Whether the job has an XML report.
-             * @example true
-             */
-            hasXmlReport: boolean;
-            /**
-             * @description Whether the job has an JSON report.
-             * @example true
-             */
-            hasJsonReport: boolean;
-            /**
-             * @description Foundry Version to use in the docker image tag. Leave empty to use the "latest" version.
-             * @example v0.0.0
-             */
-            foundryVersion?: string | null;
-            /**
-             * @description The foundry docker image to use.
-             * @example ghcr.io/foundry-rs/foundry:latest
-             */
-            foundryDockerImage?: string | null;
-            /**
-             * @description The JSON generated from "forge --version"
-             * @example {"forge Version": "1.1.0"}
-             */
-            forgeVersion?: string | null;
-            /**
-             * @description Kontrol Version to use. In the format of 'vX.Y.Z'. Leave empty to use the latest version.
-             * @example v0.0.0
-             */
-            kontrolVersion?: string | null;
-            /**
-             * @description The kontrol docker image to use.
-             * @example runtimeverificationinc/kontrol:ubuntu-jammy-1.0.82
-             */
-            kontrolDockerImage?: string | null;
-            /**
-             * @description The kaas-cli branch to use.
-             * @example main
-             */
-            kaasCliBranch?: string | null;
-            /**
-             * @description The root directory to run the tests from. This will be relative to the client repository project root.
-             * @example .
-             */
-            testRoot?: string | null;
-            /**
-             * @description The branch of `kaas-compute-template` repository to trigger the github workflow.
-             * @example main
-             */
-            workflowBranch?: string | null;
-            /**
-             * @description The number of profiles found in kontrol.toml file.
-             * @example 1
-             */
-            kontrolTomlProfiles?: number | null;
-            /**
-             * @description The arguments to pass to the kontrol job.
-             * @example --verbose
-             */
-            args?: string | null;
-            /**
-             * @description The tag for cache.
-             * @example default
-             */
-            tag?: string | null;
-            /**
-             * @description The profile name for running kontrol prove
-             * @example default
-             */
-            profileName?: string | null;
-            /**
-             * @description The job execution duration.
-             * @example 1
-             */
-            duration: number;
-            /**
-             * @description Job publish date
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            publishedAt: string | null;
-            /**
-             * @description The cache hash for the kcfg.
-             * @example abcdef1234567890abcdef1234567890abcdef12
-             */
-            cacheHash?: string | null;
-            /** @description The cache detailed information. */
-            cache?: components["schemas"]["ICache"] | null;
-            /**
-             * @description The job execution timeout.
-             * @example 480
-             */
-            executionTimeout: number;
-            /** @description Whether is running "kontrol build" with "--regen" flag. This will invalidate the old cache. */
-            regenMode?: boolean | null;
-            /** @description Whether is running "kontrol build" with "--rekompile" flag. This will invalidate the old cache. */
-            rekompile?: boolean | null;
-            /** @description Whether is running job with --debug flag. */
-            debugMode?: boolean | null;
-            /** @description Whether to disable the cache or not. */
-            disableCache?: boolean | null;
-            /**
-             * @description The extra arguments to pass to the "forge test" command.
-             * @example --verbose
-             */
-            extraTestArgs: string | null;
-            /**
-             * @description When the job was created.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            createdAt: string;
-            /**
-             * @description When the job was last updated.
-             * @example 2021-10-10T00:00:00.000Z
-             */
-            updatedAt: string;
-            /** @description The child jobs' details. */
-            children?: components["schemas"]["IJob"][] | null;
-        };
-        IJobTimeStats: {
-            /**
-             * @description Total time taken to run the jobs in seconds.
-             * @example 600
-             */
-            total: number | null;
-            /**
-             * @description Change to previous period in seconds.
-             * @example 120
-             */
-            change: number | null;
-            /**
-             * @description Change to previous period in percentage.
-             * @example 20
-             */
-            changePercentage: number | null;
-        };
-        IJobCounterStats: {
-            /**
-             * @description The number of jobs that successfully completed.
-             * @example 100
-             */
-            total: number | null;
-            /**
-             * @description Change to previous period.
-             * @example 20
-             */
-            change: number | null;
-            /**
-             * @description Change to previous period in percentage.
-             * @example 20
-             */
-            changePercentage: number | null;
-        };
-        IJobStats: {
-            /** @description The time statistics for the jobs. */
-            time: components["schemas"]["IJobTimeStats"];
-            /** @description The success statistics for the jobs. */
-            jobsSuccess: components["schemas"]["IJobCounterStats"];
-            /** @description The failure statistics for the jobs. */
-            jobsFailure: components["schemas"]["IJobCounterStats"];
-            /** @description The success rate statistics for the jobs. */
-            successRate: components["schemas"]["IJobCounterStats"];
-        };
-        IJobsChart: {
-            /** @description The total number of jobs that have been run in the organization's vaults. */
-            totalJobs: number;
-            /** @description The total number of jobs that were run in the previous period. */
-            previousTotalJobs: number;
-            /** @description The change in the total number of jobs run. */
-            totalJobsChange: number;
-            /** @description The percentage change in the total number of jobs run. */
-            totalJobsChangePercentage: number;
-            /** @description The time labels for the jobs. */
-            dates: string[];
-            /** @description The number of jobs that successfully completed. */
-            successfulJobs: number[];
-            /** @description The number of jobs that failed. */
-            failedJobs: number[];
-            /** @description The number of jobs that were canceled. */
-            canceledJobs: number[];
-            /** @description The number of jobs that are running. */
-            runningJobs: number[];
-            /** @description The number of jobs that are pending or have other statuses. */
-            otherJobs: number[];
-        };
-        IDurationChart: {
-            /**
-             * @description The duration labels for the jobs.
-             * @example 2023-11-23
-             */
-            x: string;
-            /**
-             * @description The duration values for the jobs.
-             * @example 1000000
-             */
-            y: number;
-        };
-        IDurationStats: {
-            /**
-             * @description The duration current value.
-             * @example 10000
-             */
-            current: number;
-            /**
-             * @description The duration change value.
-             * @example 20
-             */
-            changePercentage: number;
-        };
-        IJobDuration: {
-            /**
-             * @description The job duration in seconds.
-             * @example [
-             *       {
-             *         "x": "2023-11-23",
-             *         "y": 1000000
-             *       },
-             *       {
-             *         "x": "2023-11-24",
-             *         "y": 1400000
-             *       }
-             *     ]
-             */
-            duration: components["schemas"]["IDurationChart"][];
-            /** @description The average job time. */
-            averageJobTime: components["schemas"]["IDurationStats"];
-            /** @description The total job time. */
-            totalComputeTime: components["schemas"]["IDurationStats"];
-            /** @description The fastest job time. */
-            fastestSuccessJobTime: components["schemas"]["IDurationStats"];
-        };
-        IJobStatsResponse: {
-            /** @description The job statistics. */
-            counter: components["schemas"]["IJobStats"];
-            /** @description The job chart statistics. */
-            jobsChart: components["schemas"]["IJobsChart"];
-            /** @description The job duration statistics. */
-            jobsDuration: components["schemas"]["IJobDuration"];
-        };
-        JobCallbackDto: {
-            /**
-             * @description Unique identifier for the compute job.
-             * @example 1234567890abcdef
-             */
-            kaasJobId: string;
-            /**
-             * @description Unique identifier for the GitHub workflow run.
-             * @example 1234567890abcdef
-             */
-            githubRunId: string;
-            /**
-             * @description Unique identifier for the GitHub job.
-             * @example 1234567890abcdef
-             */
-            githubJobId: string;
-            /**
-             * @description Status of the GitHub job.
-             * @example success
-             */
-            status: components["schemas"]["JobStatus"];
-            /**
-             * @description The foundry version being run. This is used as the docker image tag.
-             * @example v1.0.0
-             */
-            foundryVersion?: string;
-            /**
-             * @description The JSON generated from "forge --version"
-             * @example {"forge Version": "1.1.0"}
-             */
-            forgeVersion?: string;
-            /**
-             * @description The kontrol version being run.
-             * @example v1.0.81
-             */
-            kontrolVersion?: string;
-            /**
-             * @description The tag for cache.
-             * @example default
-             */
-            tag?: string;
-        };
-        JobCallbackResponse: {
-            /**
-             * @description A message indicating the result of the operation.
-             * @example Job status updated and task initiated.
-             */
-            message: string;
-        };
-        AskXmlReportFailureDto: {
-            /**
-             * @description The job ID.
-             * @example xxxxxxxx-0000-0000-0000-xxxxxxxxxxxx
-             */
-            jobId: string;
-            /**
-             * @description The test name.
-             * @example test_donateETH(uint256,uint256)
-             */
-            testName: string;
-            /**
-             * @description The file path.
-             * @example test/Portal.t.sol
-             */
-            filePath: string;
-            /**
-             * @description The failures in the XML report.
-             * @example 1
-             */
-            failures: string;
-            /**
-             * @description (ADMIN) The prompt to ask the GPT.
-             * @example Explain the failures in the report. Then provide a fix for the failures in different scenarios:
-             *     - Modify only the solidity code.
-             *     - Modify only the lemmas.
-             *     - Modify both the solidity code and the lemmas.
-             *     Please output the explanation and fix that works in plain markdown format.
-             */
-            prompt?: string;
-        };
+  schemas: {
+    /** @enum {string} */
+    LoginProvider: LoginProvider;
+    IUser: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Username of the user.
+       * @example john_doe
+       */
+      username?: string | null;
+      /**
+       * @description Email of the user.
+       * @example XXX@gmail.com
+       */
+      email: string | null;
+      /**
+       * @description Avatar of the user.
+       * @example https://example.com/avatar.png
+       */
+      avatar: string | null;
+      /**
+       * @description Whether the user is an admin.
+       * @example true
+       */
+      isAdmin: boolean;
+      /**
+       * @description Date and time the user reset their password.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      provider: components['schemas']['LoginProvider'];
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    IUserAdmin: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Username of the user.
+       * @example john_doe
+       */
+      username?: string | null;
+      /**
+       * @description Email of the user.
+       * @example xxx@gmail.com
+       */
+      email: string | null;
+      /**
+       * @description Avatar of the user.
+       * @example https://example.com/avatar.png
+       */
+      avatar: string | null;
+      /**
+       * @description Whether the user is an admin.
+       * @example true
+       */
+      isAdmin: boolean;
+      /**
+       * @description Date and time the user was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the user was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the user was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+      /**
+       * @description Date and time the user signed up.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      signedUp: string | null;
+      /**
+       * @description The user provider.
+       * @example github
+       */
+      provider: components['schemas']['LoginProvider'];
+    };
+    IOrganizationNameAndId: {
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the organization.
+       * @example my-organization
+       */
+      name: string;
+    };
+    ICache: {
+      /**
+       * @description The cache file stored in S3 `orgName/vaultName`
+       * @example cache.zip
+       */
+      fileName: string;
+      /**
+       * @description The hash is the `cacheHash` part of `orgName/vaultName/cacheHash`
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      hash: string;
+      /**
+       * @description The unique identifier for the cache.
+       * @example 1
+       */
+      shortId?: string | null;
+      /**
+       * @description The tag of the cache
+       * @example latest
+       */
+      tag?: string | null;
+      /**
+       * @description The date and time the cache was last modified.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      lastModified?: string | null;
+      /**
+       * @description The vault ID the cache belongs to.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      vaultId: string;
+      /**
+       * @description Whether the cache has an XML report associated with it.
+       * @example true
+       */
+      hasXmlReport: boolean;
+      /**
+       * Format: int64
+       * @description The total file size of the cache in bytes.
+       * @example 100
+       */
+      totalFileSize: number;
+    };
+    IVault: {
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the vault.
+       * @example my-vault
+       */
+      name: string;
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      organizationId: string;
+      /**
+       * @description GitHub repository owner.
+       * @example runtimeverification
+       */
+      owner: string;
+      /**
+       * @description GitHub repository name.
+       * @example kaas
+       */
+      repo: string;
+      /**
+       * @description Date and time the vault was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the vault was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the vault was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+      /**
+       * @description Date and time the vault was initialized.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      initializedAt: string | null;
+      /** @description The organization the vault belongs to. */
+      organization?: components['schemas']['IOrganizationNameAndId'];
+      /** @description The vault caches. */
+      caches?: components['schemas']['ICache'][];
+      /** @description Number of caches in the vault. */
+      cacheCount?: number;
+    };
+    CreateKeyDto: {
+      /**
+       * @description Name of the key
+       * @example my-key
+       */
+      name?: string | null;
+      /**
+       * Format: date-time
+       * @description Expiration date of the key
+       * @example 2022-01-01T00:00:00.000Z
+       */
+      expiresAt?: string | null;
+      /**
+       * @description Allow remote compute
+       * @example true
+       */
+      allowRemoteCompute?: boolean;
+      /**
+       * @description Allow usage tracking
+       * @example true
+       */
+      allowUsageTracking?: boolean;
+    };
+    IAdminKey: {
+      /**
+       * @description Unique identifier for the key.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Key value.
+       * @example key_value
+       */
+      key: string;
+      /**
+       * @description Name of the key.
+       * @example key
+       */
+      name: string | null;
+      /**
+       * @description The user ID.
+       * @example 1
+       */
+      userId: string;
+      /**
+       * @description Whether the key allows remote compute.
+       * @example true
+       */
+      allowRemoteCompute: boolean;
+      /**
+       * @description Whether the key allows usage tracking.
+       * @example true
+       */
+      allowUsageTracking: boolean;
+      /**
+       * @description When the key was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description When the key was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description When the key expires.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      expiresAt: string | null;
+      /** @description The user details. */
+      user?: components['schemas']['IUser'];
+    };
+    IKey: {
+      /**
+       * @description Unique identifier for the key.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the key.
+       * @example key
+       */
+      name: string | null;
+      /**
+       * @description Key value.
+       * @example key_value
+       */
+      key: string;
+      /**
+       * @description When the key was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description When the key expires.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      expiresAt: string | null;
+    };
+    IUserSuggestion: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Username of the user.
+       * @example john_doe
+       */
+      username: string | null;
+      /**
+       * @description Email of the user.
+       * @example xxx@gmail.com
+       */
+      email: string | null;
+      /**
+       * @description Avatar of the user.
+       * @example https://example.com/avatar.png
+       */
+      avatar: string | null;
+    };
+    /** @enum {string} */
+    UserRole: UserRole;
+    AddUserToOrganizationDto: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      userId: string;
+      /** @description Unique identifier for the organization. */
+      role: components['schemas']['UserRole'];
+    };
+    IOrganizationUserUser: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Username of the user.
+       * @example john_doe
+       */
+      username?: string | null;
+      /**
+       * @description Email of the user.
+       * @example XXX@gmail.com
+       */
+      email: string | null;
+      /**
+       * @description Avatar of the user.
+       * @example https://example.com/avatar.png
+       */
+      avatar: string | null;
+    };
+    IOrganizationUser: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      userId: string;
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      organizationId: string;
+      /** @description Role of the user in the organization. */
+      role: components['schemas']['UserRole'];
+      /** @description User details. */
+      user: components['schemas']['IOrganizationUserUser'];
+    };
+    AddUserToVaultDto: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      userId: string;
+      /** @description Unique identifier for the organization. */
+      role: components['schemas']['UserRole'];
+    };
+    IVaultUser: {
+      /**
+       * @description Unique identifier for the user.
+       * @example 1
+       */
+      userId: string;
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      vaultId: string;
+      /** @description Role of the user in the organization. */
+      role: components['schemas']['UserRole'];
+      /** @description User details. */
+      user: components['schemas']['IOrganizationUserUser'];
+    };
+    IVaultWithoutCachesAndOrganization: {
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the vault.
+       * @example my-vault
+       */
+      name: string;
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      organizationId: string;
+      /**
+       * @description GitHub repository owner.
+       * @example runtimeverification
+       */
+      owner: string;
+      /**
+       * @description GitHub repository name.
+       * @example kaas
+       */
+      repo: string;
+      /**
+       * @description Date and time the vault was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the vault was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the vault was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+      /**
+       * @description Date and time the vault was initialized.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      initializedAt: string | null;
+      /** @description Number of caches in the vault. */
+      cacheCount?: number;
+    };
+    IVaultAdmin: {
+      /** @description The vault. */
+      vault: components['schemas']['IVaultWithoutCachesAndOrganization'];
+      /** @description The organization. */
+      organization: components['schemas']['IOrganizationNameAndId'];
+      /**
+       * @description The number of the vault's caches.
+       * @example 1
+       */
+      cacheCount: number;
+    };
+    CreateVaultDto: {
+      /**
+       * @description Name of the vault
+       * @example my-vault
+       */
+      name: string;
+      /**
+       * @description owner part of the GitHub repository: owner/repo. Leave it empty to mean it's not the GitHub repository.
+       * @example runtimeverification
+       */
+      owner: string;
+      /**
+       * @description repo part of the GitHub repository: owner/repo. Leave it empty to mean it's not the GitHub repository.
+       * @example kaas
+       */
+      repo: string;
+    };
+    /** @enum {string} */
+    SeverityLevel: SeverityLevel;
+    ISeverity: {
+      /**
+       * @description The testsuite name
+       * @example CounterTest
+       */
+      testSuiteName: string;
+      /**
+       * @description The testcase name
+       * @example setUp()
+       */
+      testCaseName: string;
+      /**
+       * @description The testcase class name
+       * @example CounterTest
+       */
+      testCaseClassName: string;
+      /**
+       * @description The testcase file
+       * @example test/kontrol/Counter.t.sol
+       */
+      testCaseFile: string;
+      /**
+       * @description The severity level.
+       * @example high
+       */
+      severity: components['schemas']['SeverityLevel'];
+    };
+    UpsertReportSeverityDto: {
+      /**
+       * @description The testsuite name
+       * @example CounterTest
+       */
+      testSuiteName: string;
+      /**
+       * @description The testcase name
+       * @example setUp()
+       */
+      testCaseName: string;
+      /**
+       * @description The testcase class name
+       * @example CounterTest
+       */
+      testCaseClassName: string;
+      /**
+       * @description The testcase file
+       * @example test/kontrol/Counter.t.sol
+       */
+      testCaseFile: string;
+      /**
+       * @description The severity level.
+       * @example high
+       */
+      severity: components['schemas']['SeverityLevel'];
+      /**
+       * @description The job ID that this severity is associated with
+       * @example my-job
+       */
+      jobId?: string | null;
+    };
+    IVaultNameAndId: {
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the vault.
+       * @example my-vault
+       */
+      name: string;
+    };
+    ICacheAdmin: {
+      /** @description The cache. */
+      cache: components['schemas']['ICache'];
+      /** @description The organization. */
+      organization: components['schemas']['IOrganizationNameAndId'];
+      /** @description The vault. */
+      vault: components['schemas']['IVaultNameAndId'];
+    };
+    ITest: {
+      /**
+       * @description The test name.
+       * @example test
+       */
+      name: string;
+      /**
+       * @description The test version.
+       * @example 0
+       */
+      version: string;
+    };
+    ICacheWithUrl: {
+      /**
+       * @description The cache file stored in S3 `orgName/vaultName`
+       * @example cache.zip
+       */
+      fileName: string;
+      /**
+       * @description The hash is the `cacheHash` part of `orgName/vaultName/cacheHash`
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      hash: string;
+      /**
+       * @description The unique identifier for the cache.
+       * @example 1
+       */
+      shortId?: string | null;
+      /**
+       * @description The tag of the cache
+       * @example latest
+       */
+      tag?: string | null;
+      /**
+       * @description The date and time the cache was last modified.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      lastModified?: string | null;
+      /**
+       * @description The vault ID the cache belongs to.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      vaultId: string;
+      /**
+       * @description Whether the cache has an XML report associated with it.
+       * @example true
+       */
+      hasXmlReport: boolean;
+      /**
+       * Format: int64
+       * @description The total file size of the cache in bytes.
+       * @example 100
+       */
+      totalFileSize: number;
+      /**
+       * @description The presigned URL to the cache file.
+       * @example https://example.com/cache.zip
+       */
+      url: string;
+    };
+    IMessage: {
+      /**
+       * @description Message to be displayed.
+       * @example OK!
+       */
+      message: string;
+    };
+    IError: {
+      /**
+       * @description Message to be displayed.
+       * @example OK!
+       */
+      message: string;
+      /**
+       * @description Error message.
+       * @example Internal server error.
+       */
+      statusCode: number;
+    };
+    IOrganizationVault: {
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the vault.
+       * @example my-vault
+       */
+      name: string;
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the vault was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      initializedAt: string | null;
+      /**
+       * @description Date and time the vault was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the vault was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+      /** @description Number of caches in the vault. */
+      cacheCount: number;
+    };
+    /** @enum {string} */
+    SubscriptionType: SubscriptionType;
+    ISubscription: {
+      /**
+       * @description Unique identifier for the subscription.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      organizationId: string;
+      /**
+       * @description Type of subscription plan.
+       * @example free
+       */
+      plan: components['schemas']['SubscriptionType'];
+      /**
+       * @description Date and time the subscription was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the subscription was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+    };
+    IOrganization: {
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the organization.
+       * @example my-organization
+       */
+      name: string;
+      /**
+       * @description Date and time the organization was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the organization was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the organization was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+      /** @description Users in the organization. */
+      users?: components['schemas']['IOrganizationUser'][];
+      /** @description Vaults in the organization. */
+      vaults?: components['schemas']['IOrganizationVault'][];
+      /** @description Subscriptions in the organization. */
+      subscription?: components['schemas']['ISubscription'] | null;
+    };
+    ICredit: {
+      /**
+       * @description The organization's unique identifier.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      organizationId: string;
+      /**
+       * @description The number of credits added.
+       * @example 1
+       */
+      credits: number;
+      /** @description The organization. */
+      organization?: components['schemas']['IOrganization'];
+      /**
+       * @description The reason for adding credits.
+       * @example reason
+       */
+      reason: string;
+      /**
+       * @description The date and time the credits were added.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description The date and time the credits were last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+    };
+    ICreditsTopUp: {
+      /**
+       * @description The number of credits added.
+       * @example 1
+       */
+      credits: number;
+      /** @description The organization. */
+      organization: components['schemas']['IOrganization'];
+      /**
+       * @description The reason for adding credits.
+       * @example reason
+       */
+      reason: string;
+      /**
+       * @description When the credits were added.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description When the credits were last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+    };
+    /** @enum {string} */
+    NodeSize: NodeSize;
+    IUsage: {
+      /**
+       * @description Unique identifier for the usage.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Unique identifier for the vault.
+       * @example 1
+       */
+      vaultId: string;
+      /**
+       * @description Credits consumed.
+       * @example 1
+       */
+      creditsConsumed: number;
+      /**
+       * @description Number of CPUs used.
+       * @example 1
+       */
+      cpu: number;
+      /**
+       * @description Amount of memory used.
+       * @example 1
+       */
+      memory: number;
+      /**
+       * @description Node size used.
+       * @example small
+       */
+      nodeSize: components['schemas']['NodeSize'];
+      /**
+       * @description Duration of the usage.
+       * @example 1
+       */
+      duration: number;
+      /**
+       * @description Date and time the usage was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the usage was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the usage was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+    };
+    IOrganizationStats: {
+      /** @description The credits' top-up records. */
+      creditsTopUp: components['schemas']['ICreditsTopUp'][];
+      /**
+       * @description The total credits added.
+       * @example 100
+       */
+      totalCreditsAdded?: number;
+      /**
+       * @description The total credits available.
+       * @example 100
+       */
+      totalCreditsAvailable?: number;
+      /**
+       * @description The total credits used.
+       * @example 100
+       */
+      totalCreditsUsed?: number;
+      /**
+       * @description The storage utilization.
+       * @example 100
+       */
+      storageUtilization: number;
+      /** @description The usages. */
+      usages: components['schemas']['IUsage'][];
+    };
+    AddCreditsDto: {
+      /**
+       * @description Number of credits to add
+       * @example 10
+       */
+      credits: number;
+      /**
+       * @description Organization name
+       * @example runtimeverification
+       */
+      organizationName: string;
+      /**
+       * @description Reason for adding credits
+       * @example For testing
+       */
+      reason: string;
+    };
+    CreateUsageDto: {
+      /**
+       * @description Size of the node
+       * @example small
+       */
+      NodeSize: string;
+      /**
+       * @description Maximum CPU usage
+       * @example 10
+       */
+      MaxCPUUsage: number;
+      /**
+       * @description Maximum Memory usage
+       * @example 10
+       */
+      MaxMemoryUsage: number;
+      /**
+       * @description Duration in seconds
+       * @example 10
+       */
+      Duration: number;
+      /**
+       * @description Vault ID
+       * @example orgName/vaultName:optionalTag
+       */
+      VaultId: string;
+    };
+    CreateUserOrganizationDto: {
+      /**
+       * @description Name of the organization
+       * @example @my-organization
+       */
+      name: string;
+    };
+    IOrganizationSummary: {
+      /**
+       * @description Unique identifier for the organization.
+       * @example 1
+       */
+      id: string;
+      /**
+       * @description Name of the organization.
+       * @example my-organization
+       */
+      name: string;
+      /**
+       * @description Number of users in the organization.
+       * @example 1
+       */
+      userCount: number;
+      /**
+       * @description Number of vaults in the organization.
+       * @example 1
+       */
+      vaultCount: number;
+      /**
+       * @description Date and time the organization was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description Date and time the organization was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /**
+       * @description Date and time the organization was deleted.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      deletedAt: string | null;
+    };
+    ChangeSubscriptionDto: {
+      /**
+       * @description The new subscription plan.
+       * @example professional
+       */
+      plan: components['schemas']['SubscriptionType'];
+    };
+    SlackOAuthCallbackResponse: {
+      /**
+       * @description The URL to redirect to after OAuth callback.
+       * @example https://example.com
+       */
+      url: string;
+    };
+    SendMessageResponse: {
+      /** @example Slack is not connected for this user. */
+      error?: string;
+      /** @example Test message sent successfully. */
+      message?: string;
+    };
+    /** @enum {string} */
+    EventType: EventType;
+    IOrganizationEventSubscription: {
+      /**
+       * @description The unique identifier for the organization event subscription.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      id: string;
+      /**
+       * @description The unique identifier for the organization.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      organizationId: string;
+      /**
+       * @description The event type to subscribe to.
+       * @example JobCompleted
+       */
+      event: components['schemas']['EventType'];
+      /**
+       * @description The unique identifier for the vault.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      vaultId: string | null;
+      /**
+       * @description The unique identifier for the job.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      jobId: string | null;
+      /**
+       * @description The unique identifier for the Slack channel.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      slackChannelId: string;
+      /**
+       * @description When the organization event subscription was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description When the organization event subscription was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+    };
+    /** @enum {string} */
+    JobKind: JobKind;
+    CreateProveProfileDto: {
+      /**
+       * @description The profile name
+       * @example default
+       */
+      profileName: string;
+      /**
+       * @description Extra prove arguments to pass to Kontrol. See the Kontrol cheatsheet for more details: https://docs.runtimeverification.com/kontrol/cheatsheets/kontrol-cheatsheet.html#command-line-options
+       * @example --depth 3
+       */
+      extraProveArgs?: string;
+      /**
+       * @description The tag of the cache to upload to.
+       * @example latest
+       */
+      tag?: string;
+    };
+    CreateJobDto: {
+      /**
+       * @description The kind of the job.
+       * @example kontrol
+       */
+      kind: components['schemas']['JobKind'];
+      /**
+       * @description Branch Name of Clients code to Clone.
+       * @example main
+       */
+      branch: string;
+      /**
+       * @description Commit SHA of Clients code to Clone. If not provided, the latest commit will be used.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      commitSha?: string;
+      /**
+       * @description The timeout for the job in minutes.
+       * @example 480
+       */
+      executionTimeout?: number;
+      /**
+       * @description Foundry Version to use in the docker image tag. Leave empty to use the "latest" version.
+       * @example v0.0.0
+       */
+      foundryVersion?: string;
+      /**
+       * @description The foundry docker image being run.
+       * @example ghcr.io/foundry-rs/foundry:latest
+       */
+      foundryDockerImage?: string;
+      /**
+       * @description Kontrol Version to use. In the format of 'vX.Y.Z'. Leave empty to use the latest version.
+       * @example v0.0.0
+       */
+      kontrolVersion?: string;
+      /**
+       * @description The kontrol docker image being run.
+       * @example runtimeverification/kontrol:ubuntu-jammy-1.0.82
+       */
+      kontrolDockerImage?: string;
+      /**
+       * @description The branch of `runtimeverification/kaas` repository to use for building the kaas-cli. If not provided, then the latest published kaas-cli will be used.
+       * @example master
+       */
+      kaasCliBranch?: string;
+      /**
+       * @description Extra build arguments to pass to Kontrol. See the Kontrol cheatsheet for more details: https://docs.runtimeverification.com/kontrol/cheatsheets/kontrol-cheatsheet.html#command-line-options
+       * @example --require test/myproject-lemmas.k
+       */
+      extraBuildArgs?: string;
+      /**
+       * @description The root directory to run the tests from. This will be relative to the client repository project root.
+       * @example .
+       */
+      kaasTestRoot?: string;
+      /**
+       * @description The FOUNDRY_PROFILE to use. If not provided, the 'default' profile will be used.
+       * @example default
+       */
+      foundryProfile?: string;
+      /** @description List of the profiles to prove. If not provided, the 'default' profile will be used. */
+      profiles: components['schemas']['CreateProveProfileDto'][];
+      /**
+       * @description The branch of `kaas-compute-template` repository to trigger the github workflow.
+       * @example main
+       */
+      workflowBranch?: string;
+      /**
+       * @description The URL of the Kaas Server.
+       * @example https://kaas.runtimeverification.com
+       */
+      kaasServerUrl?: string;
+      /**
+       * @description The number of profiles found in kontrol.toml file.
+       * @example 1
+       */
+      kontrolTomlProfiles?: number;
+      /** @description Whether is running "kontrol build" with "--regen" flag. This will invalidate the old cache. */
+      regenMode?: boolean;
+      /** @description Whether is running "kontrol build" with "--rekompile" flag. This will invalidate the old cache. */
+      rekompile?: boolean;
+      /** @description Whether is running job with --debug flag. */
+      debugMode?: boolean;
+      /** @description Whether to disable the cache or not. */
+      disableCache?: boolean;
+      /**
+       * @description The extra arguments to pass to the "forge test" command.
+       * @example --verbose
+       */
+      extraTestArgs?: string;
+    };
+    /** @enum {string} */
+    JobStatus: JobStatus;
+    JobStatusResponse: {
+      /**
+       * @description Unique identifier for the compute job.
+       * @example 1234567890abcdef
+       */
+      jobId: string;
+      /**
+       * @description Current status of the compute job.
+       * @example running
+       */
+      status: components['schemas']['JobStatus'];
+    };
+    /** @enum {string} */
+    JobType: JobType;
+    IJobUser: {
+      /**
+       * @description Username of the user.
+       * @example john_doe
+       */
+      username?: string | null;
+      /**
+       * @description Avatar of the user.
+       * @example https://example.com/avatar.png
+       */
+      avatar: string | null;
+    };
+    IJob: {
+      /**
+       * @description The unique job ID.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      id: string;
+      /**
+       * @description The kind of the job.
+       * @example kontrol
+       */
+      kind: components['schemas']['JobKind'];
+      /**
+       * @description The type of the job.
+       * @example build
+       */
+      type: components['schemas']['JobType'];
+      /**
+       * @description The status of the job.
+       * @example pending
+       */
+      status: components['schemas']['JobStatus'];
+      /**
+       * @description The unique github run ID.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      githubRunId: string | null;
+      /**
+       * @description The unique vault ID.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      vaultId: string;
+      /**
+       * @description GitHub repository owner.
+       * @example runtimeverification
+       */
+      owner: string;
+      /**
+       * @description GitHub repository name.
+       * @example kaas
+       */
+      repo: string;
+      /**
+       * @description Organization name.
+       * @example runtimeverification
+       */
+      organizationName: string;
+      /**
+       * @description Vault name.
+       * @example kaas
+       */
+      vaultName: string;
+      /**
+       * @description GitHub repository branch.
+       * @example main
+       */
+      branch: string | null;
+      /**
+       * @description The user ID.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      userId: string;
+      /** @description The user details. */
+      user: components['schemas']['IJobUser'];
+      /**
+       * @description The commit SHA.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      commitSha: string | null;
+      /**
+       * @description Whether the job has an XML report.
+       * @example true
+       */
+      hasXmlReport: boolean;
+      /**
+       * @description Whether the job has an JSON report.
+       * @example true
+       */
+      hasJsonReport: boolean;
+      /**
+       * @description Foundry Version to use in the docker image tag. Leave empty to use the "latest" version.
+       * @example v0.0.0
+       */
+      foundryVersion?: string | null;
+      /**
+       * @description The foundry docker image to use.
+       * @example ghcr.io/foundry-rs/foundry:latest
+       */
+      foundryDockerImage?: string | null;
+      /**
+       * @description The JSON generated from "forge --version"
+       * @example {"forge Version": "1.1.0"}
+       */
+      forgeVersion?: string | null;
+      /**
+       * @description Kontrol Version to use. In the format of 'vX.Y.Z'. Leave empty to use the latest version.
+       * @example v0.0.0
+       */
+      kontrolVersion?: string | null;
+      /**
+       * @description The kontrol docker image to use.
+       * @example runtimeverificationinc/kontrol:ubuntu-jammy-1.0.82
+       */
+      kontrolDockerImage?: string | null;
+      /**
+       * @description The kaas-cli branch to use.
+       * @example main
+       */
+      kaasCliBranch?: string | null;
+      /**
+       * @description The root directory to run the tests from. This will be relative to the client repository project root.
+       * @example .
+       */
+      testRoot?: string | null;
+      /**
+       * @description The branch of `kaas-compute-template` repository to trigger the github workflow.
+       * @example main
+       */
+      workflowBranch?: string | null;
+      /**
+       * @description The number of profiles found in kontrol.toml file.
+       * @example 1
+       */
+      kontrolTomlProfiles?: number | null;
+      /**
+       * @description The arguments to pass to the kontrol job.
+       * @example --verbose
+       */
+      args?: string | null;
+      /**
+       * @description The tag for cache.
+       * @example default
+       */
+      tag?: string | null;
+      /**
+       * @description The profile name for running kontrol prove
+       * @example default
+       */
+      profileName?: string | null;
+      /**
+       * @description The job execution duration.
+       * @example 1
+       */
+      duration: number;
+      /**
+       * @description Job publish date
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      publishedAt: string | null;
+      /**
+       * @description The cache hash for the kcfg.
+       * @example abcdef1234567890abcdef1234567890abcdef12
+       */
+      cacheHash?: string | null;
+      /** @description The cache detailed information. */
+      cache?: components['schemas']['ICache'] | null;
+      /**
+       * @description The job execution timeout.
+       * @example 480
+       */
+      executionTimeout: number;
+      /** @description Whether is running "kontrol build" with "--regen" flag. This will invalidate the old cache. */
+      regenMode?: boolean | null;
+      /** @description Whether is running "kontrol build" with "--rekompile" flag. This will invalidate the old cache. */
+      rekompile?: boolean | null;
+      /** @description Whether is running job with --debug flag. */
+      debugMode?: boolean | null;
+      /** @description Whether to disable the cache or not. */
+      disableCache?: boolean | null;
+      /**
+       * @description The extra arguments to pass to the "forge test" command.
+       * @example --verbose
+       */
+      extraTestArgs: string | null;
+      /**
+       * @description When the job was created.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      createdAt: string;
+      /**
+       * @description When the job was last updated.
+       * @example 2021-10-10T00:00:00.000Z
+       */
+      updatedAt: string;
+      /** @description The child jobs' details. */
+      children?: components['schemas']['IJob'][] | null;
+    };
+    IJobTimeStats: {
+      /**
+       * @description Total time taken to run the jobs in seconds.
+       * @example 600
+       */
+      total: number | null;
+      /**
+       * @description Change to previous period in seconds.
+       * @example 120
+       */
+      change: number | null;
+      /**
+       * @description Change to previous period in percentage.
+       * @example 20
+       */
+      changePercentage: number | null;
+    };
+    IJobCounterStats: {
+      /**
+       * @description The number of jobs that successfully completed.
+       * @example 100
+       */
+      total: number | null;
+      /**
+       * @description Change to previous period.
+       * @example 20
+       */
+      change: number | null;
+      /**
+       * @description Change to previous period in percentage.
+       * @example 20
+       */
+      changePercentage: number | null;
+    };
+    IJobStats: {
+      /** @description The time statistics for the jobs. */
+      time: components['schemas']['IJobTimeStats'];
+      /** @description The success statistics for the jobs. */
+      jobsSuccess: components['schemas']['IJobCounterStats'];
+      /** @description The failure statistics for the jobs. */
+      jobsFailure: components['schemas']['IJobCounterStats'];
+      /** @description The success rate statistics for the jobs. */
+      successRate: components['schemas']['IJobCounterStats'];
+    };
+    IJobsChart: {
+      /** @description The total number of jobs that have been run in the organization's vaults. */
+      totalJobs: number;
+      /** @description The total number of jobs that were run in the previous period. */
+      previousTotalJobs: number;
+      /** @description The change in the total number of jobs run. */
+      totalJobsChange: number;
+      /** @description The percentage change in the total number of jobs run. */
+      totalJobsChangePercentage: number;
+      /** @description The time labels for the jobs. */
+      dates: string[];
+      /** @description The number of jobs that successfully completed. */
+      successfulJobs: number[];
+      /** @description The number of jobs that failed. */
+      failedJobs: number[];
+      /** @description The number of jobs that were canceled. */
+      canceledJobs: number[];
+      /** @description The number of jobs that are running. */
+      runningJobs: number[];
+      /** @description The number of jobs that are pending or have other statuses. */
+      otherJobs: number[];
+    };
+    IDurationChart: {
+      /**
+       * @description The duration labels for the jobs.
+       * @example 2023-11-23
+       */
+      x: string;
+      /**
+       * @description The duration values for the jobs.
+       * @example 1000000
+       */
+      y: number;
+    };
+    IDurationStats: {
+      /**
+       * @description The duration current value.
+       * @example 10000
+       */
+      current: number;
+      /**
+       * @description The duration change value.
+       * @example 20
+       */
+      changePercentage: number;
+    };
+    IJobDuration: {
+      /**
+       * @description The job duration in seconds.
+       * @example [
+       *       {
+       *         "x": "2023-11-23",
+       *         "y": 1000000
+       *       },
+       *       {
+       *         "x": "2023-11-24",
+       *         "y": 1400000
+       *       }
+       *     ]
+       */
+      duration: components['schemas']['IDurationChart'][];
+      /** @description The average job time. */
+      averageJobTime: components['schemas']['IDurationStats'];
+      /** @description The total job time. */
+      totalComputeTime: components['schemas']['IDurationStats'];
+      /** @description The fastest job time. */
+      fastestSuccessJobTime: components['schemas']['IDurationStats'];
+    };
+    IJobStatsResponse: {
+      /** @description The job statistics. */
+      counter: components['schemas']['IJobStats'];
+      /** @description The job chart statistics. */
+      jobsChart: components['schemas']['IJobsChart'];
+      /** @description The job duration statistics. */
+      jobsDuration: components['schemas']['IJobDuration'];
+    };
+    JobCallbackDto: {
+      /**
+       * @description Unique identifier for the compute job.
+       * @example 1234567890abcdef
+       */
+      kaasJobId: string;
+      /**
+       * @description Unique identifier for the GitHub workflow run.
+       * @example 1234567890abcdef
+       */
+      githubRunId: string;
+      /**
+       * @description Unique identifier for the GitHub job.
+       * @example 1234567890abcdef
+       */
+      githubJobId: string;
+      /**
+       * @description Status of the GitHub job.
+       * @example success
+       */
+      status: components['schemas']['JobStatus'];
+      /**
+       * @description The foundry version being run. This is used as the docker image tag.
+       * @example v1.0.0
+       */
+      foundryVersion?: string;
+      /**
+       * @description The JSON generated from "forge --version"
+       * @example {"forge Version": "1.1.0"}
+       */
+      forgeVersion?: string;
+      /**
+       * @description The kontrol version being run.
+       * @example v1.0.81
+       */
+      kontrolVersion?: string;
+      /**
+       * @description The tag for cache.
+       * @example default
+       */
+      tag?: string;
+    };
+    JobCallbackResponse: {
+      /**
+       * @description A message indicating the result of the operation.
+       * @example Job status updated and task initiated.
+       */
+      message: string;
+    };
+    AskXmlReportFailureDto: {
+      /**
+       * @description The job ID.
+       * @example xxxxxxxx-0000-0000-0000-xxxxxxxxxxxx
+       */
+      jobId: string;
+      /**
+       * @description The test name.
+       * @example test_donateETH(uint256,uint256)
+       */
+      testName: string;
+      /**
+       * @description The file path.
+       * @example test/Portal.t.sol
+       */
+      filePath: string;
+      /**
+       * @description The failures in the XML report.
+       * @example 1
+       */
+      failures: string;
+      /**
+       * @description (ADMIN) The prompt to ask the GPT.
+       * @example Explain the failures in the report. Then provide a fix for the failures in different scenarios:
+       *     - Modify only the solidity code.
+       *     - Modify only the lemmas.
+       *     - Modify both the solidity code and the lemmas.
+       *     Please output the explanation and fix that works in plain markdown format.
+       */
+      prompt?: string;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    AppController_getHello: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns a greeting message */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    UserController_user: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUser"];
-                };
-            };
-        };
-    };
-    UserController_deleteUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    UserController_listUsers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUserAdmin"][];
-                };
-            };
-        };
-    };
-    UserController_getUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUserAdmin"];
-                };
-            };
-        };
-    };
-    UserController_getUserVaults: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"][];
-                };
-            };
-        };
-    };
-    UserController_getAdminKeys: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IAdminKey"][];
-                };
-            };
-        };
-    };
-    UserController_createAdminKey: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateKeyDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IAdminKey"];
-                };
-            };
-        };
-    };
-    UserController_getUserKeys: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IKey"][];
-                };
-            };
-        };
-    };
-    UserController_createKey: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateKeyDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IKey"];
-                };
-            };
-        };
-    };
-    UserController_getAllAdminKeys: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IAdminKey"][];
-                };
-            };
-        };
-    };
-    UserController_deleteAdminKey: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                keyId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    UserController_deleteUserKey: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                keyId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    UserController_userSuggestions: {
-        parameters: {
-            query: {
-                q: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUserSuggestion"][];
-                };
-            };
-        };
-    };
-    UserController_addUserToOrganization: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddUserToOrganizationDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganizationUser"];
-                };
-            };
-        };
-    };
-    UserController_removeUserFromOrganization: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    UserController_getVaultUsers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVaultUser"][];
-                };
-            };
-        };
-    };
-    UserController_addUserToVault: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddUserToVaultDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVaultUser"];
-                };
-            };
-        };
-    };
-    UserController_removeUserFromVault: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    VaultController_getVaults: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"][];
-                };
-            };
-        };
-    };
-    VaultController_getVaultByName: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"];
-                };
-            };
-        };
-    };
-    VaultController_linkVault: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The name of the organization to which the vault belongs */
-                organizationName: string;
-                /** @description The name of the vault to link */
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The vault has been linked successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"];
-                };
-            };
-            /** @description Failed to link the vault due to bad request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized access */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Organization or vault not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    VaultController_listAllVaults: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVaultAdmin"][];
-                };
-            };
-        };
-    };
-    VaultController_getVault: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"][];
-                };
-            };
-        };
-    };
-    VaultController_createVaultForOrganization: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateVaultDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"];
-                };
-            };
-        };
-    };
-    VaultController_getVaultById: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                vaultId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IVault"];
-                };
-            };
-        };
-    };
-    VaultController_deleteVault: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                vaultId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    VaultController_getUserVaultLevelRole: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    VaultController_getReportSeverities: {
-        parameters: {
-            query: {
-                /**
-                 * @description The test suites to filter by, separated by commas
-                 * @example suite1,suite2
-                 */
-                testsuites: string;
-            };
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ISeverity"][];
-                };
-            };
-        };
-    };
-    VaultController_upsertReportSeverity: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpsertReportSeverityDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ISeverity"];
-                };
-            };
-        };
-    };
-    CacheController_listAllCaches: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ICacheAdmin"][];
-                };
-            };
-        };
-    };
-    CacheController_getCacheTests: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-                cacheHash: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ITest"][];
-                };
-            };
-        };
-    };
-    CacheController_getFilePresignedLink: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-                cacheHash: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    CacheController_deleteCache: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-                cacheHash: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    CacheController_getVaultCaches: {
-        parameters: {
-            query: {
-                search: string;
-            };
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ICacheWithUrl"][];
-                };
-            };
-        };
-    };
-    PublicController_healthCheck: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IMessage"];
-                };
-            };
-        };
-    };
-    PublicController_sentryError: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IError"];
-                };
-            };
-        };
-    };
-    CreditsController_findAll: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Credits retrieved successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ICredit"][];
-                };
-            };
-        };
-    };
-    CreditsController_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddCreditsDto"];
-            };
-        };
-        responses: {
-            /** @description Credits added successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ICredit"];
-                };
-            };
-        };
-    };
-    CreditsController_getStats: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganizationStats"];
-                };
-            };
-        };
-    };
-    CreditsController_getVaultStats: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUsage"][];
-                };
-            };
-        };
-    };
-    CreditsController_createUsage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateUsageDto"];
-            };
-        };
-        responses: {
-            /** @description Usage record created successfully. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IUsage"];
-                };
-            };
-            /** @description Unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Vault not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    OrganizationController_findVaultOrgTags: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    OrganizationController_findUserOrganizations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of organizations */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganizationSummary"][];
-                };
-            };
-        };
-    };
-    OrganizationController_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateUserOrganizationDto"];
-            };
-        };
-        responses: {
-            /** @description Organization created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganization"];
-                };
-            };
-        };
-    };
-    OrganizationController_findAllOrganizations: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of organizations */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganizationSummary"][];
-                };
-            };
-        };
-    };
-    OrganizationController_findOne: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Organization */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganization"];
-                };
-            };
-        };
-    };
-    OrganizationController_subscribe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ChangeSubscriptionDto"];
-            };
-        };
-        responses: {
-            /** @description Organization subscription updated */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ISubscription"];
-                };
-            };
-        };
-    };
-    OrganizationController_getUserOrganizationLevelRole: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    SlackController_authorize: {
-        parameters: {
-            query: {
-                orgName: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Redirects to Slack OAuth authorization URL */
-            302: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    SlackController_oauthCallback: {
-        parameters: {
-            query: {
-                /** @description Authorization code from Slack */
-                code: string;
-                /** @description State parameter to prevent CSRF */
-                state: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Slack app installed successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SlackOAuthCallbackResponse"];
-                };
-            };
-            /** @description Invalid state parameter */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    SlackController_sendTestMessage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Test message sent successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SendMessageResponse"];
-                };
-            };
-            /** @description Slack not connected for this user */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SendMessageResponse"];
-                };
-            };
-            /** @description Internal Server Error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    SlackController_unsubscribeChannel: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscriptionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IMessage"];
-                };
-            };
-        };
-    };
-    SlackController_sendTestMessageSubscriptionId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                subscriptionId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SendMessageResponse"];
-                };
-            };
-        };
-    };
-    SlackController_getSubscriptions: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IOrganizationEventSubscription"][];
-                };
-            };
-        };
-    };
-    SlackController_handleSlashCommand: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Command processed successfully */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_getVaultJobs: {
-        parameters: {
-            query: {
-                profile: string;
-                /**
-                 * @description The page number to retrieve.
-                 * @example 1
-                 */
-                page: number;
-                /**
-                 * @description The number of items per page.
-                 * @example 10
-                 */
-                per_page: number;
-            };
-            header?: never;
-            path: {
-                /** @description The name of the organization. */
-                organizationName: string;
-                /** @description The name of the vault. */
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The statuses of the jobs. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJob"][];
-                };
-            };
-            /** @description Bad Request. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_createJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The name of the organization. */
-                organizationName: string;
-                /** @description The name of the vault. */
-                vaultName: string;
-            };
-            cookie?: never;
-        };
-        /** @description Parameters required to initiate the compute job. */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateJobDto"];
-            };
-        };
-        responses: {
-            /** @description The job has been successfully initiated. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JobStatusResponse"];
-                };
-            };
-            /** @description Bad Request. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_cancelJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The UUID of the job to cancel. */
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The job has been successfully cancelled. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IMessage"];
-                };
-            };
-            /** @description Bad Request. The job cannot be cancelled in its current state. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized. Authentication credentials were missing or incorrect. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Forbidden. You do not have permission to cancel this job. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found. The job with the specified ID was not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Internal Server Error. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_getOrganizationJobs: {
-        parameters: {
-            query: {
-                /**
-                 * @description The page number to retrieve.
-                 * @example 1
-                 */
-                page: number;
-                /**
-                 * @description The number of items per page.
-                 * @example 10
-                 */
-                per_page: number;
-            };
-            header?: never;
-            path: {
-                /** @description The name of the organization. */
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of jobs for the specified organization. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJob"][];
-                };
-            };
-            /** @description Bad Request. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Organization not found. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Internal Server Error. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_getCacheJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                organizationName: string;
-                vaultName: string;
-                cacheHash: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJob"];
-                };
-            };
-        };
-    };
-    JobController_getOrganizationStats: {
-        parameters: {
-            query: {
-                period: string;
-            };
-            header?: never;
-            path: {
-                organizationName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns organization usage stats */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJobStatsResponse"];
-                };
-            };
-        };
-    };
-    JobController_getAllJobs: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns all jobs */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJob"][];
-                };
-            };
-        };
-    };
-    JobController_getJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description The unique identifier of the job. */
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Detailed information of the specified job. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IJob"];
-                };
-            };
-            /** @description Bad Request. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Internal Server Error. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_getJobFileS3DownloadPresignedUrl: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                jobId: string;
-                fileName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Returns a presigned URL to download the file from the job */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    JobController_getJobPdfReportDownload: {
-        parameters: {
-            query: {
-                rebuild: string;
-            };
-            header?: never;
-            path: {
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Get a presigned URL to download the PDF report */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    JobController_getUserJobLevelRole: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    JobController_publishJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobController_unpublishJob: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                jobId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    JobCallbackController_jobCallback: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description Payload containing the job ID, GitHub job ID, and status. */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JobCallbackDto"];
-            };
-        };
-        responses: {
-            /** @description Job status updated successfully. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JobCallbackResponse"];
-                };
-            };
-            /** @description Invalid request payload. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Unauthorized access. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Failed to update job details in the database. */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    GptController_askGptReportFailures: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AskXmlReportFailureDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
+  AppController_getHello: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns a greeting message */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  UserController_user: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUser'];
+        };
+      };
+    };
+  };
+  UserController_deleteUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_listUsers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUserAdmin'][];
+        };
+      };
+    };
+  };
+  UserController_getUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUserAdmin'];
+        };
+      };
+    };
+  };
+  UserController_getUserVaults: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'][];
+        };
+      };
+    };
+  };
+  UserController_getAdminKeys: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IAdminKey'][];
+        };
+      };
+    };
+  };
+  UserController_createAdminKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateKeyDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IAdminKey'];
+        };
+      };
+    };
+  };
+  UserController_getUserKeys: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IKey'][];
+        };
+      };
+    };
+  };
+  UserController_createKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateKeyDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IKey'];
+        };
+      };
+    };
+  };
+  UserController_getAllAdminKeys: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IAdminKey'][];
+        };
+      };
+    };
+  };
+  UserController_deleteAdminKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        keyId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_deleteUserKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        keyId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_userSuggestions: {
+    parameters: {
+      query: {
+        q: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUserSuggestion'][];
+        };
+      };
+    };
+  };
+  UserController_addUserToOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddUserToOrganizationDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganizationUser'];
+        };
+      };
+    };
+  };
+  UserController_removeUserFromOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        userId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_getVaultUsers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVaultUser'][];
+        };
+      };
+    };
+  };
+  UserController_addUserToVault: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddUserToVaultDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVaultUser'];
+        };
+      };
+    };
+  };
+  UserController_removeUserFromVault: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+        userId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  VaultController_getVaults: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'][];
+        };
+      };
+    };
+  };
+  VaultController_getVaultByName: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'];
+        };
+      };
+    };
+  };
+  VaultController_linkVault: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The name of the organization to which the vault belongs */
+        organizationName: string;
+        /** @description The name of the vault to link */
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The vault has been linked successfully */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'];
+        };
+      };
+      /** @description Failed to link the vault due to bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized access */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Organization or vault not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  VaultController_listAllVaults: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVaultAdmin'][];
+        };
+      };
+    };
+  };
+  VaultController_getVault: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'][];
+        };
+      };
+    };
+  };
+  VaultController_createVaultForOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateVaultDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'];
+        };
+      };
+    };
+  };
+  VaultController_getVaultById: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vaultId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IVault'];
+        };
+      };
+    };
+  };
+  VaultController_deleteVault: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        vaultId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  VaultController_getUserVaultLevelRole: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  VaultController_getReportSeverities: {
+    parameters: {
+      query: {
+        /**
+         * @description The test suites to filter by, separated by commas
+         * @example suite1,suite2
+         */
+        testsuites: string;
+      };
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ISeverity'][];
+        };
+      };
+    };
+  };
+  VaultController_upsertReportSeverity: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpsertReportSeverityDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ISeverity'];
+        };
+      };
+    };
+  };
+  CacheController_listAllCaches: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ICacheAdmin'][];
+        };
+      };
+    };
+  };
+  CacheController_getCacheTests: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+        cacheHash: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ITest'][];
+        };
+      };
+    };
+  };
+  CacheController_getFilePresignedLink: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+        cacheHash: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  CacheController_deleteCache: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+        cacheHash: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  CacheController_getVaultCaches: {
+    parameters: {
+      query: {
+        search: string;
+      };
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ICacheWithUrl'][];
+        };
+      };
+    };
+  };
+  PublicController_healthCheck: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IMessage'];
+        };
+      };
+    };
+  };
+  PublicController_sentryError: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IError'];
+        };
+      };
+    };
+  };
+  CreditsController_findAll: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Credits retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ICredit'][];
+        };
+      };
+    };
+  };
+  CreditsController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AddCreditsDto'];
+      };
+    };
+    responses: {
+      /** @description Credits added successfully */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ICredit'];
+        };
+      };
+    };
+  };
+  CreditsController_getStats: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganizationStats'];
+        };
+      };
+    };
+  };
+  CreditsController_getVaultStats: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUsage'][];
+        };
+      };
+    };
+  };
+  CreditsController_createUsage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateUsageDto'];
+      };
+    };
+    responses: {
+      /** @description Usage record created successfully. */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IUsage'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Vault not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  OrganizationController_findVaultOrgTags: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  OrganizationController_findUserOrganizations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of organizations */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganizationSummary'][];
+        };
+      };
+    };
+  };
+  OrganizationController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateUserOrganizationDto'];
+      };
+    };
+    responses: {
+      /** @description Organization created */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganization'];
+        };
+      };
+    };
+  };
+  OrganizationController_findAllOrganizations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of organizations */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganizationSummary'][];
+        };
+      };
+    };
+  };
+  OrganizationController_findOne: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Organization */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganization'];
+        };
+      };
+    };
+  };
+  OrganizationController_subscribe: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ChangeSubscriptionDto'];
+      };
+    };
+    responses: {
+      /** @description Organization subscription updated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ISubscription'];
+        };
+      };
+    };
+  };
+  OrganizationController_getUserOrganizationLevelRole: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  SlackController_authorize: {
+    parameters: {
+      query: {
+        orgName: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Redirects to Slack OAuth authorization URL */
+      302: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SlackController_oauthCallback: {
+    parameters: {
+      query: {
+        /** @description Authorization code from Slack */
+        code: string;
+        /** @description State parameter to prevent CSRF */
+        state: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Slack app installed successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SlackOAuthCallbackResponse'];
+        };
+      };
+      /** @description Invalid state parameter */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SlackController_sendTestMessage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Test message sent successfully */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SendMessageResponse'];
+        };
+      };
+      /** @description Slack not connected for this user */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SendMessageResponse'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SlackController_unsubscribeChannel: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        subscriptionId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IMessage'];
+        };
+      };
+    };
+  };
+  SlackController_sendTestMessageSubscriptionId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        subscriptionId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SendMessageResponse'];
+        };
+      };
+    };
+  };
+  SlackController_getSubscriptions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IOrganizationEventSubscription'][];
+        };
+      };
+    };
+  };
+  SlackController_handleSlashCommand: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Command processed successfully */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_getVaultJobs: {
+    parameters: {
+      query: {
+        profile: string;
+        /**
+         * @description The page number to retrieve.
+         * @example 1
+         */
+        page: number;
+        /**
+         * @description The number of items per page.
+         * @example 10
+         */
+        per_page: number;
+      };
+      header?: never;
+      path: {
+        /** @description The name of the organization. */
+        organizationName: string;
+        /** @description The name of the vault. */
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The statuses of the jobs. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJob'][];
+        };
+      };
+      /** @description Bad Request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_createJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The name of the organization. */
+        organizationName: string;
+        /** @description The name of the vault. */
+        vaultName: string;
+      };
+      cookie?: never;
+    };
+    /** @description Parameters required to initiate the compute job. */
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateJobDto'];
+      };
+    };
+    responses: {
+      /** @description The job has been successfully initiated. */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['JobStatusResponse'];
+        };
+      };
+      /** @description Bad Request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_cancelJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The UUID of the job to cancel. */
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The job has been successfully cancelled. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IMessage'];
+        };
+      };
+      /** @description Bad Request. The job cannot be cancelled in its current state. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized. Authentication credentials were missing or incorrect. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Forbidden. You do not have permission to cancel this job. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Not Found. The job with the specified ID was not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal Server Error. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_getOrganizationJobs: {
+    parameters: {
+      query: {
+        /**
+         * @description The page number to retrieve.
+         * @example 1
+         */
+        page: number;
+        /**
+         * @description The number of items per page.
+         * @example 10
+         */
+        per_page: number;
+      };
+      header?: never;
+      path: {
+        /** @description The name of the organization. */
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of jobs for the specified organization. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJob'][];
+        };
+      };
+      /** @description Bad Request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Organization not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal Server Error. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_getCacheJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationName: string;
+        vaultName: string;
+        cacheHash: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJob'];
+        };
+      };
+    };
+  };
+  JobController_getOrganizationStats: {
+    parameters: {
+      query: {
+        period: string;
+      };
+      header?: never;
+      path: {
+        organizationName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns organization usage stats */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJobStatsResponse'];
+        };
+      };
+    };
+  };
+  JobController_getAllJobs: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns all jobs */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJob'][];
+        };
+      };
+    };
+  };
+  JobController_getJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description The unique identifier of the job. */
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Detailed information of the specified job. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IJob'];
+        };
+      };
+      /** @description Bad Request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Internal Server Error. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_getJobFileS3DownloadPresignedUrl: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        jobId: string;
+        fileName: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns a presigned URL to download the file from the job */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  JobController_getJobPdfReportDownload: {
+    parameters: {
+      query: {
+        rebuild: string;
+      };
+      header?: never;
+      path: {
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Get a presigned URL to download the PDF report */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  JobController_getUserJobLevelRole: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  JobController_publishJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobController_unpublishJob: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        jobId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  JobCallbackController_jobCallback: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Payload containing the job ID, GitHub job ID, and status. */
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['JobCallbackDto'];
+      };
+    };
+    responses: {
+      /** @description Job status updated successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['JobCallbackResponse'];
+        };
+      };
+      /** @description Invalid request payload. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Unauthorized access. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Failed to update job details in the database. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  GptController_askGptReportFailures: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AskXmlReportFailureDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
 }
 export enum LoginProvider {
-    github = "github",
-    google = "google",
-    email = "email"
+  github = 'github',
+  google = 'google',
+  email = 'email',
 }
 export enum UserRole {
-    read = "read",
-    write = "write",
-    admin = "admin"
+  read = 'read',
+  write = 'write',
+  admin = 'admin',
 }
 export enum SeverityLevel {
-    high = "high",
-    medium = "medium",
-    low = "low"
+  high = 'high',
+  medium = 'medium',
+  low = 'low',
 }
 export enum SubscriptionType {
-    no_limits = "no_limits",
-    free = "free",
-    professional = "professional",
-    premium = "premium"
+  no_limits = 'no_limits',
+  free = 'free',
+  professional = 'professional',
+  premium = 'premium',
 }
 export enum NodeSize {
-    small = "small",
-    medium = "medium",
-    large = "large"
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
 }
 export enum EventType {
-    JobCompleted = "JobCompleted",
-    JobFailed = "JobFailed",
-    JobCancelled = "JobCancelled",
-    JobStarted = "JobStarted",
-    JobScheduled = "JobScheduled"
+  JobCompleted = 'JobCompleted',
+  JobFailed = 'JobFailed',
+  JobCancelled = 'JobCancelled',
+  JobStarted = 'JobStarted',
+  JobScheduled = 'JobScheduled',
 }
 export enum JobKind {
-    kontrol = "kontrol",
-    foundry = "foundry"
+  kontrol = 'kontrol',
+  foundry = 'foundry',
 }
 export enum JobStatus {
-    pending = "pending",
-    running = "running",
-    success = "success",
-    failure = "failure",
-    cancelled = "cancelled",
-    processed = "processed",
-    processing_failed = "processing_failed",
-    error = "error"
+  pending = 'pending',
+  running = 'running',
+  success = 'success',
+  failure = 'failure',
+  cancelled = 'cancelled',
+  processed = 'processed',
+  processing_failed = 'processing_failed',
+  error = 'error',
 }
 export enum JobType {
-    build = "build",
-    prove = "prove"
+  build = 'build',
+  prove = 'prove',
 }

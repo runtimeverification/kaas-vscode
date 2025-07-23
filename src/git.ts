@@ -1,3 +1,4 @@
+import gitUrlParse from 'git-url-parse';
 import * as vscode from 'vscode';
 import { API, GitExtension, Remote, Repository } from './git-api';
 
@@ -20,11 +21,31 @@ export async function getGitRepository(
   git: API,
   workspaceFolder: vscode.WorkspaceFolder
 ): Promise<Repository | undefined> {
-  const repository = git.getRepository(workspaceFolder.uri);
+  let repository = git.getRepository(workspaceFolder.uri);
+
+  // If no repository found, try to wait a bit and check again
+  if (!repository) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    repository = git.getRepository(workspaceFolder.uri);
+  }
+
+  // Also try to find it in the repositories list
+  if (!repository) {
+    const foundRepo = git.repositories.find(
+      repo => repo.rootUri.fsPath === workspaceFolder.uri.fsPath
+    );
+    repository = foundRepo || null;
+  }
+
   return repository ?? undefined;
 }
 
 export async function getRemoteOrigin(repository: Repository): Promise<Remote | undefined> {
+  // If no remotes found, wait a bit for Git to load them
+  if (repository.state.remotes.length === 0) {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+
   const remote = repository.state.remotes.find((r: Remote) => r.name === 'origin');
   return remote ?? undefined;
 }
@@ -33,18 +54,37 @@ export async function getRemoteBranch(
   repository: Repository
 ): Promise<{ owner: string; repo: string; branch: string } | undefined> {
   const remote = await getRemoteOrigin(repository);
+
   if (remote && remote.pushUrl) {
     const upstream = repository.state.HEAD?.upstream;
-    if (upstream) {
-      const match = remote.pushUrl.match(/github\.com[/:]([\w-]+)\/([\w.-]+)(?:\.git)?/);
-      if (match && match[1] && match[2]) {
-        const owner = match[1];
-        const repo = match[2].replace(/\.git$/, '');
-        const branch = upstream.name;
-        return { owner, repo, branch };
+
+    try {
+      const parsed = gitUrlParse(remote.pushUrl);
+
+      // Check if it's a GitHub repository
+      if (parsed.source === 'github.com' || parsed.resource.includes('github')) {
+        const owner = parsed.owner;
+        const repo = parsed.name;
+
+        if (owner && repo) {
+          let branch: string;
+
+          if (upstream) {
+            branch = upstream.name;
+          } else if (repository.state.HEAD?.name) {
+            branch = repository.state.HEAD.name;
+          } else {
+            return undefined;
+          }
+
+          return { owner, repo, branch };
+        }
       }
+    } catch (error) {
+      // Failed to parse git URL
     }
   }
+
   return undefined;
 }
 

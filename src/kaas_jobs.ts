@@ -53,6 +53,23 @@ export async function getJobStatusByJobId(client: Client<paths>, jobId: string):
 	return job.data;
 }
 
+export async function getJobReportByJobId(client: Client<paths>, jobId: string): Promise<components["schemas"]["IJob"]> {
+	const job = await client.GET('/api/jobs/{jobId}/json-report', {
+		params: {
+			path: {
+				jobId
+			}
+		}
+	});
+	if (job.response.status !== 200) {
+		throw new Error(`Job with ID ${jobId} not found`);
+	}
+	if (job.data === undefined) {
+		throw new Error(`Job with ID ${jobId} returned no data`);
+	}
+	return job.data.testsuites;
+}
+
 export async function pollForJobStatus(
 	client: Client<paths>,
 	testController: vscode.TestController,
@@ -67,6 +84,13 @@ export async function pollForJobStatus(
 				test.busy = false;
 				const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
 				testRun.appendOutput(`Run completed successfully. See details here: ${jobUri(jobDetails).toString()}`);
+				const report = await getJobReportByJobId(client, jobId);
+				if (report) {
+					const document = await vscode.workspace.openTextDocument({ language: 'plaintext', content: JSON.stringify(report, null, 2) });
+							
+					// Open the document in a new tab
+					vscode.window.showTextDocument(document);
+				}
 				testRun.passed(test, jobDetails.duration * 1000);
 				testRun.end();
 				break;

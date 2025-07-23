@@ -1,15 +1,12 @@
-import { components, paths } from './kaas-api';
 import { Client } from 'openapi-fetch';
-import * as vscode from 'vscode';
-import { gitApi, getGitInfo } from './git';
 import { parse } from 'smol-toml';
-import { getJobStatusByJobId } from './kaas_jobs';
-import { TestRunState } from './test_run_state';
-import { JobStatus } from './kaas-api';
-import { JobKind } from './kaas-api';
+import * as vscode from 'vscode';
+import { getKaasBaseUrl } from './config';
+import { getGitInfo, gitApi } from './git';
+import { components, JobKind, JobStatus, paths } from './kaas-api';
+import { getJobStatusByJobId, pollForJobStatus } from './kaas_jobs';
 import { verifyVaultExists } from './kaas_vault';
-import { pollForJobStatus } from './kaas_jobs';
-import { KAAS_BASE_URL } from './config';
+import { TestRunState } from './test_run_state';
 
 interface KontrolToml {
   prove: {
@@ -145,7 +142,7 @@ export async function runKontrolProfileViaKaaS(
     foundryProfile: 'default',
     profiles: profiles,
     workflowBranch: 'main',
-    kaasServerUrl: KAAS_BASE_URL,
+    kaasServerUrl: getKaasBaseUrl(),
     kind: JobKind.kontrol,
   };
   console.log(`Submitting job for test ${test.id} with body:`, body);

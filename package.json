@@ -38,6 +38,11 @@
           "type": "string",
           "default": "default value",
           "description": "API Key for KaaS"
+        },
+        "kaas-vscode.baseUrl": {
+          "type": "string",
+          "default": "https://kaas.runtimeverification.com",
+          "description": "Base URL for KaaS API endpoints"
         }
       }
     },

@@ -1,8 +1,7 @@
-import { components, paths, JobStatus } from './kaas-api';
 import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
-import { KAAS_JOB_POLL_INTERVAL } from './config';
-import { KAAS_BASE_URL } from './config';
+import { KAAS_JOB_POLL_INTERVAL, getKaasBaseUrl } from './config';
+import { JobStatus, components, paths } from './kaas-api';
 
 export async function fetchLatestRun(
   client: Client<paths>,
@@ -202,6 +201,6 @@ function jobName(job: components['schemas']['IJob']): string {
 
 function jobUri(job: components['schemas']['IJob']): vscode.Uri {
   return vscode.Uri.parse(
-    `${KAAS_BASE_URL}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`
+    `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`
   );
 }

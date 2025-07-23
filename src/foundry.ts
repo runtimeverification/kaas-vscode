@@ -1,14 +1,14 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as child_process from 'child_process';
-import { parse } from 'smol-toml';
 import { Client } from 'openapi-fetch';
-import { paths, components, JobKind } from './kaas-api';
-import { TestRunState } from './test_run_state';
+import * as path from 'path';
+import { parse } from 'smol-toml';
+import * as vscode from 'vscode';
+import { getKaasBaseUrl } from './config';
 import { getGitInfo } from './git';
-import { verifyVaultExists } from './kaas_vault';
-import { KAAS_BASE_URL } from './config';
+import { components, JobKind, paths } from './kaas-api';
 import { pollForJobStatus } from './kaas_jobs';
+import { verifyVaultExists } from './kaas_vault';
+import { TestRunState } from './test_run_state';
 
 interface FoundryTest {
   filePath: string;
@@ -249,7 +249,7 @@ export async function runFoundryTestViaKaaS(
     foundryProfile: 'default',
     profiles: profiles,
     workflowBranch: 'main',
-    kaasServerUrl: KAAS_BASE_URL,
+    kaasServerUrl: getKaasBaseUrl(),
   };
   console.log(`Submitting job for test ${test.id} with body:`, body);
   vscode.window.showInformationMessage(`Starting KaaS job for: ${test.id}`);

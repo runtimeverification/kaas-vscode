@@ -1,12 +1,12 @@
-import * as vscode from 'vscode';
 import createClient from 'openapi-fetch';
+import * as vscode from 'vscode';
+import { getKaasBaseUrl } from './config';
+import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
 import { type paths } from './kaas-api';
 import { runTests } from './kaas_run';
-import { discoverFoundryTestsAndPopulate, discoverFoundryProfiles } from './foundry';
 import { kontrolProfiles } from './kontrol';
-import { TestRunState } from './test_run_state';
-import { KAAS_BASE_URL } from './config';
 import { createRemoteSyncView } from './remote_sync_view';
+import { TestRunState } from './test_run_state';
 
 interface KontrolProfile {
   'match-test': string;
@@ -33,7 +33,7 @@ export async function activate(context: vscode.ExtensionContext) {
     'kaas-vscode.testController',
     'KaaS Proofs'
   );
-  const client = createClient<paths>({ baseUrl: KAAS_BASE_URL });
+  const client = createClient<paths>({ baseUrl: getKaasBaseUrl() });
   client.use({
     onRequest: request => {
       const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');

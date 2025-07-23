@@ -1,5 +1,6 @@
-import { components, paths } from './kaas-api';
 import { Client } from 'openapi-fetch';
+import { getGithubAppInstallUrl } from './config';
+import { components, paths } from './kaas-api';
 
 export async function verifyVaultExists(
   client: Client<paths>,
@@ -10,14 +11,18 @@ export async function verifyVaultExists(
   try {
     const orgsResponse = await client.GET('/api/orgs');
     if (!orgsResponse.data) {
-      return `Failed to fetch organizations: ${JSON.stringify(orgsResponse.error)}`;
+      const githubAppUrl = getGithubAppInstallUrl();
+
+      return `Failed to fetch organizations: ${JSON.stringify(orgsResponse.error)}.\nPlease ensure the GitHub app is installed for your repository by visiting:\n${githubAppUrl}`;
     }
 
     const org = orgsResponse.data.find(
       (o: components['schemas']['IOrganizationSummary']) => o.name === organizationName
     );
     if (!org) {
-      return `Organization '${organizationName}' not found on KaaS.`;
+      const githubAppUrl = getGithubAppInstallUrl();
+
+      return `Organization '${organizationName}' not found on KaaS.\nPlease ensure the GitHub app is installed for your repository by visiting:\n${githubAppUrl}`;
     }
 
     const vaultsResponse = await client.GET('/api/orgs/{organizationName}/vaults', {

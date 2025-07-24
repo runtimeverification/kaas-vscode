@@ -2,8 +2,8 @@ import createClient from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
-import { getJobStatusByJobId, jobReportUri } from './kaas_jobs';
 import { type paths } from './kaas-api';
+import { getJobStatusByJobId, jobCacheUri, jobReportUri } from './kaas_jobs';
 import { runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
 import { createRemoteSyncView } from './remote_sync_view';
@@ -107,7 +107,7 @@ export async function activate(context: vscode.ExtensionContext) {
         const jobId = testRunState.getJobId(testItem);
         if (!jobId) {
           vscode.window.showInformationMessage(
-            'No job has been started for this test yet. Run the test first to see job details.'
+            'No job has been started for this test yet. Run the test first to view job details.'
           );
           return;
         }
@@ -156,6 +156,34 @@ export async function activate(context: vscode.ExtensionContext) {
         vscode.env.openExternal(reportUri);
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to open job report: ${error}`);
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('kaas-vscode.viewCache', async (testItem: vscode.TestItem) => {
+      const jobId = testRunState.getJobId(testItem);
+      if (!jobId) {
+        vscode.window.showInformationMessage(
+          'No job has been started for this test yet. Run the test first to view the cache.'
+        );
+        return;
+      }
+
+      try {
+        // Get the job details to construct the proper cache URI
+        const job = await getJobStatusByJobId(client, jobId);
+        const cacheUri = jobCacheUri(job);
+
+        if (cacheUri) {
+          vscode.env.openExternal(cacheUri);
+        } else {
+          vscode.window.showInformationMessage(
+            'No cache is available for this job. Cache may not have been generated or preserved.'
+          );
+        }
+      } catch (error) {
+        vscode.window.showErrorMessage(`Failed to open job cache: ${error}`);
       }
     })
   );

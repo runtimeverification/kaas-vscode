@@ -210,3 +210,13 @@ export function jobReportUri(job: components['schemas']['IJob']): vscode.Uri {
     `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}/report`
   );
 }
+
+export function jobCacheUri(job: components['schemas']['IJob']): vscode.Uri | undefined {
+  if (job.cacheHash) {
+    return vscode.Uri.parse(
+      `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/cache/${job.cacheHash}`
+    );
+  } else {
+    return undefined; // No cache found
+  }
+}

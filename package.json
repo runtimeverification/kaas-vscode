@@ -32,13 +32,18 @@
       },
       {
         "command": "kaas-vscode.seeJobDetails",
-        "title": "See Job Details",
+        "title": "View Job Details",
         "icon": "$(link-external)"
       },
       {
         "command": "kaas-vscode.viewReport",
         "title": "View Report",
         "icon": "$(file-text)"
+      },
+      {
+        "command": "kaas-vscode.viewCache",
+        "title": "View Cache",
+        "icon": "$(database)"
       }
     ],
     "configuration": {
@@ -78,6 +83,9 @@
         },
         {
           "command": "kaas-vscode.viewReport"
+        },
+        {
+          "command": "kaas-vscode.viewCache"
         }
       ]
     }

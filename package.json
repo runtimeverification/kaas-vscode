@@ -104,6 +104,7 @@
     "fmt": "prettier --write \"src/**/*.{ts,js,json,md}\"",
     "fmt:check": "prettier --check \"src/**/*.{ts,js,json,md}\"",
     "test": "vscode-test",
+    "check:all": "npm run lint && npm run fmt:check && npm run compile",
     "prepare": "husky .husky"
   },
   "devDependencies": {

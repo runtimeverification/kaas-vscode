@@ -1,0 +1,31 @@
+name: 'Test'
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    name: 'Test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check out code'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Install nodejs 22'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+      - name: 'Build and test'
+        run: |
+          npm install -g @vscode/vsce
+          npm install
+          npm run check:all
+          vsce package
+          ls -lah *.vsix

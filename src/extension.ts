@@ -2,7 +2,7 @@ import createClient from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
-import { type paths } from './kaas-api';
+import { type paths, components } from './kaas-api';
 import { getJobStatusByJobId, jobCacheUri, jobReportUri } from './kaas_jobs';
 import { runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
@@ -94,6 +94,23 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   }
 
+  // Helper function to find the correct job from children based on test item name
+  function findJobFromChildren(
+    parentJob: components['schemas']['IJob'],
+    testItemLabel: string
+  ): components['schemas']['IJob'] {
+    // If the job has children, try to find one that matches the test item name
+    if (parentJob.children && parentJob.children.length > 0) {
+      for (const childJob of parentJob.children) {
+        if (childJob.profileName === testItemLabel) {
+          return childJob;
+        }
+      }
+    }
+    // If no matching child found, return the parent job
+    return parentJob;
+  }
+
   context.subscriptions.push(
     vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
       vscode.window.showInformationMessage('Welcome to Simbolik powered by KaaS!');
@@ -102,7 +119,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'kaas-vscode.seeJobDetails',
+      'kaas-vscode.viewJobDetails',
       async (testItem: vscode.TestItem) => {
         const jobId = testRunState.getJobId(testItem);
         if (!jobId) {
@@ -151,7 +168,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
       try {
         // Get the job details to construct the proper report URI
-        const job = await getJobStatusByJobId(client, jobId);
+        const parentJob = await getJobStatusByJobId(client, jobId);
+        const job = findJobFromChildren(parentJob, testItem.label);
         const reportUri = jobReportUri(job);
         vscode.env.openExternal(reportUri);
       } catch (error) {
@@ -172,7 +190,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
       try {
         // Get the job details to construct the proper cache URI
-        const job = await getJobStatusByJobId(client, jobId);
+        const parentJob = await getJobStatusByJobId(client, jobId);
+        const job = findJobFromChildren(parentJob, testItem.label);
         const cacheUri = jobCacheUri(job);
 
         if (cacheUri) {

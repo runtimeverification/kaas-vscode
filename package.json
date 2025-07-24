@@ -31,7 +31,7 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "kaas-vscode.seeJobDetails",
+        "command": "kaas-vscode.viewJobDetails",
         "title": "View Job Details",
         "icon": "$(link-external)"
       },
@@ -79,7 +79,7 @@
       ],
       "testing/item/context": [
         {
-          "command": "kaas-vscode.seeJobDetails"
+          "command": "kaas-vscode.viewJobDetails"
         },
         {
           "command": "kaas-vscode.viewReport"

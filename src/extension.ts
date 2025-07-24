@@ -1,6 +1,6 @@
 import createClient from 'openapi-fetch';
 import * as vscode from 'vscode';
-import { getKaasBaseUrl } from './config';
+import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
 import { type paths } from './kaas-api';
 import { runTests } from './kaas_run';
@@ -56,7 +56,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     try {
       await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'kontrol.toml'));
-      const kontrolRoot = testController.createTestItem('kontrol', 'Kontrol');
+      const kontrolRoot = testController.createTestItem(TestKind.kontrol, 'Kontrol');
       worrkspaceItem.children.add(kontrolRoot);
       const kontrolProfilesRoot = testController.createTestItem('kontrolProfiles', 'Profiles');
       kontrolRoot.children.add(kontrolProfilesRoot);
@@ -79,7 +79,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     try {
       await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'foundry.toml'));
-      const foundryRoot = testController.createTestItem('foundry', 'Foundry');
+      const foundryRoot = testController.createTestItem(TestKind.foundry, 'Foundry');
       worrkspaceItem.children.add(foundryRoot);
       const foundryProfilesRoot = testController.createTestItem('foundryProfiles', 'Profiles');
       foundryRoot.children.add(foundryProfilesRoot);

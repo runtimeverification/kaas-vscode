@@ -13,4 +13,9 @@ export function getGithubAppInstallUrl(): string {
     : 'https://github.com/apps/runtime-verification-inc-sandbox/installations/new';
 }
 
+export enum TestKind {
+  foundry = 'foundry',
+  kontrol = 'kontrol',
+}
+
 export const KAAS_JOB_POLL_INTERVAL = 5000;

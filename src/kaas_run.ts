@@ -1,13 +1,14 @@
-import { components, paths, JobKind, JobStatus } from './kaas-api';
 import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
-import { TestRunState } from './test_run_state';
+import { TestKind } from './config';
 import { runFoundryTestViaKaaS } from './foundry';
+import { paths } from './kaas-api';
 import { runKontrolProfileViaKaaS } from './kontrol';
+import { TestRunState } from './test_run_state';
 
-function getRootTestId(test: vscode.TestItem): string | undefined {
+function getTestId(test: vscode.TestItem): string | undefined {
   let current = test;
-  while (current.parent) {
+  while (current.parent?.parent) {
     current = current.parent;
   }
   return current.id;
@@ -48,9 +49,9 @@ export async function runTests(
     if (token.isCancellationRequested) {
       break;
     }
-    const rootId = getRootTestId(test);
+    const testId = getTestId(test);
 
-    if (rootId === 'kontrol') {
+    if (testId === TestKind.kontrol) {
       await runKontrolProfileViaKaaS(
         worksaceFolder,
         client,
@@ -59,7 +60,7 @@ export async function runTests(
         test,
         testRunState
       );
-    } else {
+    } else if (testId === TestKind.foundry) {
       await runFoundryTestViaKaaS(
         worksaceFolder,
         client,
@@ -68,6 +69,9 @@ export async function runTests(
         test,
         testRunState
       );
+    } else {
+      console.warn(`Unknown test kind for test ${testId}, skipping.`);
+      testRun.errored(test, new vscode.TestMessage(`Unknown test kind: ${testId}`));
     }
   }
 

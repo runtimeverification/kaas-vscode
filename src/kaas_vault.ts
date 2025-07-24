@@ -1,36 +1,52 @@
-import { components, paths } from "./kaas-api";
-import { Client } from "openapi-fetch";
+import { Client } from 'openapi-fetch';
+import { getGithubAppInstallUrl } from './config';
+import { components, paths } from './kaas-api';
 
 export async function verifyVaultExists(
-    client: Client<paths>,
-    organizationName: string,
-    vaultName: string
-): Promise<string | undefined> { // returns error message string or undefined if ok
-    try {
-        const orgsResponse = await client.GET('/api/orgs');
-        if (!orgsResponse.data) {
-            return `Failed to fetch organizations: ${JSON.stringify(orgsResponse.error)}`;
-        }
+  client: Client<paths>,
+  organizationName: string,
+  vaultName: string
+): Promise<string | undefined> {
+  // returns error message string or undefined if ok
+  try {
+    const orgsResponse = await client.GET('/api/orgs');
+    if (!orgsResponse.data) {
+      const githubAppUrl = getGithubAppInstallUrl();
 
-        const org = orgsResponse.data.find((o: components["schemas"]["IOrganizationSummary"]) => o.name === organizationName);
-        if (!org) {
-            return `Organization '${organizationName}' not found on KaaS.`;
-        }
+      return `Failed to fetch organizations: ${JSON.stringify(orgsResponse.error)}.\nPlease ensure the GitHub app is installed for your repository by visiting:\n${githubAppUrl}`;
+    }
 
-        const vaultsResponse = await client.GET('/api/orgs/{organizationName}/vaults', {
-            params: { path: { organizationName } }
+    const org = orgsResponse.data.find(
+      (o: components['schemas']['IOrganizationSummary']) => o.name === organizationName
+    );
+    if (!org) {
+      const githubAppUrl = getGithubAppInstallUrl();
+
+      return `Organization '${organizationName}' not found on KaaS.\nPlease ensure the GitHub app is installed for your repository by visiting:\n${githubAppUrl}`;
+    }
+
+    const vaultResponse = await client.GET('/api/orgs/{organizationName}/vaults/{vaultName}', {
+      params: { path: { organizationName, vaultName } },
+    });
+
+    if (!vaultResponse.data) {
+      // Vault doesn't exist, try to link it to the organization automatically
+      try {
+        const linkResponse = await client.POST('/api/orgs/{organizationName}/vaults/{vaultName}', {
+          params: { path: { organizationName, vaultName } },
         });
 
-        if (!vaultsResponse.data) {
-            return `Failed to fetch vaults for organization '${organizationName}': ${JSON.stringify(vaultsResponse.error)}`;
+        if (!linkResponse.data) {
+          return `Failed to link vault '${vaultName}' to organization '${organizationName}': ${JSON.stringify(linkResponse.error)}`;
         }
-
-        const vault = vaultsResponse.data.find((v: components["schemas"]["IVault"]) => v.name === vaultName);
-        if (!vault) {
-            return `Vault '${vaultName}' not found in organization '${organizationName}' on KaaS.`;
-        }
-    } catch (e: any) {
-        return `Error validating org/vault: ${e.message}`;
+        // Successfully linked the vault
+      } catch (linkError: any) {
+        return `Failed to link vault '${vaultName}' to organization '${organizationName}': ${linkError.message}`;
+      }
     }
-    return undefined; // No error
+    // Vault exists or was successfully linked
+  } catch (e: any) {
+    return `Error validating org/vault: ${e.message}`;
+  }
+  return undefined; // No error
 }

@@ -2,6 +2,7 @@ import createClient from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
+import { getJobStatusByJobId, jobReportUri } from './kaas_jobs';
 import { type paths } from './kaas-api';
 import { runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
@@ -136,6 +137,27 @@ export async function activate(context: vscode.ExtensionContext) {
         }
       }
     )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('kaas-vscode.viewReport', async (testItem: vscode.TestItem) => {
+      const jobId = testRunState.getJobId(testItem);
+      if (!jobId) {
+        vscode.window.showInformationMessage(
+          'No job has been started for this test yet. Run the test first to view the report.'
+        );
+        return;
+      }
+
+      try {
+        // Get the job details to construct the proper report URI
+        const job = await getJobStatusByJobId(client, jobId);
+        const reportUri = jobReportUri(job);
+        vscode.env.openExternal(reportUri);
+      } catch (error) {
+        vscode.window.showErrorMessage(`Failed to open job report: ${error}`);
+      }
+    })
   );
 
   context.subscriptions.push(

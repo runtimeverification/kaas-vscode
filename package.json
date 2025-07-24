@@ -34,6 +34,11 @@
         "command": "kaas-vscode.seeJobDetails",
         "title": "See Job Details",
         "icon": "$(link-external)"
+      },
+      {
+        "command": "kaas-vscode.viewReport",
+        "title": "View Report",
+        "icon": "$(file-text)"
       }
     ],
     "configuration": {
@@ -70,6 +75,9 @@
       "testing/item/context": [
         {
           "command": "kaas-vscode.seeJobDetails"
+        },
+        {
+          "command": "kaas-vscode.viewReport"
         }
       ]
     }

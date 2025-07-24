@@ -204,3 +204,9 @@ function jobUri(job: components['schemas']['IJob']): vscode.Uri {
     `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`
   );
 }
+
+export function jobReportUri(job: components['schemas']['IJob']): vscode.Uri {
+  return vscode.Uri.parse(
+    `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}/report`
+  );
+}

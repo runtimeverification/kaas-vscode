@@ -1,10 +1,16 @@
-import * as child_process from 'child_process';
+import * as childProcess from 'child_process';
 import { Client } from 'openapi-fetch';
 import * as path from 'path';
 import { parse } from 'smol-toml';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl } from './config';
-import { getGitInfo } from './git';
+import {
+  getGitInfo,
+  getGitRepository,
+  gitApi,
+  hasUnpushedChanges,
+  hasWorkingTreeChanges,
+} from './git';
 import { components, JobKind, paths } from './kaas-api';
 import { pollForJobStatus } from './kaas_jobs';
 import { verifyVaultExists } from './kaas_vault';
@@ -35,7 +41,7 @@ export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.Test
 
     const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>(
       (resolve, reject) => {
-        const process = child_process.exec(command, { cwd: path.dirname(testPath) });
+        const process = childProcess.exec(command, { cwd: path.dirname(testPath) });
         let stdout = '';
         let stderr = '';
 
@@ -201,14 +207,47 @@ export async function runFoundryTestViaKaaS(
     return;
   }
 
+  // --- Dirty git check ---
+  const git = gitApi();
+  const repository = await getGitRepository(git, worksaceFolder);
+  if (repository) {
+    const workingTreeChanges = await hasWorkingTreeChanges(repository);
+    const unpushedChanges = await hasUnpushedChanges(repository);
+    if (workingTreeChanges || unpushedChanges) {
+      const proceed = await vscode.window.showWarningMessage(
+        'You have uncommitted or unpushed changes. Please commit and push your changes before running a remote job on KaaS.',
+        { modal: true },
+        'Proceed Anyway',
+        'Cancel'
+      );
+      if (proceed !== 'Proceed Anyway') {
+        test.busy = false;
+        testRun.errored(test, new vscode.TestMessage('Job cancelled due to dirty git state.'));
+        return;
+      }
+    }
+  }
+
   const gitInfo = await getGitInfo(worksaceFolder);
   if (!gitInfo) {
+    vscode.window
+      .showErrorMessage(
+        'KaaS requires access to your remote repository. Please install the Runtime Verification GitHub App and grant access.',
+        'Install App'
+      )
+      .then(selection => {
+        if (selection === 'Install App') {
+          vscode.env.openExternal(
+            vscode.Uri.parse('https://github.com/apps/runtime-verification-inc')
+          );
+        }
+      });
     console.error(`Could not get git info for ${test.uri.fsPath}`);
     test.busy = false;
     testRun.errored(
       test,
       new vscode.TestMessage(
-        'Could not determine git origin. Make sure you are in a git repository with a remote named "origin".'
+        'Could not determine git origin. Make sure you are in a git repository with a remote named "origin" and KaaS has access.'
       )
     );
     return;

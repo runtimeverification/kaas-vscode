@@ -158,6 +158,31 @@ export async function getLatestJobStatusFor(client: Client<paths>, organizationN
 	throw new Error(`No jobs found for profile ${profileName} in organization ${organizationName} and vault ${vaultName}`);
 }
 
+export async function downloadKcfgFile(client: Client<paths>, jobId: string, fileName: string, saveUri: vscode.Uri) {
+	try {
+		// Get presigned URL for the file
+		const presignedResp = await client.GET('/api/jobs/{jobId}/files/{fileName}/url', {
+			params: { path: { jobId, fileName } }
+		});
+		if (presignedResp.error || !presignedResp.data) {
+			vscode.window.showErrorMessage(`Failed to get download URL for ${fileName}`);
+			return;
+		}
+		const url = presignedResp.data;
+		const response = await fetch(url);
+		if (!response.ok) {
+			vscode.window.showErrorMessage(`Failed to download file: ${fileName}`);
+			return;
+		}
+		const arrayBuffer = await response.arrayBuffer();
+		const buffer = Buffer.from(arrayBuffer);
+		await vscode.workspace.fs.writeFile(saveUri, buffer);
+		vscode.window.showInformationMessage(`Downloaded ${fileName} to ${saveUri.fsPath}`);
+	} catch (e: any) {
+		vscode.window.showErrorMessage(`Error downloading kcfg file: ${e.message}`);
+	}
+}
+
 function jobName(job: components["schemas"]["IJob"]): string {
 	return `${job.kind}/${job.type}/${job.repo}`;
 }

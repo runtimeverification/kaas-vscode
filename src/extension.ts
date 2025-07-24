@@ -100,6 +100,45 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'kaas-vscode.seeJobDetails',
+      async (testItem: vscode.TestItem) => {
+        const jobId = testRunState.getJobId(testItem);
+        if (!jobId) {
+          vscode.window.showInformationMessage(
+            'No job has been started for this test yet. Run the test first to see job details.'
+          );
+          return;
+        }
+
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(testItem.uri!);
+        if (workspaceFolder) {
+          try {
+            // Get git info to construct the proper job URL
+            const { getGitInfo } = await import('./git');
+            const gitInfo = await getGitInfo(workspaceFolder);
+
+            if (gitInfo) {
+              const baseUrl = getKaasBaseUrl();
+              const jobUrl = `${baseUrl}/app/organization/${gitInfo.owner}/${gitInfo.repo}/job/${jobId}`;
+              vscode.env.openExternal(vscode.Uri.parse(jobUrl));
+            } else {
+              // Fallback to basic URL if git info is not available
+              const baseUrl = getKaasBaseUrl();
+              const jobUrl = `${baseUrl}/app/job/${jobId}`;
+              vscode.env.openExternal(vscode.Uri.parse(jobUrl));
+            }
+          } catch (error) {
+            vscode.window.showErrorMessage(`Failed to open job details: ${error}`);
+          }
+        } else {
+          vscode.window.showErrorMessage('Could not determine workspace folder for this test.');
+        }
+      }
+    )
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('kaas-vscode.refreshComputeJobs', async () => {
       testController.items.replace([]);
       // This command is now less relevant, as discovery happens on start.

@@ -29,6 +29,11 @@
         "command": "kaas-vscode.refreshSyncView",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "kaas-vscode.seeJobDetails",
+        "title": "See Job Details",
+        "icon": "$(link-external)"
       }
     ],
     "configuration": {
@@ -60,6 +65,11 @@
           "command": "kaas-vscode.refreshSyncView",
           "when": "view == kaas-vscode.remote-sync-view",
           "group": "navigation"
+        }
+      ],
+      "testing/item/context": [
+        {
+          "command": "kaas-vscode.seeJobDetails"
         }
       ]
     }

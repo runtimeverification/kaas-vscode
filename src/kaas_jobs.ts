@@ -103,7 +103,9 @@ export async function pollForJobStatus(
                 'report', // Identifies the type of the webview. Used internally
                 'Report', // Title of the panel displayed to the user
                 vscode.ViewColumn.One, // Editor column to show the new webview panel in
-                {} // Webview options
+                {
+                  enableScripts: true, // <-- This is required for any JS to run!
+                }
               );
 
               panel.webview.html = getReportContentHtml(report);
@@ -309,9 +311,9 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
   let suitesHtml = `<h1>Test Suites</h1>`;
   const testSuites = report.testsuite ?? [];
   for (const suite of testSuites) {
-    const suiteTests = suite.$.tests ?? 0;
-    const suiteErrors = suite.$.errors ?? 0;
-    const suiteFailures = suite.$.failures ?? 0;
+    const suiteTests = report.$.tests ?? 0;
+    const suiteErrors = report.$.errors ?? 0;
+    const suiteFailures = report.$.failures ?? 0;
     const suitepassingTests = suiteTests - suiteErrors - suiteFailures;
     suitesHtml += `
     <div class="suite">
@@ -334,19 +336,43 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
         </thead>
         <tbody>
           ${(suite.testcase ?? [])
-            .map(
-              (test: any) => `
-            <tr>
-              <td>${test.$.name}</td>
-              <td>
-                ${test.failure ? '<span style="color:red;">Failed</span>' : test.error ? '<span style="color:orange;">Passed</span>' : '<span style="color:green;">Passed</span>'}
-              </td>
-              <td>
-                ${test.$.time ? `${formatDuration(test.$.time)}` : 'N/A'}
-              </td>
-            </tr>
-          `
-            )
+            .map((test: any, idx: number) => {
+              const isFailed = !!test.failure;
+              const failureId = `failure-${suite.$.name.replace(/\s+/g, '-')}-${idx}`;
+              const failureReason =
+                isFailed && test.failure[0]._ ? test.failure[0]._ : 'Cannot display failure reason';
+              // Always return an array of rows, then flatten and join
+              const rows = [
+                `
+                <tr>
+                  <td>${test.$.name}</td>
+                  <td>
+                    ${
+                      isFailed
+                        ? `<a href="#" style="color:red;" onclick="toggleFailureReason('${failureId}');return false;">Failed</a>`
+                        : test.error
+                          ? '<span style="color:orange;">Passed</span>'
+                          : '<span style="color:green;">Passed</span>'
+                    }
+                  </td>
+                  <td>
+                    ${test.$.time ? `${formatDuration(test.$.time)}` : 'N/A'}
+                  </td>
+                </tr>
+              `,
+              ];
+              if (isFailed) {
+                rows.push(`
+                  <tr id="${failureId}" style="display:none;">
+                    <td>
+                      <b>Failure Reason:</b><br>
+                      <pre style="white-space:pre-wrap;">${failureReason || 'No details provided.'}</pre>
+                    </td>
+                  </tr>
+                `);
+              }
+              return rows.join('');
+            })
             .join('')}
         </tbody>
       </table>
@@ -374,6 +400,14 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
 <body>
     ${verificationSummary}
     ${suitesHtml}
+    <script>
+      function toggleFailureReason(id) {
+        var row = document.getElementById(id);
+        if (row) {
+          row.style.display = row.style.display === 'none' ? '' : 'none';
+        }
+      }
+    </script>
 </body>
 </html>
 `;

@@ -119,7 +119,7 @@ export async function activate(context: vscode.ExtensionContext) {
   ): vscode.WebviewPanel {
     const baseUrl = getKaasBaseUrl();
     const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-    const authUrl = `${baseUrl}/api/api-token-auth?api-token=${apiKey}&redirect=${encodeURIComponent(url + '?embed=true')}`;
+    const authUrl = `${url}?api-token=${apiKey}`;
 
     console.log(`authUrl: `, authUrl);
 
@@ -141,7 +141,7 @@ export async function activate(context: vscode.ExtensionContext) {
           </style>
       </head>
       <body>
-          <iframe src="${authUrl}" sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation"></iframe>
+          <iframe src="${authUrl}" sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation allow-popups allow-popups-to-escape-sandbox"></iframe>
       </body>
       </html>
     `;

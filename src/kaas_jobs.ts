@@ -2,6 +2,7 @@ import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { KAAS_JOB_POLL_INTERVAL, getKaasBaseUrl } from './config';
 import { JobStatus, components, paths } from './kaas-api';
+import parse from 'parse-duration';
 
 export async function fetchLatestRun(
   client: Client<paths>,
@@ -271,7 +272,7 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
   const passingTests = totalTests - totalErrors - totalFailures;
 
   const passRate = totalTests > 0 ? (passingTests / totalTests) * 100 : 0;
-  const duration = report.$.time ? formatDuration(Number(report.$.time) * 1000) : 'N/A';
+  const duration = report.$.time ? formatDuration(report.$.time) : 'N/A';
   const timestamp = report.$.timestamp ?? '';
 
   const verificationSummary = `<h1>Verification Summary</h1>
@@ -308,9 +309,9 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
   let suitesHtml = `<h1>Test Suites</h1>`;
   const testSuites = report.testsuite ?? [];
   for (const suite of testSuites) {
-    const suiteTests = report.$.tests ?? 0;
-    const suiteErrors = report.$.errors ?? 0;
-    const suiteFailures = report.$.failures ?? 0;
+    const suiteTests = suite.$.tests ?? 0;
+    const suiteErrors = suite.$.errors ?? 0;
+    const suiteFailures = suite.$.failures ?? 0;
     const suitepassingTests = suiteTests - suiteErrors - suiteFailures;
     suitesHtml += `
     <div class="suite">
@@ -320,7 +321,7 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
         <b>Passing:</b> <span style="color:green;">${suitepassingTests}</span> &nbsp; 
         <b>Failures:</b> <span style="color:red;">${suiteFailures}</span> &nbsp; 
         <b>Errors:</b> <span style="color:orange;">${suiteErrors}</span> &nbsp; 
-        <b>Time:</b> ${formatDuration(Number(suite.$.time) * 1000)} seconds
+        <b>Time:</b> ${formatDuration(suite.$.time)} seconds
       </div>
       <hr>
       <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; margin-bottom:1em; width:100%;">
@@ -341,7 +342,7 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
                 ${test.failure ? '<span style="color:red;">Failed</span>' : test.error ? '<span style="color:orange;">Passed</span>' : '<span style="color:green;">Passed</span>'}
               </td>
               <td>
-                ${test.$.time ? `${formatDuration(Number(test.$.time) * 1000)}` : 'N/A'}
+                ${test.$.time ? `${formatDuration(test.$.time)}` : 'N/A'}
               </td>
             </tr>
           `
@@ -379,8 +380,9 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
 }
 
 // Helper function to format milliseconds into human-readable duration
-function formatDuration(ms: number): string {
-  if (isNaN(ms)) {
+function formatDuration(time: string): string {
+  const ms = parse(time + 's');
+  if (ms == null) {
     return 'N/A';
   }
   const seconds = Math.floor((ms / 1000) % 60);

@@ -117,11 +117,8 @@ export async function activate(context: vscode.ExtensionContext) {
     viewType: string,
     title: string
   ): vscode.WebviewPanel {
-    const baseUrl = getKaasBaseUrl();
     const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
     const authUrl = `${url}?api-token=${apiKey}`;
-
-    console.log(`authUrl: `, authUrl);
 
     const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.One, {
       enableScripts: true,
@@ -139,12 +136,34 @@ export async function activate(context: vscode.ExtensionContext) {
               body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
               iframe { width: 100%; height: 100vh; border: none; }
           </style>
+          <script>
+              const vscode = acquireVsCodeApi();
+              
+              // Listen for messages from the iframe
+              window.addEventListener('message', (event) => {
+                  if (event.data && event.data.type === 'openExternal') {
+                      vscode.postMessage({
+                          command: 'openExternal',
+                          url: event.data.url
+                      });
+                  }
+              });
+          </script>
       </head>
       <body>
-          <iframe src="${authUrl}" sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation allow-popups allow-popups-to-escape-sandbox"></iframe>
+          <iframe src="${authUrl}"></iframe>
       </body>
       </html>
     `;
+
+    // Handle messages from webview
+    panel.webview.onDidReceiveMessage(message => {
+      switch (message.command) {
+        case 'openExternal':
+          vscode.env.openExternal(vscode.Uri.parse(message.url));
+          break;
+      }
+    });
 
     return panel;
   }

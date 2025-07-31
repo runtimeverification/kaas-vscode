@@ -2198,6 +2198,8 @@ export interface components {
       avatar: string | null;
     };
     IJob: {
+      testsuite: never[];
+      $: any;
       /**
        * @description The unique job ID.
        * @example abcdef1234567890abcdef1234567890abcdef12

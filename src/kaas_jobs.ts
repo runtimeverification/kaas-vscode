@@ -63,7 +63,7 @@ export async function getJobReportByJobId(
   client: Client<paths>,
   jobId: string
 ): Promise<components['schemas']['IJob']> {
-  const job = await client.GET('/api/jobs/{jobId}/json-report', {
+  const job = await client.GET('/api/jobs/{jobId}/json-report' as any, {
     params: {
       path: {
         jobId,
@@ -309,11 +309,22 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
 
   // Loop over test suites and build HTML for each
   let suitesHtml = `<h1>Test Suites</h1>`;
-  const testSuites = report.testsuite ?? [];
+  // Define a type for the test suite structure
+  type TestCase = {
+    $: { name: string; time?: string };
+    failure?: Array<{ _: string }>;
+    error?: any;
+  };
+  type TestSuite = {
+    $: { name: string; time?: string; tests?: number; errors?: number; failures?: number };
+    testcase?: TestCase[];
+  };
+
+  const testSuites: TestSuite[] = report.testsuite ?? [];
   for (const suite of testSuites) {
-    const suiteTests = report.$.tests ?? 0;
-    const suiteErrors = report.$.errors ?? 0;
-    const suiteFailures = report.$.failures ?? 0;
+    const suiteTests = suite.$.tests ?? 0;
+    const suiteErrors = suite.$.errors ?? 0;
+    const suiteFailures = suite.$.failures ?? 0;
     const suitepassingTests = suiteTests - suiteErrors - suiteFailures;
     suitesHtml += `
     <div class="suite">
@@ -323,7 +334,7 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
         <b>Passing:</b> <span style="color:green;">${suitepassingTests}</span> &nbsp; 
         <b>Failures:</b> <span style="color:red;">${suiteFailures}</span> &nbsp; 
         <b>Errors:</b> <span style="color:orange;">${suiteErrors}</span> &nbsp; 
-        <b>Time:</b> ${formatDuration(suite.$.time)} seconds
+        <b>Time:</b> ${formatDuration(suite.$.time ?? '')} seconds
       </div>
       <hr>
       <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; margin-bottom:1em; width:100%;">
@@ -336,11 +347,13 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
         </thead>
         <tbody>
           ${(suite.testcase ?? [])
-            .map((test: any, idx: number) => {
+            .map((test: TestCase, idx: number) => {
               const isFailed = !!test.failure;
               const failureId = `failure-${suite.$.name.replace(/\s+/g, '-')}-${idx}`;
               const failureReason =
-                isFailed && test.failure[0]._ ? test.failure[0]._ : 'Cannot display failure reason';
+                isFailed && test.failure && test.failure[0]._
+                  ? test.failure[0]._
+                  : 'Cannot display failure reason';
               // Always return an array of rows, then flatten and join
               const rows = [
                 `
@@ -364,7 +377,7 @@ function getReportContentHtml(report: components['schemas']['IJob']): string {
               if (isFailed) {
                 rows.push(`
                   <tr id="${failureId}" style="display:none;">
-                    <td>
+                    <td colspan="3" style="border:1px solid #faa;">
                       <b>Failure Reason:</b><br>
                       <pre style="white-space:pre-wrap;">${failureReason || 'No details provided.'}</pre>
                     </td>

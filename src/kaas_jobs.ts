@@ -1,7 +1,8 @@
 import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { KAAS_JOB_POLL_INTERVAL, getKaasBaseUrl } from './config';
-import { JobStatus, components, paths } from './kaas-api';
+import { JobKind, JobStatus, components, paths } from './kaas-api';
+import { createAuthenticatedWebview } from './webview';
 
 export async function fetchLatestRun(
   client: Client<paths>,
@@ -58,10 +59,7 @@ export async function getJobStatusByJobId(
   return job.data;
 }
 
-export async function getJobReportByJobId(
-  client: Client<paths>,
-  jobId: string
-): Promise<components['schemas']['IJob']> {
+export async function getJobReportByJobId(client: Client<paths>, jobId: string): Promise<string> {
   const job = await client.GET('/api/jobs/{jobId}/json-report', {
     params: {
       path: {
@@ -75,7 +73,7 @@ export async function getJobReportByJobId(
   if (job.data === undefined) {
     throw new Error(`Job with ID ${jobId} returned no data`);
   }
-  return job.data.testsuites;
+  return job.data;
 }
 
 export async function pollForJobStatus(
@@ -94,25 +92,43 @@ export async function pollForJobStatus(
         testRun.appendOutput(
           `Run completed successfully. See details here: ${jobUri(jobDetails).toString()}`
         );
-        if (jobDetails.children && jobDetails.children.length > 0) {
-          for (const childJob of jobDetails.children) {
-            const report = await getJobReportByJobId(client, childJob.id);
-            if (report) {
-              const panel = vscode.window.createWebviewPanel(
-                'report', // Identifies the type of the webview. Used internally
-                'Report', // Title of the panel displayed to the user
-                vscode.ViewColumn.One, // Editor column to show the new webview panel in
-                {} // Webview options
-              );
+        testRun.passed(test, jobDetails.duration * 1000);
+        testRun.end();
 
-              panel.webview.html = getReportContentHtml(report);
+        // Automatically display the report
+        // Kontrol job
+        if (jobDetails.kind === JobKind.kontrol) {
+          if (jobDetails.children && jobDetails.children.length > 0) {
+            for (const childJob of jobDetails.children) {
+              const report = await getJobReportByJobId(client, childJob.id);
+              if (report) {
+                const reportUrl = jobReportUri(childJob).toString();
+                createAuthenticatedWebview(
+                  reportUrl,
+                  `jobReport-${childJob.id}`,
+                  `Job ${childJob.id.slice(0, 6)} Report`
+                );
+              }
             }
           }
         }
-        testRun.passed(test, jobDetails.duration * 1000);
-        testRun.end();
+        // Foundry job
+        else if (jobDetails.kind === JobKind.foundry) {
+          const report = await getJobReportByJobId(client, jobDetails.id);
+          if (report) {
+            const reportUrl = jobReportUri(jobDetails).toString();
+            createAuthenticatedWebview(
+              reportUrl,
+              `jobReport-${jobDetails.id}`,
+              `Job ${jobDetails.id.slice(0, 6)} Report`
+            );
+          }
+        }
+
+        console.log('testRun.passed: ', jobDetails.duration * 1000);
         break;
       }
+
       if (
         jobDetails.status === JobStatus.failure ||
         jobDetails.status === JobStatus.processing_failed
@@ -129,6 +145,7 @@ export async function pollForJobStatus(
         testRun.end();
         break;
       }
+
       if (jobDetails.status === JobStatus.cancelled) {
         test.busy = false;
         const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
@@ -241,7 +258,7 @@ function jobName(job: components['schemas']['IJob']): string {
   return `${job.kind}/${job.type}/${job.repo}`;
 }
 
-function jobUri(job: components['schemas']['IJob']): vscode.Uri {
+export function jobUri(job: components['schemas']['IJob']): vscode.Uri {
   return vscode.Uri.parse(
     `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`
   );
@@ -261,138 +278,4 @@ export function jobCacheUri(job: components['schemas']['IJob']): vscode.Uri | un
   } else {
     return undefined; // No cache found
   }
-}
-
-function getReportContentHtml(report: components['schemas']['IJob']): string {
-  // Extract your dynamic values from the report object
-  const totalTests = report.$.tests ?? 0;
-  const totalErrors = report.$.errors ?? 0;
-  const totalFailures = report.$.failures ?? 0;
-  const passingTests = totalTests - totalErrors - totalFailures;
-
-  const passRate = totalTests > 0 ? (passingTests / totalTests) * 100 : 0;
-  const duration = report.$.time ? formatDuration(Number(report.$.time) * 1000) : 'N/A';
-  const timestamp = report.$.timestamp ?? '';
-
-  const verificationSummary = `<h1>Verification Summary</h1>
-  <div class="summary">
-    <div>
-      <div>Total Tests</div>
-      <div><b>${totalTests}</b></div>
-    </div>
-    <div>
-      <div style="color: green;">Passed</div>
-      <div style="color: green;"><b>${passingTests}</b></div>
-    </div>
-    <div>
-      <div style="color: red;">Failures</div>
-      <div style="color: red;"><b>${totalFailures}</b></div>
-    </div>
-    <div>
-      <div style="color: orange;">Errors</div>
-      <div style="color: orange;"><b>${totalErrors}</b></div>
-    </div>
-  </div>
-  <div style="margin-top:2em;">
-    <div>Pass Rate: <b>${passRate.toFixed(2)}%</b></div>
-    <div class="progress-bar">
-      <div class="progress" style="width: ${passRate}%;"></div>
-    </div>
-  </div>
-  <div style="margin-top:2em;">
-    <div>Duration: <b>${duration}</b></div>
-    <div>Timestamp: <b>${timestamp}</b></div>
-  </div>`;
-
-  // Loop over test suites and build HTML for each
-  let suitesHtml = `<h1>Test Suites</h1>`;
-  const testSuites = report.testsuite ?? [];
-  for (const suite of testSuites) {
-    const suiteTests = report.$.tests ?? 0;
-    const suiteErrors = report.$.errors ?? 0;
-    const suiteFailures = report.$.failures ?? 0;
-    const suitepassingTests = suiteTests - suiteErrors - suiteFailures;
-    suitesHtml += `
-    <div class="suite">
-      <h2>${suite.$.name}</h2>
-      <hr>
-      <div class="suite-info">
-        <b>Passing:</b> <span style="color:green;">${suitepassingTests}</span> &nbsp; 
-        <b>Failures:</b> <span style="color:red;">${suiteFailures}</span> &nbsp; 
-        <b>Errors:</b> <span style="color:orange;">${suiteErrors}</span> &nbsp; 
-        <b>Time:</b> ${formatDuration(Number(suite.$.time) * 1000)} seconds
-      </div>
-      <hr>
-      <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; margin-bottom:1em; width:100%;">
-        <thead>
-          <tr>
-            <th>Test Name</th>
-            <th>Status</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${(suite.testcase ?? [])
-            .map(
-              (test: any) => `
-            <tr>
-              <td>${test.$.name}</td>
-              <td>
-                ${test.failure ? '<span style="color:red;">Failed</span>' : test.error ? '<span style="color:orange;">Passed</span>' : '<span style="color:green;">Passed</span>'}
-              </td>
-              <td>
-                ${test.$.time ? `${formatDuration(Number(test.$.time) * 1000)}` : 'N/A'}
-              </td>
-            </tr>
-          `
-            )
-            .join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
-  }
-
-  // Build the HTML string with template literals
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formal Verification Report</title>
-    <style>
-      body { font-family: sans-serif; margin: 2em; }
-      .summary { display: flex; gap: 2em; }
-      .summary div { padding: 1em; border-radius: 8px; }
-      .progress-bar { background: #eee; border-radius: 4px; height: 16px; width: 100%; }
-      .progress { background: #4caf50; height: 100%; border-radius: 4px; }
-      .suite-info span { margin-right: 3.0em; } /* Add this line */
-    </style>
-</head>
-<body>
-    ${verificationSummary}
-    ${suitesHtml}
-</body>
-</html>
-`;
-}
-
-// Helper function to format milliseconds into human-readable duration
-function formatDuration(ms: number): string {
-  if (isNaN(ms)) {
-    return 'N/A';
-  }
-  const seconds = Math.floor((ms / 1000) % 60);
-  const minutes = Math.floor((ms / (1000 * 60)) % 60);
-  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
-  const parts = [];
-  if (hours > 0) {
-    parts.push(`${hours}h`);
-  }
-  if (minutes > 0) {
-    parts.push(`${minutes}m`);
-  }
-  parts.push(`${seconds}s`);
-  return parts.join(' ');
 }

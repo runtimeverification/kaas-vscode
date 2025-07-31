@@ -3,11 +3,12 @@ import * as vscode from 'vscode';
 import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
 import { type paths, components } from './kaas-api';
-import { getJobStatusByJobId } from './kaas_jobs';
+import { getJobStatusByJobId, jobCacheUri, jobReportUri, jobUri } from './kaas_jobs';
 import { runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
 import { createRemoteSyncView } from './remote_sync_view';
 import { TestRunState } from './test_run_state';
+import { createAuthenticatedWebview } from './webview';
 
 interface KontrolProfile {
   'match-test': string;
@@ -111,63 +112,6 @@ export async function activate(context: vscode.ExtensionContext) {
     return parentJob;
   }
 
-  // Helper function to create and show webview with authentication
-  function createAuthenticatedWebview(
-    url: string,
-    viewType: string,
-    title: string
-  ): vscode.WebviewPanel {
-    const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-    const authUrl = `${url}?api-token=${apiKey}`;
-
-    const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.One, {
-      enableScripts: true,
-      retainContextWhenHidden: true,
-    });
-
-    panel.webview.html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${title}</title>
-          <style>
-              body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-              iframe { width: 100%; height: 100vh; border: none; }
-          </style>
-          <script>
-              const vscode = acquireVsCodeApi();
-              
-              // Listen for messages from the iframe
-              window.addEventListener('message', (event) => {
-                  if (event.data && event.data.type === 'openExternal') {
-                      vscode.postMessage({
-                          command: 'openExternal',
-                          url: event.data.url
-                      });
-                  }
-              });
-          </script>
-      </head>
-      <body>
-          <iframe src="${authUrl}"></iframe>
-      </body>
-      </html>
-    `;
-
-    // Handle messages from webview
-    panel.webview.onDidReceiveMessage(message => {
-      switch (message.command) {
-        case 'openExternal':
-          vscode.env.openExternal(vscode.Uri.parse(message.url));
-          break;
-      }
-    });
-
-    return panel;
-  }
-
   context.subscriptions.push(
     vscode.commands.registerCommand('kaas-vscode.helloWorld', () => {
       vscode.window.showInformationMessage('Welcome to Simbolik powered by KaaS!');
@@ -190,11 +134,13 @@ export async function activate(context: vscode.ExtensionContext) {
           // Get the job details to construct the proper job URL
           const parentJob = await getJobStatusByJobId(client, jobId);
           const job = findJobFromChildren(parentJob, testItem.label);
+          const jobUrl = jobUri(job).toString();
 
-          const baseUrl = getKaasBaseUrl();
-          const jobUrl = `${baseUrl}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`;
-
-          createAuthenticatedWebview(jobUrl, 'jobDetails', 'Job Details');
+          createAuthenticatedWebview(
+            jobUrl,
+            `jobDetails-${job.id}`,
+            `Job ${job.id.slice(0, 6)} Details`
+          );
         } catch (error) {
           vscode.window.showErrorMessage(`Failed to open job details: ${error}`);
         }
@@ -216,11 +162,13 @@ export async function activate(context: vscode.ExtensionContext) {
         // Get the job details to construct the proper report URI
         const parentJob = await getJobStatusByJobId(client, jobId);
         const job = findJobFromChildren(parentJob, testItem.label);
+        const reportUrl = jobReportUri(job).toString();
 
-        const baseUrl = getKaasBaseUrl();
-        const reportUrl = `${baseUrl}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}/report`;
-
-        createAuthenticatedWebview(reportUrl, 'jobReport', 'Job Report');
+        createAuthenticatedWebview(
+          reportUrl,
+          `jobReport-${job.id}`,
+          `Job ${job.id.slice(0, 6)} Report`
+        );
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to open job report: ${error}`);
       }
@@ -248,11 +196,13 @@ export async function activate(context: vscode.ExtensionContext) {
           );
           return;
         }
+        const cacheUrl = jobCacheUri(job)?.toString()!;
 
-        const baseUrl = getKaasBaseUrl();
-        const cacheUrl = `${baseUrl}/app/organization/${job.organizationName}/${job.vaultName}/cache/${job.cacheHash}`;
-
-        createAuthenticatedWebview(cacheUrl, 'jobCache', 'Job Cache');
+        createAuthenticatedWebview(
+          cacheUrl,
+          `jobCache-${job.id}`,
+          `Job ${job.id.slice(0, 6)} Cache`
+        );
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to open job cache: ${error}`);
       }

@@ -34,14 +34,20 @@ export async function activate(context: vscode.ExtensionContext) {
     'kaas-vscode.testController',
     'KaaS Proofs'
   );
-  const client = createClient<paths>({ baseUrl: getKaasBaseUrl() });
-  client.use({
-    onRequest: request => {
-      const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-      request.request.headers.set('Authorization', `Bearer ${apiKey}`);
-    },
-  });
 
+  // Factory function to create a new client with current configuration
+  const createKaasClient = () => {
+    const client = createClient<paths>({ baseUrl: getKaasBaseUrl() });
+    client.use({
+      onRequest: request => {
+        const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
+        request.request.headers.set('Authorization', `Bearer ${apiKey}`);
+      },
+    });
+    return client;
+  };
+
+  let client = createKaasClient();
   const testRunState = new TestRunState(context);
 
   // Create root items for Kontrol and Foundry if their respective config files exist.
@@ -234,8 +240,64 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(testController);
 
   // Add Remote Sync View
-  const view = await createRemoteSyncView(context, client);
+  let remoteSyncResult = await createRemoteSyncView(context, client);
+  let view = remoteSyncResult.view;
+  let remoteSyncDataProvider = remoteSyncResult.dataProvider;
   context.subscriptions.push(view);
+
+  // Trigger initial refresh to ensure data loads
+  remoteSyncDataProvider.update();
+
+  // Register the refresh command once
+  const refreshSyncViewCommand = vscode.commands.registerCommand(
+    'kaas-vscode.refreshSyncView',
+    () => {
+      // Use the current remoteSyncDataProvider reference
+      if (remoteSyncDataProvider && remoteSyncDataProvider.update) {
+        remoteSyncDataProvider.update();
+      }
+    }
+  );
+  context.subscriptions.push(refreshSyncViewCommand);
+
+  // Listen for configuration changes and refresh the sync view when relevant settings change
+  const configChangeListener = vscode.workspace.onDidChangeConfiguration(async event => {
+    if (
+      event.affectsConfiguration('kaas-vscode.apiKey') ||
+      event.affectsConfiguration('kaas-vscode.baseUrl')
+    ) {
+      if (event.affectsConfiguration('kaas-vscode.baseUrl')) {
+        // Base URL changed - need to recreate client and remote sync view
+        client = createKaasClient();
+
+        // Dispose old view
+        view.dispose();
+
+        // Create new view with updated client
+        try {
+          remoteSyncResult = await createRemoteSyncView(context, client);
+          view = remoteSyncResult.view;
+          remoteSyncDataProvider = remoteSyncResult.dataProvider;
+          context.subscriptions.push(view);
+
+          // Trigger a refresh to ensure the new view loads data
+          remoteSyncDataProvider.update();
+
+          vscode.window.showInformationMessage(
+            'Base URL updated. All KaaS services are now using the new endpoint.'
+          );
+        } catch (error) {
+          vscode.window.showErrorMessage(`Failed to recreate remote sync view: ${error}`);
+        }
+      } else {
+        // Just API key changed - refresh the sync view to re-run checkSyncState
+        // The client will pick up the new API key on the next request due to the onRequest middleware
+        vscode.commands.executeCommand('kaas-vscode.refreshSyncView');
+      }
+    }
+  });
+
+  context.subscriptions.push(configChangeListener);
 }
 
 export function deactivate() {}

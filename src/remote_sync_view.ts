@@ -19,9 +19,8 @@ export async function createRemoteSyncView(
   const treeDataProvider = new RemoteSyncDataProvider(client);
   const view = vscode.window.createTreeView('kaas-vscode.remote-sync-view', {
     treeDataProvider,
+    showCollapseAll: true,
   });
-
-  view.message = 'Ensure your changes are synced with GitHub before starting a proof.';
 
   return { view, dataProvider: treeDataProvider };
 }
@@ -54,19 +53,32 @@ class RemoteSyncDataProvider implements vscode.TreeDataProvider<vscode.TreeItem>
     this._onDidChangeTreeData.fire(undefined);
   }
 
+  updateClient(newClient: Client<paths>): void {
+    this.client = newClient;
+    // Trigger a refresh to recreate all items with the new client
+    this.update();
+  }
+
   private getRootItems(): vscode.TreeItem[] {
     const rootItems = [];
     const workspaceFolders = vscode.workspace.workspaceFolders;
 
-    console.log('Getting root items, workspace folders:', workspaceFolders?.length || 0);
-
-    for (const workspaceFolder of workspaceFolders || []) {
-      const workspaceItem = new WorkspaceFolderItem(this.client, workspaceFolder);
-      rootItems.push(workspaceItem);
-      console.log('Added workspace item:', workspaceFolder.name);
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      // Add a test item to show the view is working
+      const noWorkspaceItem = new vscode.TreeItem(
+        'No workspace folders found',
+        vscode.TreeItemCollapsibleState.None
+      );
+      noWorkspaceItem.iconPath = new vscode.ThemeIcon('warning');
+      rootItems.push(noWorkspaceItem);
+      return rootItems;
     }
 
-    console.log('Returning', rootItems.length, 'root items');
+    for (const workspaceFolder of workspaceFolders) {
+      const workspaceItem = new WorkspaceFolderItem(this.client, workspaceFolder);
+      rootItems.push(workspaceItem);
+    }
+
     return rootItems;
   }
 }

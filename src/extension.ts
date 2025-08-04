@@ -267,28 +267,15 @@ export async function activate(context: vscode.ExtensionContext) {
       event.affectsConfiguration('kaas-vscode.baseUrl')
     ) {
       if (event.affectsConfiguration('kaas-vscode.baseUrl')) {
-        // Base URL changed - need to recreate client and remote sync view
+        // Base URL changed - need to recreate client and update the data provider
         client = createKaasClient();
 
-        // Dispose old view
-        view.dispose();
+        // Update the data provider with the new client instead of recreating the whole view
+        remoteSyncDataProvider.updateClient(client);
 
-        // Create new view with updated client
-        try {
-          remoteSyncResult = await createRemoteSyncView(context, client);
-          view = remoteSyncResult.view;
-          remoteSyncDataProvider = remoteSyncResult.dataProvider;
-          context.subscriptions.push(view);
-
-          // Trigger a refresh to ensure the new view loads data
-          remoteSyncDataProvider.update();
-
-          vscode.window.showInformationMessage(
-            'Base URL updated. All KaaS services are now using the new endpoint.'
-          );
-        } catch (error) {
-          vscode.window.showErrorMessage(`Failed to recreate remote sync view: ${error}`);
-        }
+        vscode.window.showInformationMessage(
+          'Base URL updated. All KaaS services are now using the new endpoint.'
+        );
       } else {
         // Just API key changed - refresh the sync view to re-run checkSyncState
         // The client will pick up the new API key on the next request due to the onRequest middleware

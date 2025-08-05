@@ -138,7 +138,7 @@ export async function discoverFoundryTests(
         // Extract contract name from the file
         const contractMatch = contentStr.match(/contract\s+([a-zA-Z0-9_]+)Test/);
         const contractName = contractMatch
-          ? contractMatch[1]
+          ? `${contractMatch[1]}Test`
           : path.basename(file.fsPath, '.t.sol');
 
         while ((match = testRegex.exec(contentStr)) !== null) {

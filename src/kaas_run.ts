@@ -2,7 +2,16 @@ import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { TestKind } from './config';
 import { runFoundryTestViaKaaS } from './foundry';
+import {
+  getGitInfo,
+  getGitRepository,
+  gitApi,
+  GitInfo,
+  hasUnpushedChanges,
+  hasWorkingTreeChanges,
+} from './git';
 import { paths } from './kaas-api';
+import { verifyVaultExists } from './kaas_vault';
 import { runKontrolProfileViaKaaS } from './kontrol';
 import { TestRunState } from './test_run_state';
 
@@ -45,6 +54,98 @@ export async function runTests(
   }
   console.log(`Found ${testsToRun.size} leaf tests to run.`);
 
+  if (testsToRun.size === 0) {
+    testRun.end();
+    return;
+  }
+
+  // Perform common validation checks once before running any tests
+  let validatedGitInfo: GitInfo | null = null;
+
+  try {
+    // --- Dirty git check ---
+    const git = gitApi();
+    const repository = await getGitRepository(git, worksaceFolder);
+    if (repository) {
+      const workingTreeChanges = await hasWorkingTreeChanges(repository);
+      const unpushedChanges = await hasUnpushedChanges(repository);
+      if (workingTreeChanges || unpushedChanges) {
+        const proceed = await vscode.window.showWarningMessage(
+          'You have uncommitted or unpushed changes. Please commit and push your changes before running a remote job on KaaS.',
+          { modal: true },
+          'Proceed Anyway',
+          'Cancel'
+        );
+        if (proceed !== 'Proceed Anyway') {
+          for (const test of testsToRun) {
+            testRun.errored(test, new vscode.TestMessage('Job cancelled due to dirty git state.'));
+          }
+          testRun.end();
+          return;
+        }
+      }
+    }
+
+    // --- Git info validation ---
+    const gitInfo = await getGitInfo(worksaceFolder);
+    if (!gitInfo) {
+      vscode.window
+        .showErrorMessage(
+          'KaaS requires access to your remote repository. Please install the Runtime Verification GitHub App and grant access.',
+          'Install App'
+        )
+        .then(selection => {
+          if (selection === 'Install App') {
+            vscode.env.openExternal(
+              vscode.Uri.parse('https://github.com/apps/runtime-verification-inc')
+            );
+          }
+        });
+      console.error(`Could not get git info for workspace ${worksaceFolder.name}`);
+      for (const test of testsToRun) {
+        testRun.errored(
+          test,
+          new vscode.TestMessage(
+            'Could not determine git origin. Make sure you are in a git repository with a remote named "origin" and KaaS has access.'
+          )
+        );
+      }
+      testRun.end();
+      return;
+    }
+
+    validatedGitInfo = gitInfo;
+    console.log(`Git info for workspace ${worksaceFolder.name}:`, gitInfo);
+
+    // --- Vault verification ---
+    const { owner: organizationName, repo: vaultName } = gitInfo;
+    const verificationError = await verifyVaultExists(client, organizationName, vaultName);
+    if (verificationError) {
+      console.error(
+        `Vault verification failed for ${organizationName}/${vaultName}: ${verificationError}`
+      );
+      for (const test of testsToRun) {
+        testRun.errored(test, new vscode.TestMessage(verificationError));
+      }
+      testRun.end();
+      return;
+    }
+    console.log(`Vault verified for workspace ${worksaceFolder.name}`);
+  } catch (error) {
+    console.error('Pre-run validation failed:', error);
+    for (const test of testsToRun) {
+      testRun.errored(
+        test,
+        new vscode.TestMessage(
+          `Pre-run validation failed: ${error instanceof Error ? error.message : String(error)}`
+        )
+      );
+    }
+    testRun.end();
+    return;
+  }
+
+  // Now run each test with the validated information
   for (const test of testsToRun) {
     if (token.isCancellationRequested) {
       break;
@@ -58,7 +159,8 @@ export async function runTests(
         testController,
         testRun,
         test,
-        testRunState
+        testRunState,
+        validatedGitInfo
       );
     } else if (testId === TestKind.foundry) {
       await runFoundryTestViaKaaS(
@@ -67,7 +169,8 @@ export async function runTests(
         testController,
         testRun,
         test,
-        testRunState
+        testRunState,
+        validatedGitInfo
       );
     } else {
       console.warn(`Unknown test kind for test ${testId}, skipping.`);

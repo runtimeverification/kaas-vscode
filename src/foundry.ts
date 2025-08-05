@@ -29,8 +29,9 @@ export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.Test
   }
 
   try {
-    const testName = test.id.split('.').pop();
-    const command = `forge test --match-test ${testName} -vv`;
+    // Extract just the function name from test.id (ContractName.functionName -> functionName)
+    const functionName = test.id.split('.').pop() || test.id;
+    const command = `forge test --match-test ${functionName} -vv`;
 
     const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>(
       (resolve, reject) => {
@@ -100,9 +101,11 @@ export async function discoverFoundryTestsAndPopulate(
     testsRoot.children.add(contractItem);
 
     for (const test of contractTests) {
+      const fullTestId = `${test.contractName}.${test.testName}`; // Full ID with test_/prove_ prefix
+      const displayName = test.testName.replace(/^(test|prove)_/, ''); // Display name without prefix
       const testItem = testController.createTestItem(
-        `${test.contractName}.${test.testName}`,
-        test.testName,
+        fullTestId,
+        displayName, // Use display name for UI
         vscode.Uri.file(test.filePath)
       );
       // maybe set range here if I can find it easily
@@ -139,9 +142,10 @@ export async function discoverFoundryTests(
           : path.basename(file.fsPath, '.t.sol');
 
         while ((match = testRegex.exec(contentStr)) !== null) {
+          const fullTestName = `${match[1]}_${match[2]}`; // Keep the full function name with prefix
           tests.push({
             filePath: file.fsPath,
-            testName: match[2],
+            testName: fullTestName, // Store the full test name including test_/prove_ prefix
             contractName: contractName,
           });
         }
@@ -210,7 +214,7 @@ export async function runFoundryTestViaKaaS(
   const profiles: components['schemas']['CreateProveProfileDto'][] = [
     {
       profileName: 'default', // Assuming a default profile for Foundry tests
-      extraProveArgs: `--match-test ${test.id}`,
+      extraProveArgs: `--match-test ${test.id}`, // Use "ContractName.functionName" format
       tag: 'latest',
     },
   ];

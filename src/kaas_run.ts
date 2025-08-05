@@ -146,11 +146,14 @@ export async function runTests(
   }
 
   // Now run each test with the validated information
+  const runningTests = new Set<vscode.TestItem>();
+
   for (const test of testsToRun) {
     if (token.isCancellationRequested) {
       break;
     }
     const testId = getTestId(test);
+    runningTests.add(test);
 
     if (testId === TestKind.kontrol) {
       await runKontrolProfileViaKaaS(
@@ -160,7 +163,8 @@ export async function runTests(
         testRun,
         test,
         testRunState,
-        validatedGitInfo
+        validatedGitInfo,
+        runningTests
       );
     } else if (testId === TestKind.foundry) {
       await runFoundryTestViaKaaS(
@@ -170,14 +174,18 @@ export async function runTests(
         testRun,
         test,
         testRunState,
-        validatedGitInfo
+        validatedGitInfo,
+        runningTests
       );
     } else {
       console.warn(`Unknown test kind for test ${testId}, skipping.`);
       testRun.errored(test, new vscode.TestMessage(`Unknown test kind: ${testId}`));
+      runningTests.delete(test);
     }
   }
 
-  // The 'end' of the testRun is now handled by the polling function for each individual test.
-  // This allows the "Run All" to show progress correctly.
+  // If no tests were actually started (e.g., all were unknown kinds), end the test run
+  if (runningTests.size === 0) {
+    testRun.end();
+  }
 }

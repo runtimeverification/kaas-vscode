@@ -63,7 +63,8 @@ export async function pollForJobStatus(
   testController: vscode.TestController,
   test: vscode.TestItem,
   jobId: string,
-  originalTestRun?: vscode.TestRun
+  testRun: vscode.TestRun,
+  runningTests: Set<vscode.TestItem>
 ) {
   while (true) {
     try {
@@ -71,13 +72,16 @@ export async function pollForJobStatus(
 
       if (jobDetails.status === JobStatus.success) {
         test.busy = false;
-        const testRun =
-          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.appendOutput(
           `Run completed successfully. See details here: ${jobUri(jobDetails).toString()}`
         );
         testRun.passed(test, jobDetails.duration * 1000);
-        testRun.end();
+
+        // Remove this test from running tests and end testRun if no more tests are running
+        runningTests.delete(test);
+        if (runningTests.size === 0) {
+          testRun.end();
+        }
         break;
       }
       if (
@@ -85,8 +89,6 @@ export async function pollForJobStatus(
         jobDetails.status === JobStatus.processing_failed
       ) {
         test.busy = false;
-        const testRun =
-          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.failed(
           test,
           new vscode.TestMessage(
@@ -94,13 +96,16 @@ export async function pollForJobStatus(
           ),
           jobDetails.duration * 1000
         );
-        testRun.end();
+
+        // Remove this test from running tests and end testRun if no more tests are running
+        runningTests.delete(test);
+        if (runningTests.size === 0) {
+          testRun.end();
+        }
         break;
       }
       if (jobDetails.status === JobStatus.cancelled) {
         test.busy = false;
-        const testRun =
-          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.errored(
           test,
           new vscode.TestMessage(
@@ -108,15 +113,23 @@ export async function pollForJobStatus(
           ),
           jobDetails.duration * 1000
         );
-        testRun.end();
+
+        // Remove this test from running tests and end testRun if no more tests are running
+        runningTests.delete(test);
+        if (runningTests.size === 0) {
+          testRun.end();
+        }
         break;
       }
     } catch (error) {
       test.busy = false;
-      const testRun =
-        originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
       testRun.errored(test, new vscode.TestMessage(`Error fetching job status: ${error}`));
-      testRun.end();
+
+      // Remove this test from running tests and end testRun if no more tests are running
+      runningTests.delete(test);
+      if (runningTests.size === 0) {
+        testRun.end();
+      }
       break;
     }
     await new Promise(resolve => setTimeout(resolve, KAAS_JOB_POLL_INTERVAL));

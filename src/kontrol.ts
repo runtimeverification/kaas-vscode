@@ -71,7 +71,8 @@ export async function runKontrolProfileViaKaaS(
   testRun: vscode.TestRun,
   test: vscode.TestItem,
   testRunState: TestRunState,
-  validatedGitInfo: GitInfo
+  validatedGitInfo: GitInfo,
+  runningTests: Set<vscode.TestItem>
 ): Promise<void> {
   console.log(`Processing Kontrol test: ${test.id}`);
   test.busy = true;
@@ -156,7 +157,7 @@ export async function runKontrolProfileViaKaaS(
     console.log(`Job created for ${test.id} with KaaS ID: ${job.jobId}`);
 
     testRunState.setJobId(test, job.jobId);
-    pollForJobStatus(client, testController, test, job.jobId, testRun);
+    pollForJobStatus(client, testController, test, job.jobId, testRun, runningTests);
   } catch (e: any) {
     console.error(`An exception occurred while creating job for ${test.id}:`, e);
     test.busy = false;

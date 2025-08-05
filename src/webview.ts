@@ -7,7 +7,7 @@ export function createAuthenticatedWebview(
   title: string
 ): vscode.WebviewPanel {
   const apiKey = vscode.workspace.getConfiguration('kaas-vscode').get<string>('apiKey');
-  const authUrl = `${url}?api-token=${apiKey}`;
+  const authUrl = `${url}?api-token=${encodeURIComponent(apiKey ?? '')}`;
 
   const panel = vscode.window.createWebviewPanel(viewType, title, vscode.ViewColumn.One, {
     enableScripts: true,

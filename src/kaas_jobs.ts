@@ -62,7 +62,8 @@ export async function pollForJobStatus(
   client: Client<paths>,
   testController: vscode.TestController,
   test: vscode.TestItem,
-  jobId: string
+  jobId: string,
+  originalTestRun?: vscode.TestRun
 ) {
   while (true) {
     try {
@@ -70,7 +71,8 @@ export async function pollForJobStatus(
 
       if (jobDetails.status === JobStatus.success) {
         test.busy = false;
-        const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
+        const testRun =
+          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.appendOutput(
           `Run completed successfully. See details here: ${jobUri(jobDetails).toString()}`
         );
@@ -83,7 +85,8 @@ export async function pollForJobStatus(
         jobDetails.status === JobStatus.processing_failed
       ) {
         test.busy = false;
-        const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
+        const testRun =
+          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.failed(
           test,
           new vscode.TestMessage(
@@ -96,7 +99,8 @@ export async function pollForJobStatus(
       }
       if (jobDetails.status === JobStatus.cancelled) {
         test.busy = false;
-        const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
+        const testRun =
+          originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
         testRun.errored(
           test,
           new vscode.TestMessage(
@@ -109,7 +113,8 @@ export async function pollForJobStatus(
       }
     } catch (error) {
       test.busy = false;
-      const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
+      const testRun =
+        originalTestRun || testController.createTestRun(new vscode.TestRunRequest([test]));
       testRun.errored(test, new vscode.TestMessage(`Error fetching job status: ${error}`));
       testRun.end();
       break;

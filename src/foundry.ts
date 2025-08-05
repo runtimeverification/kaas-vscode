@@ -266,7 +266,7 @@ export async function runFoundryTestViaKaaS(
     console.log(`Job created for ${test.id} with KaaS ID: ${job.jobId}`);
 
     testRunState.setJobId(test, job.jobId);
-    pollForJobStatus(client, testController, test, job.jobId);
+    pollForJobStatus(client, testController, test, job.jobId, testRun);
   } catch (e: any) {
     console.error(`An exception occurred while creating job for ${test.id}:`, e);
     test.busy = false;

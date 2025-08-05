@@ -23,7 +23,7 @@ function getTestId(test: vscode.TestItem): string | undefined {
   return current.id;
 }
 
-function gatherLeafTests(test: vscode.TestItem, collection: Set<vscode.TestItem>) {
+export function gatherLeafTests(test: vscode.TestItem, collection: Set<vscode.TestItem>) {
   if (test.children.size > 0) {
     test.children.forEach(child => gatherLeafTests(child, collection));
   } else if (test.uri) {

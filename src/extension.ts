@@ -4,28 +4,10 @@ import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
 import { type paths, components } from './kaas-api';
 import { getJobStatusByJobId, jobCacheUri, jobReportUri } from './kaas_jobs';
-import { runTests } from './kaas_run';
+import { gatherLeafTests, runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
 import { createRemoteSyncView } from './remote_sync_view';
 import { TestRunState } from './test_run_state';
-
-interface KontrolProfile {
-  'match-test': string;
-  [key: string]: any;
-}
-
-interface KontrolToml {
-  prove: {
-    [key: string]: KontrolProfile;
-  };
-  [key: string]: any;
-}
-
-interface FoundryTest {
-  filePath: string;
-  testName: string;
-  contractName: string;
-}
 
 export async function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "kaas-vscode" is now active!');
@@ -238,16 +220,53 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   };
 
-  for (const workspaceFolder of workspaceFolders || []) {
-    const runProfile = testController.createRunProfile(
-      'Run KaaS Tests',
-      vscode.TestRunProfileKind.Run,
-      (request, token) => {
-        runTests(workspaceFolder, client, testController, request, token, testRunState);
-      },
-      true
-    );
-  }
+  // Create a single run profile that handles all workspace folders
+  const runProfile = testController.createRunProfile(
+    'Run KaaS Tests',
+    vscode.TestRunProfileKind.Run,
+    (request, token) => {
+      // Determine workspace folder from the test items in the request
+      let targetWorkspaceFolder: vscode.WorkspaceFolder | undefined;
+
+      // Gather all leaf tests (actual executable tests) from the request
+      const leafTests = new Set<vscode.TestItem>();
+
+      if (request.include && request.include.length > 0) {
+        // Gather leaf tests from all included items
+        request.include.forEach(item => gatherLeafTests(item, leafTests));
+
+        console.log(
+          `Request includes ${request.include.length} items, found ${leafTests.size} executable leaf tests`
+        );
+
+        // Get workspace folder from the first executable test
+        for (const leafTest of leafTests) {
+          if (leafTest.uri) {
+            targetWorkspaceFolder = vscode.workspace.getWorkspaceFolder(leafTest.uri);
+            break;
+          }
+        }
+
+        if (targetWorkspaceFolder) {
+          console.log(
+            `runTests triggered for ${targetWorkspaceFolder.name} workspace (detected from test items)`
+          );
+        } else {
+          console.log(`runTests triggered but no executable test items with URI found`);
+          return; // Skip execution if we can't determine workspace
+        }
+      } else {
+        console.log(`runTests triggered for all tests`);
+        // For "run all", we'll need to handle this differently in runTests
+      }
+
+      // Pass the detected workspace folder (or null if we couldn't determine it)
+      if (targetWorkspaceFolder) {
+        runTests(targetWorkspaceFolder, client, testController, request, token, testRunState);
+      }
+    },
+    true
+  );
 
   context.subscriptions.push(testController);
 
@@ -315,16 +334,7 @@ export async function activate(context: vscode.ExtensionContext) {
       // Handle added folders - discover tests for new workspace folders
       for (const addedFolder of event.added) {
         await discoverTestsForWorkspace(addedFolder);
-
-        // Create run profile for the new workspace folder
-        const runProfile = testController.createRunProfile(
-          'Run KaaS Tests',
-          vscode.TestRunProfileKind.Run,
-          (request, token) => {
-            runTests(addedFolder, client, testController, request, token, testRunState);
-          },
-          true
-        );
+        // No need to create additional run profiles - the single profile handles all workspaces
       }
 
       // Refresh the remote sync view to show updated workspace folders

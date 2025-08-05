@@ -159,11 +159,11 @@ export async function discoverFoundryTests(
 }
 
 export async function discoverFoundryProfiles(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   testController: vscode.TestController,
   profilesRoot: vscode.TestItem
 ) {
-  const foundryTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'foundry.toml');
+  const foundryTomlPath = vscode.Uri.joinPath(workspaceFolder.uri, 'foundry.toml');
   try {
     const foundryTomlExists = await vscode.workspace.fs.stat(foundryTomlPath);
     if (foundryTomlExists) {
@@ -186,7 +186,7 @@ export async function discoverFoundryProfiles(
 }
 
 export async function runFoundryTestViaKaaS(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRun: vscode.TestRun,

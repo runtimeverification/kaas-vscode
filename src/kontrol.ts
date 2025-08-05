@@ -20,7 +20,7 @@ interface KontrolProfile {
 }
 
 export async function kontrolProfiles(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRunState: TestRunState,
@@ -31,11 +31,11 @@ export async function kontrolProfiles(
   }
   const queue: Promise<void>[] = [];
   // Does the folder contain a kontrol.toml file?
-  const kontrolTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'kontrol.toml');
+  const kontrolTomlPath = vscode.Uri.joinPath(workspaceFolder.uri, 'kontrol.toml');
   try {
     const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
     if (kontrolTomlExists) {
-      const gitInfo = await getGitInfo(worksaceFolder);
+      const gitInfo = await getGitInfo(workspaceFolder);
 
       // If it exists, parse the file
       const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
@@ -65,7 +65,7 @@ export async function kontrolProfiles(
 }
 
 export async function runKontrolProfileViaKaaS(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRun: vscode.TestRun,

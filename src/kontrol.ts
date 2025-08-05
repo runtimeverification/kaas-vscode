@@ -104,7 +104,7 @@ export async function runKontrolProfileViaKaaS(
     profiles = [
       {
         profileName: 'default',
-        extraProveArgs: `--match-test ${test.id}`,
+        extraProveArgs: `--match-test "${test.id}("`,
         tag: 'latest',
       },
     ];

@@ -31,7 +31,7 @@ export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.Test
   try {
     // Extract just the function name from test.id (ContractName.functionName -> functionName)
     const functionName = test.id.split('.').pop() || test.id;
-    const command = `forge test --match-test ${functionName} -vv`;
+    const command = `forge test --match-test "${functionName}(" -vv`;
 
     const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>(
       (resolve, reject) => {
@@ -102,10 +102,9 @@ export async function discoverFoundryTestsAndPopulate(
 
     for (const test of contractTests) {
       const fullTestId = `${test.contractName}.${test.testName}`; // Full ID with test_/prove_ prefix
-      const displayName = test.testName.replace(/^(test|prove)_/, ''); // Display name without prefix
       const testItem = testController.createTestItem(
         fullTestId,
-        displayName, // Use display name for UI
+        test.testName, // Display the full test name
         vscode.Uri.file(test.filePath)
       );
       // maybe set range here if I can find it easily
@@ -214,7 +213,7 @@ export async function runFoundryTestViaKaaS(
   const profiles: components['schemas']['CreateProveProfileDto'][] = [
     {
       profileName: 'default', // Assuming a default profile for Foundry tests
-      extraProveArgs: `--match-test ${test.id}`, // Use "ContractName.functionName" format
+      extraProveArgs: `--match-test "${test.id}("`, // Use "ContractName.functionName" format
       tag: 'latest',
     },
   ];

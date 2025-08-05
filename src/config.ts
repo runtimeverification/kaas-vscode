@@ -19,6 +19,31 @@ export function validateKaasBaseUrl(url: string): { isValid: boolean; error?: st
       return { isValid: false, error: 'Base URL must include a valid hostname' };
     }
 
+    // Define allowed URL patterns
+    const allowedPatterns = [
+      // Local development URLs (http only)
+      /^http:\/\/127\.0\.0\.1:\d+$/,
+      /^http:\/\/localhost:\d+$/,
+      // Production URLs (https only)
+      /^https:\/\/kaas\.runtimeverification\.com$/,
+      /^https:\/\/kaas-sandbox\.runtimeverification\.com$/,
+      // PR environment URLs (https only)
+      /^https:\/\/pr-\d+\.kaas-sandbox\.runtimeverification\.com$/,
+    ];
+
+    const urlString = url.replace(/\/$/, ''); // Remove trailing slash for comparison
+
+    // Check if the URL matches any of the allowed patterns
+    const isAllowed = allowedPatterns.some(pattern => pattern.test(urlString));
+
+    if (!isAllowed) {
+      return {
+        isValid: false,
+        error:
+          'Base URL must be one of: https://kaas.runtimeverification.com, https://kaas-sandbox.runtimeverification.com, or https://pr-xxx.kaas-sandbox.runtimeverification.com, http://127.0.0.1:port, http://localhost:port',
+      };
+    }
+
     return { isValid: true };
   } catch (error) {
     return {

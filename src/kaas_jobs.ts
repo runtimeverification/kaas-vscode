@@ -1,8 +1,7 @@
 import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
 import { KAAS_JOB_POLL_INTERVAL, getKaasBaseUrl } from './config';
-import { JobKind, JobStatus, components, paths } from './kaas-api';
-import { createAuthenticatedWebview } from './webview';
+import { JobStatus, components, paths } from './kaas-api';
 
 export async function fetchLatestRun(
   client: Client<paths>,
@@ -94,37 +93,6 @@ export async function pollForJobStatus(
         );
         testRun.passed(test, jobDetails.duration * 1000);
         testRun.end();
-
-        // Automatically display the report
-        // Kontrol job
-        if (jobDetails.kind === JobKind.kontrol) {
-          if (jobDetails.children && jobDetails.children.length > 0) {
-            for (const childJob of jobDetails.children) {
-              const report = await getJobReportByJobId(client, childJob.id);
-              if (report) {
-                const reportUrl = jobReportUri(childJob).toString();
-                createAuthenticatedWebview(
-                  reportUrl,
-                  `jobReport-${childJob.id}`,
-                  `Job ${childJob.id.slice(0, 6)} Report`
-                );
-              }
-            }
-          }
-        }
-        // Foundry job
-        else if (jobDetails.kind === JobKind.foundry) {
-          const report = await getJobReportByJobId(client, jobDetails.id);
-          if (report) {
-            const reportUrl = jobReportUri(jobDetails).toString();
-            createAuthenticatedWebview(
-              reportUrl,
-              `jobReport-${jobDetails.id}`,
-              `Job ${jobDetails.id.slice(0, 6)} Report`
-            );
-          }
-        }
-
         console.log('testRun.passed: ', jobDetails.duration * 1000);
         break;
       }

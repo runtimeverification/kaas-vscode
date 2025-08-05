@@ -4,6 +4,12 @@ All notable changes to the "kaas-vscode" extension will be documented in this fi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [Unreleased]
+
+### New Features
+
+- Support to display job/report/cache pages directly in the vscode extension.
+
 ## [0.0.9] - July 24 2025
 
 ### New Features

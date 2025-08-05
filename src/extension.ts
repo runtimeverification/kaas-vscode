@@ -50,21 +50,17 @@ export async function activate(context: vscode.ExtensionContext) {
   let client = createKaasClient();
   const testRunState = new TestRunState(context);
 
-  // Create root items for Kontrol and Foundry if their respective config files exist.
-  const workspaceFolders = vscode.workspace.workspaceFolders;
-  for (const workspaceFolder of workspaceFolders || []) {
+  // Function to discover tests for a specific workspace folder
+  async function discoverTestsForWorkspace(workspaceFolder: vscode.WorkspaceFolder) {
     const rootPath = workspaceFolder.uri;
 
-    const worrkspaceItem = testController.createTestItem(
-      workspaceFolder.name,
-      workspaceFolder.name
-    );
-    testController.items.add(worrkspaceItem);
+    const workspaceItem = testController.createTestItem(workspaceFolder.name, workspaceFolder.name);
+    testController.items.add(workspaceItem);
 
     try {
       await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'kontrol.toml'));
       const kontrolRoot = testController.createTestItem(TestKind.kontrol, 'Kontrol');
-      worrkspaceItem.children.add(kontrolRoot);
+      workspaceItem.children.add(kontrolRoot);
       const kontrolProfilesRoot = testController.createTestItem('kontrolProfiles', 'Profiles');
       kontrolRoot.children.add(kontrolProfilesRoot);
       const kontrolProveRoot = testController.createTestItem('kontrolProve', 'Prove');
@@ -87,7 +83,7 @@ export async function activate(context: vscode.ExtensionContext) {
     try {
       await vscode.workspace.fs.stat(vscode.Uri.joinPath(rootPath, 'foundry.toml'));
       const foundryRoot = testController.createTestItem(TestKind.foundry, 'Foundry');
-      worrkspaceItem.children.add(foundryRoot);
+      workspaceItem.children.add(foundryRoot);
       const foundryProfilesRoot = testController.createTestItem('foundryProfiles', 'Profiles');
       foundryRoot.children.add(foundryProfilesRoot);
       const foundryTestsRoot = testController.createTestItem('foundryTests', 'Tests');
@@ -98,6 +94,12 @@ export async function activate(context: vscode.ExtensionContext) {
     } catch (e) {
       // foundry.toml not found
     }
+  }
+
+  // Create root items for Kontrol and Foundry if their respective config files exist.
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  for (const workspaceFolder of workspaceFolders || []) {
+    await discoverTestsForWorkspace(workspaceFolder);
   }
 
   // Helper function to find the correct job from children based on test item name
@@ -215,15 +217,25 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand('kaas-vscode.refreshComputeJobs', async () => {
+      // Re-run test discovery for all workspace folders
       testController.items.replace([]);
-      // This command is now less relevant, as discovery happens on start.
-      // Could be re-purposed to re-run discovery.
+      const currentWorkspaceFolders = vscode.workspace.workspaceFolders;
+      for (const workspaceFolder of currentWorkspaceFolders || []) {
+        await discoverTestsForWorkspace(workspaceFolder);
+      }
     })
   );
 
   // The refresh handler should re-run the discovery logic
   testController.refreshHandler = async () => {
-    // This needs to be implemented to clear and re-populate the roots
+    // Clear all existing test items
+    testController.items.replace([]);
+
+    // Re-discover tests for all current workspace folders
+    const currentWorkspaceFolders = vscode.workspace.workspaceFolders;
+    for (const workspaceFolder of currentWorkspaceFolders || []) {
+      await discoverTestsForWorkspace(workspaceFolder);
+    }
   };
 
   for (const workspaceFolder of workspaceFolders || []) {
@@ -285,6 +297,42 @@ export async function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(configChangeListener);
+
+  // Listen for workspace folder changes and update views accordingly
+  const workspaceFolderChangeListener = vscode.workspace.onDidChangeWorkspaceFolders(
+    async event => {
+      // Handle removed folders
+      for (const removedFolder of event.removed) {
+        // Remove test items for the removed workspace folder
+        const testItems = Array.from(testController.items);
+        for (const [id, testItem] of testItems) {
+          if (id === removedFolder.name) {
+            testController.items.delete(id);
+          }
+        }
+      }
+
+      // Handle added folders - discover tests for new workspace folders
+      for (const addedFolder of event.added) {
+        await discoverTestsForWorkspace(addedFolder);
+
+        // Create run profile for the new workspace folder
+        const runProfile = testController.createRunProfile(
+          'Run KaaS Tests',
+          vscode.TestRunProfileKind.Run,
+          (request, token) => {
+            runTests(addedFolder, client, testController, request, token, testRunState);
+          },
+          true
+        );
+      }
+
+      // Refresh the remote sync view to show updated workspace folders
+      remoteSyncDataProvider.update();
+    }
+  );
+
+  context.subscriptions.push(workspaceFolderChangeListener);
 }
 
 export function deactivate() {}

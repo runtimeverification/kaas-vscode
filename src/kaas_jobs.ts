@@ -141,15 +141,9 @@ export async function pollForJobStatus(
         break;
       }
     } catch (error) {
-      test.busy = false;
-      testRun.errored(test, new vscode.TestMessage(`Error fetching job status: ${error}`));
-
-      // Remove this test from running tests and end testRun if no more tests are running
-      runningTests.delete(test);
-      if (runningTests.size === 0) {
-        testRun.end();
-      }
-      break;
+      console.warn(`Failed to fetch job status for job ${jobId}: ${error}. Retrying...`);
+      // Don't fail the test on network errors - just continue polling
+      // The job might still be running and we'll get the status on the next poll
     }
     await new Promise(resolve => setTimeout(resolve, KAAS_JOB_POLL_INTERVAL));
   }

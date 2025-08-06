@@ -8,6 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### New Features
 
+- Support to display job/report/cache pages directly in the vscode extension.
 - Optimize validation checks to run once per workspace before test execution instead of per test.
 - Improve the user experience.
 

@@ -4,16 +4,9 @@ import * as path from 'path';
 import { parse } from 'smol-toml';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl } from './config';
-import {
-  getGitInfo,
-  getGitRepository,
-  gitApi,
-  hasUnpushedChanges,
-  hasWorkingTreeChanges,
-} from './git';
+import { GitInfo } from './git';
 import { components, JobKind, paths } from './kaas-api';
 import { pollForJobStatus } from './kaas_jobs';
-import { verifyVaultExists } from './kaas_vault';
 import { TestRunState } from './test_run_state';
 
 interface FoundryTest {
@@ -36,8 +29,9 @@ export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.Test
   }
 
   try {
-    const testName = test.id.split('.').pop();
-    const command = `forge test --match-test ${testName} -vv`;
+    // Extract just the function name from test.id (ContractName.functionName -> functionName)
+    const functionName = test.id.split('.').pop() || test.id;
+    const command = `forge test --match-test "${functionName}(" -vv`;
 
     const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>(
       (resolve, reject) => {
@@ -107,9 +101,10 @@ export async function discoverFoundryTestsAndPopulate(
     testsRoot.children.add(contractItem);
 
     for (const test of contractTests) {
+      const fullTestId = `${test.contractName}.${test.testName}`; // Full ID with test_/prove_ prefix
       const testItem = testController.createTestItem(
-        `${test.contractName}.${test.testName}`,
-        test.testName,
+        fullTestId,
+        test.testName, // Display the full test name
         vscode.Uri.file(test.filePath)
       );
       // maybe set range here if I can find it easily
@@ -142,13 +137,14 @@ export async function discoverFoundryTests(
         // Extract contract name from the file
         const contractMatch = contentStr.match(/contract\s+([a-zA-Z0-9_]+)Test/);
         const contractName = contractMatch
-          ? contractMatch[1]
+          ? `${contractMatch[1]}Test`
           : path.basename(file.fsPath, '.t.sol');
 
         while ((match = testRegex.exec(contentStr)) !== null) {
+          const fullTestName = `${match[1]}_${match[2]}`; // Keep the full function name with prefix
           tests.push({
             filePath: file.fsPath,
-            testName: match[2],
+            testName: fullTestName, // Store the full test name including test_/prove_ prefix
             contractName: contractName,
           });
         }
@@ -162,11 +158,11 @@ export async function discoverFoundryTests(
 }
 
 export async function discoverFoundryProfiles(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   testController: vscode.TestController,
   profilesRoot: vscode.TestItem
 ) {
-  const foundryTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'foundry.toml');
+  const foundryTomlPath = vscode.Uri.joinPath(workspaceFolder.uri, 'foundry.toml');
   try {
     const foundryTomlExists = await vscode.workspace.fs.stat(foundryTomlPath);
     if (foundryTomlExists) {
@@ -189,12 +185,14 @@ export async function discoverFoundryProfiles(
 }
 
 export async function runFoundryTestViaKaaS(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRun: vscode.TestRun,
   test: vscode.TestItem,
-  testRunState: TestRunState
+  testRunState: TestRunState,
+  validatedGitInfo: GitInfo,
+  runningTests: Set<vscode.TestItem>
 ): Promise<void> {
   console.log(`Processing Foundry test: ${test.id}`);
   test.busy = true;
@@ -207,78 +205,22 @@ export async function runFoundryTestViaKaaS(
     return;
   }
 
-  // --- Dirty git check ---
-  const git = gitApi();
-  const repository = await getGitRepository(git, worksaceFolder);
-  if (repository) {
-    const workingTreeChanges = await hasWorkingTreeChanges(repository);
-    const unpushedChanges = await hasUnpushedChanges(repository);
-    if (workingTreeChanges || unpushedChanges) {
-      const proceed = await vscode.window.showWarningMessage(
-        'You have uncommitted or unpushed changes. Please commit and push your changes before running a remote job on KaaS.',
-        { modal: true },
-        'Proceed Anyway',
-        'Cancel'
-      );
-      if (proceed !== 'Proceed Anyway') {
-        test.busy = false;
-        testRun.errored(test, new vscode.TestMessage('Job cancelled due to dirty git state.'));
-        return;
-      }
-    }
-  }
+  console.log(`Using validated git info for ${test.id}:`, validatedGitInfo);
 
-  const gitInfo = await getGitInfo(worksaceFolder);
-  if (!gitInfo) {
-    vscode.window
-      .showErrorMessage(
-        'KaaS requires access to your remote repository. Please install the Runtime Verification GitHub App and grant access.',
-        'Install App'
-      )
-      .then(selection => {
-        if (selection === 'Install App') {
-          vscode.env.openExternal(
-            vscode.Uri.parse('https://github.com/apps/runtime-verification-inc')
-          );
-        }
-      });
-    console.error(`Could not get git info for ${test.uri.fsPath}`);
-    test.busy = false;
-    testRun.errored(
-      test,
-      new vscode.TestMessage(
-        'Could not determine git origin. Make sure you are in a git repository with a remote named "origin" and KaaS has access.'
-      )
-    );
-    return;
-  }
-  console.log(`Git info for ${test.id}:`, gitInfo);
-
-  const { owner: organizationName, repo: vaultName } = gitInfo;
-
-  const verificationError = await verifyVaultExists(client, organizationName, vaultName);
-  if (verificationError) {
-    console.error(
-      `Vault verification failed for ${organizationName}/${vaultName}: ${verificationError}`
-    );
-    test.busy = false;
-    testRun.errored(test, new vscode.TestMessage(verificationError));
-    return;
-  }
-  console.log(`Vault verified for ${test.id}`);
+  const { owner: organizationName, repo: vaultName } = validatedGitInfo;
 
   // This is a placeholder for the Foundry-specific test arguments.
   // We are setting the `match-test` argument, similar to how it was done for local runs.
   const profiles: components['schemas']['CreateProveProfileDto'][] = [
     {
       profileName: 'default', // Assuming a default profile for Foundry tests
-      extraProveArgs: `--match-test ${test.id}`,
+      extraProveArgs: `--match-test "${test.id}("`, // Use "ContractName.functionName" format
       tag: 'latest',
     },
   ];
 
   const body: components['schemas']['CreateJobDto'] = {
-    branch: gitInfo.branch,
+    branch: validatedGitInfo.branch,
     kind: JobKind.foundry,
     // --- These fields are based on the Kontrol implementation and may need adjustment for Foundry ---
     kontrolVersion: 'latest',
@@ -324,7 +266,7 @@ export async function runFoundryTestViaKaaS(
     console.log(`Job created for ${test.id} with KaaS ID: ${job.jobId}`);
 
     testRunState.setJobId(test, job.jobId);
-    pollForJobStatus(client, testController, test, job.jobId);
+    pollForJobStatus(client, testController, test, job.jobId, testRun, runningTests);
   } catch (e: any) {
     console.error(`An exception occurred while creating job for ${test.id}:`, e);
     test.busy = false;

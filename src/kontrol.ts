@@ -2,16 +2,9 @@ import { Client } from 'openapi-fetch';
 import { parse } from 'smol-toml';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl } from './config';
-import {
-  getGitInfo,
-  getGitRepository,
-  gitApi,
-  hasUnpushedChanges,
-  hasWorkingTreeChanges,
-} from './git';
+import { getGitInfo, gitApi, GitInfo } from './git';
 import { components, JobKind, JobStatus, paths } from './kaas-api';
 import { getJobStatusByJobId, pollForJobStatus } from './kaas_jobs';
-import { verifyVaultExists } from './kaas_vault';
 import { TestRunState } from './test_run_state';
 
 interface KontrolToml {
@@ -27,7 +20,7 @@ interface KontrolProfile {
 }
 
 export async function kontrolProfiles(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRunState: TestRunState,
@@ -38,11 +31,11 @@ export async function kontrolProfiles(
   }
   const queue: Promise<void>[] = [];
   // Does the folder contain a kontrol.toml file?
-  const kontrolTomlPath = vscode.Uri.joinPath(worksaceFolder.uri, 'kontrol.toml');
+  const kontrolTomlPath = vscode.Uri.joinPath(workspaceFolder.uri, 'kontrol.toml');
   try {
     const kontrolTomlExists = await vscode.workspace.fs.stat(kontrolTomlPath);
     if (kontrolTomlExists) {
-      const gitInfo = await getGitInfo(worksaceFolder);
+      const gitInfo = await getGitInfo(workspaceFolder);
 
       // If it exists, parse the file
       const kontrolTomlContent = await vscode.workspace.fs.readFile(kontrolTomlPath);
@@ -72,12 +65,14 @@ export async function kontrolProfiles(
 }
 
 export async function runKontrolProfileViaKaaS(
-  worksaceFolder: vscode.WorkspaceFolder,
+  workspaceFolder: vscode.WorkspaceFolder,
   client: Client<paths>,
   testController: vscode.TestController,
   testRun: vscode.TestRun,
   test: vscode.TestItem,
-  testRunState: TestRunState
+  testRunState: TestRunState,
+  validatedGitInfo: GitInfo,
+  runningTests: Set<vscode.TestItem>
 ): Promise<void> {
   console.log(`Processing Kontrol test: ${test.id}`);
   test.busy = true;
@@ -90,65 +85,9 @@ export async function runKontrolProfileViaKaaS(
     return;
   }
 
-  // --- Dirty git check ---
-  const git = gitApi();
-  const repository = await getGitRepository(git, worksaceFolder);
-  if (repository) {
-    const workingTreeChanges = await hasWorkingTreeChanges(repository);
-    const unpushedChanges = await hasUnpushedChanges(repository);
-    if (workingTreeChanges || unpushedChanges) {
-      const proceed = await vscode.window.showWarningMessage(
-        'You have uncommitted or unpushed changes. Please commit and push your changes before running a remote job on KaaS.',
-        { modal: true },
-        'Proceed Anyway',
-        'Cancel'
-      );
-      if (proceed !== 'Proceed Anyway') {
-        test.busy = false;
-        testRun.errored(test, new vscode.TestMessage('Job cancelled due to dirty git state.'));
-        return;
-      }
-    }
-  }
-
-  const gitInfo = await getGitInfo(worksaceFolder);
-  if (!gitInfo) {
-    vscode.window
-      .showErrorMessage(
-        'KaaS requires access to your remote repository. Please install the Runtime Verification GitHub App and grant access.',
-        'Install App'
-      )
-      .then(selection => {
-        if (selection === 'Install App') {
-          vscode.env.openExternal(
-            vscode.Uri.parse('https://github.com/apps/runtime-verification-inc')
-          );
-        }
-      });
-    console.error(`Could not get git info for ${test.uri.fsPath}`);
-    test.busy = false;
-    testRun.errored(
-      test,
-      new vscode.TestMessage(
-        'Could not determine git origin. Make sure you are in a git repository with a remote named "origin" and KaaS has access.'
-      )
-    );
-    return;
-  }
-  console.log(`Git info for ${test.id}:`, gitInfo);
-
-  const { owner: organizationName, repo: vaultName } = gitInfo;
-
-  const verificationError = await verifyVaultExists(client, organizationName, vaultName);
-  if (verificationError) {
-    console.error(
-      `Vault verification failed for ${organizationName}/${vaultName}: ${verificationError}`
-    );
-    test.busy = false;
-    testRun.errored(test, new vscode.TestMessage(verificationError));
-    return;
-  }
-  console.log(`Vault verified for ${test.id}`);
+  // Git info and vault verification are now handled in the parent runTests function
+  const { owner: organizationName, repo: vaultName, branch } = validatedGitInfo;
+  console.log(`Using validated git info for ${test.id}:`, validatedGitInfo);
 
   let profiles: components['schemas']['CreateProveProfileDto'][];
 
@@ -166,14 +105,14 @@ export async function runKontrolProfileViaKaaS(
     profiles = [
       {
         profileName: 'default',
-        extraProveArgs: `--match-test ${test.id}`,
+        extraProveArgs: `--match-test "${test.id}("`,
         tag: 'latest',
       },
     ];
   }
 
   const body: components['schemas']['CreateJobDto'] = {
-    branch: gitInfo.branch,
+    branch: branch,
     kontrolVersion: '',
     kontrolDockerImage: '',
     kaasCliBranch: 'master',
@@ -218,7 +157,7 @@ export async function runKontrolProfileViaKaaS(
     console.log(`Job created for ${test.id} with KaaS ID: ${job.jobId}`);
 
     testRunState.setJobId(test, job.jobId);
-    pollForJobStatus(client, testController, test, job.jobId);
+    pollForJobStatus(client, testController, test, job.jobId, testRun, runningTests);
   } catch (e: any) {
     console.error(`An exception occurred while creating job for ${test.id}:`, e);
     test.busy = false;

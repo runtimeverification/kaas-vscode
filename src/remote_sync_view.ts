@@ -1,4 +1,6 @@
+import { Client } from 'openapi-fetch';
 import * as vscode from 'vscode';
+import { getKaasBaseUrl, validateKaasBaseUrlReachability } from './config';
 import {
   getGitRepository,
   getRemoteBranch,
@@ -7,26 +9,20 @@ import {
   hasUnpushedChanges,
   hasWorkingTreeChanges,
 } from './git';
-import { verifyVaultExists } from './kaas_vault';
-import { Client } from 'openapi-fetch';
 import { paths } from './kaas-api';
+import { verifyVaultExists } from './kaas_vault';
 
 export async function createRemoteSyncView(
   context: vscode.ExtensionContext,
   client: Client<paths>
-): Promise<vscode.TreeView<vscode.TreeItem>> {
+): Promise<{ view: vscode.TreeView<vscode.TreeItem>; dataProvider: RemoteSyncDataProvider }> {
   const treeDataProvider = new RemoteSyncDataProvider(client);
   const view = vscode.window.createTreeView('kaas-vscode.remote-sync-view', {
     treeDataProvider,
+    showCollapseAll: true,
   });
 
-  view.message = 'Ensure your changes are synced with GitHub before starting a proof.';
-
-  vscode.commands.registerCommand('kaas-vscode.refreshSyncView', () => {
-    treeDataProvider.update();
-  });
-
-  return view;
+  return { view, dataProvider: treeDataProvider };
 }
 
 class RemoteSyncDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
@@ -57,13 +53,32 @@ class RemoteSyncDataProvider implements vscode.TreeDataProvider<vscode.TreeItem>
     this._onDidChangeTreeData.fire(undefined);
   }
 
+  updateClient(newClient: Client<paths>): void {
+    this.client = newClient;
+    // Trigger a refresh to recreate all items with the new client
+    this.update();
+  }
+
   private getRootItems(): vscode.TreeItem[] {
     const rootItems = [];
     const workspaceFolders = vscode.workspace.workspaceFolders;
-    for (const workspaceFolder of workspaceFolders || []) {
+
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      // Add a test item to show the view is working
+      const noWorkspaceItem = new vscode.TreeItem(
+        'No workspace folders found',
+        vscode.TreeItemCollapsibleState.None
+      );
+      noWorkspaceItem.iconPath = new vscode.ThemeIcon('warning');
+      rootItems.push(noWorkspaceItem);
+      return rootItems;
+    }
+
+    for (const workspaceFolder of workspaceFolders) {
       const workspaceItem = new WorkspaceFolderItem(this.client, workspaceFolder);
       rootItems.push(workspaceItem);
     }
+
     return rootItems;
   }
 }
@@ -73,11 +88,12 @@ type GitState =
   | 'NoRemote'
   | 'NoRemoteBranch'
   | { workingTreeChanges: boolean; unpushedChanges: boolean };
-type KaasState = 'InvalidKaasToken' | 'ValidKaasToken' | 'NoVault' | 'Connected';
+type KaasState = 'InvalidBaseUrl' | 'InvalidKaasToken' | 'ValidKaasToken' | 'NoVault' | 'Connected';
 type SyncState = { git: GitState; kaas?: KaasState };
 
 class WorkspaceFolderItem extends vscode.TreeItem {
   private gitInitItem: RemoteSyncItem;
+  private kaasBaseUrl: RemoteSyncItem;
   private kaasToken: RemoteSyncItem;
   private remoteOriginItem: RemoteSyncItem;
   private remoteBranchItem: RemoteSyncItem;
@@ -98,6 +114,13 @@ class WorkspaceFolderItem extends vscode.TreeItem {
       'passed',
       'Your workspace folder is a Git repository.',
       'Your workspace folder is not a Git repository. Please initialize it.'
+    );
+
+    this.kaasBaseUrl = new RemoteSyncItem(
+      'kaas-base-url',
+      'passed',
+      'KaaS base URL is valid and reachable.',
+      'KaaS base URL is invalid or unreachable. Please check your configuration.'
     );
 
     this.kaasToken = new RemoteSyncItem(
@@ -144,8 +167,15 @@ class WorkspaceFolderItem extends vscode.TreeItem {
   }
 
   async children(): Promise<RemoteSyncItem[]> {
-    const children = [this.gitInitItem, this.kaasToken];
+    const children = [this.gitInitItem, this.kaasBaseUrl, this.kaasToken];
     const { git, kaas } = await this.checkSyncState();
+
+    if (kaas === 'InvalidBaseUrl') {
+      this.kaasBaseUrl.setState('failed');
+      this.kaasToken.setState('failed');
+      return children;
+    }
+    this.kaasBaseUrl.setState('passed');
 
     if (kaas === 'InvalidKaasToken') {
       this.kaasToken.setState('failed');
@@ -185,6 +215,13 @@ class WorkspaceFolderItem extends vscode.TreeItem {
   }
 
   private async checkSyncState(): Promise<SyncState> {
+    // First validate and check reachability of the base URL
+    const baseUrl = getKaasBaseUrl();
+    const baseUrlValidation = await validateKaasBaseUrlReachability(baseUrl);
+    if (!baseUrlValidation.isReachable) {
+      return { git: 'NoGit', kaas: 'InvalidBaseUrl' };
+    }
+
     const git = gitApi();
     const [repo, kaasTokenValid] = await Promise.all([
       getGitRepository(git, this.workspaceFolder),
@@ -260,9 +297,16 @@ async function validateKaasToken(client: Client<paths>): Promise<boolean> {
   if (!apiKey) {
     return false;
   }
-  const response = await client.GET('/api/user');
-  if (response.error) {
+
+  try {
+    const response = await client.GET('/api/user');
+    if (response.error) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    // Log the error for debugging but return false to indicate invalid token
+    console.error('Failed to validate KaaS token:', error);
     return false;
   }
-  return true;
 }

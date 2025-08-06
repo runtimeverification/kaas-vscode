@@ -2,6 +2,12 @@ import gitUrlParse from 'git-url-parse';
 import * as vscode from 'vscode';
 import { API, GitExtension, Remote, Repository } from './git-api';
 
+export interface GitInfo {
+  owner: string;
+  repo: string;
+  branch: string;
+}
+
 export function gitApi(): API {
   // Active the Git extension and get its API.
   const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git');
@@ -50,9 +56,7 @@ export async function getRemoteOrigin(repository: Repository): Promise<Remote | 
   return remote ?? undefined;
 }
 
-export async function getRemoteBranch(
-  repository: Repository
-): Promise<{ owner: string; repo: string; branch: string } | undefined> {
+export async function getRemoteBranch(repository: Repository): Promise<GitInfo | undefined> {
   const remote = await getRemoteOrigin(repository);
 
   if (remote && remote.pushUrl) {
@@ -130,7 +134,7 @@ export async function getGithubRepoUrl(
 
 export async function getGitInfo(
   workspaceFolder: vscode.WorkspaceFolder
-): Promise<{ owner: string; repo: string; branch: string } | undefined> {
+): Promise<GitInfo | undefined> {
   try {
     const git = gitApi();
     const repository = await getGitRepository(git, workspaceFolder);

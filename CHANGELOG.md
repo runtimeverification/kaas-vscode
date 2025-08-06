@@ -4,7 +4,7 @@ All notable changes to the "kaas-vscode" extension will be documented in this fi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.0.10] - August 6, 2024
 
 ### New Features
 

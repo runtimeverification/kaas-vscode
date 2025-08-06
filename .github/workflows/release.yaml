@@ -19,12 +19,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          corepack enable
-          yarn install
+          npm install
 
       - name: Build
         run: |
-          yarn build
+          npm run build
 
       - name: Get current package version
         id: package_version

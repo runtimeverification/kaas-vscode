@@ -3,11 +3,12 @@ import * as vscode from 'vscode';
 import { getKaasBaseUrl, TestKind } from './config';
 import { discoverFoundryProfiles, discoverFoundryTestsAndPopulate } from './foundry';
 import { type paths, components } from './kaas-api';
-import { getJobStatusByJobId, jobCacheUri, jobReportUri } from './kaas_jobs';
+import { getJobStatusByJobId, jobCacheUri, jobReportUri, jobUri } from './kaas_jobs';
 import { runTests } from './kaas_run';
 import { kontrolProfiles } from './kontrol';
 import { createRemoteSyncView } from './remote_sync_view';
 import { TestRunState } from './test_run_state';
+import { createAuthenticatedWebview } from './webview';
 
 interface KontrolProfile {
   'match-test': string;
@@ -129,28 +130,19 @@ export async function activate(context: vscode.ExtensionContext) {
           return;
         }
 
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(testItem.uri!);
-        if (workspaceFolder) {
-          try {
-            // Get git info to construct the proper job URL
-            const { getGitInfo } = await import('./git');
-            const gitInfo = await getGitInfo(workspaceFolder);
+        try {
+          // Get the job details to construct the proper job URL
+          const parentJob = await getJobStatusByJobId(client, jobId);
+          const job = findJobFromChildren(parentJob, testItem.label);
+          const jobUrl = jobUri(job).toString();
 
-            if (gitInfo) {
-              const baseUrl = getKaasBaseUrl();
-              const jobUrl = `${baseUrl}/app/organization/${gitInfo.owner}/${gitInfo.repo}/job/${jobId}`;
-              vscode.env.openExternal(vscode.Uri.parse(jobUrl));
-            } else {
-              // Fallback to basic URL if git info is not available
-              const baseUrl = getKaasBaseUrl();
-              const jobUrl = `${baseUrl}/app/job/${jobId}`;
-              vscode.env.openExternal(vscode.Uri.parse(jobUrl));
-            }
-          } catch (error) {
-            vscode.window.showErrorMessage(`Failed to open job details: ${error}`);
-          }
-        } else {
-          vscode.window.showErrorMessage('Could not determine workspace folder for this test.');
+          createAuthenticatedWebview(
+            jobUrl,
+            `jobDetails-${job.id}`,
+            `Job ${job.id.slice(0, 6)} Details`
+          );
+        } catch (error) {
+          vscode.window.showErrorMessage(`Failed to open job details: ${error}`);
         }
       }
     )
@@ -170,8 +162,13 @@ export async function activate(context: vscode.ExtensionContext) {
         // Get the job details to construct the proper report URI
         const parentJob = await getJobStatusByJobId(client, jobId);
         const job = findJobFromChildren(parentJob, testItem.label);
-        const reportUri = jobReportUri(job);
-        vscode.env.openExternal(reportUri);
+        const reportUrl = jobReportUri(job).toString();
+
+        createAuthenticatedWebview(
+          reportUrl,
+          `jobReport-${job.id}`,
+          `Job ${job.id.slice(0, 6)} Report`
+        );
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to open job report: ${error}`);
       }
@@ -192,15 +189,20 @@ export async function activate(context: vscode.ExtensionContext) {
         // Get the job details to construct the proper cache URI
         const parentJob = await getJobStatusByJobId(client, jobId);
         const job = findJobFromChildren(parentJob, testItem.label);
-        const cacheUri = jobCacheUri(job);
 
-        if (cacheUri) {
-          vscode.env.openExternal(cacheUri);
-        } else {
+        if (!job.cacheHash) {
           vscode.window.showInformationMessage(
             'No cache is available for this job. Cache may not have been generated or preserved.'
           );
+          return;
         }
+        const cacheUrl = jobCacheUri(job)?.toString()!;
+
+        createAuthenticatedWebview(
+          cacheUrl,
+          `jobCache-${job.id}`,
+          `Job ${job.id.slice(0, 6)} Cache`
+        );
       } catch (error) {
         vscode.window.showErrorMessage(`Failed to open job cache: ${error}`);
       }

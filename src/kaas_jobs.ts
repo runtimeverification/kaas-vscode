@@ -58,6 +58,23 @@ export async function getJobStatusByJobId(
   return job.data;
 }
 
+export async function getJobReportByJobId(client: Client<paths>, jobId: string): Promise<string> {
+  const job = await client.GET('/api/jobs/{jobId}/json-report', {
+    params: {
+      path: {
+        jobId,
+      },
+    },
+  });
+  if (job.response.status !== 200) {
+    throw new Error(`Job with ID ${jobId} not found`);
+  }
+  if (job.data === undefined) {
+    throw new Error(`Job with ID ${jobId} returned no data`);
+  }
+  return job.data;
+}
+
 export async function pollForJobStatus(
   client: Client<paths>,
   testController: vscode.TestController,
@@ -76,8 +93,10 @@ export async function pollForJobStatus(
         );
         testRun.passed(test, jobDetails.duration * 1000);
         testRun.end();
+        console.log('testRun.passed: ', jobDetails.duration * 1000);
         break;
       }
+
       if (
         jobDetails.status === JobStatus.failure ||
         jobDetails.status === JobStatus.processing_failed
@@ -94,6 +113,7 @@ export async function pollForJobStatus(
         testRun.end();
         break;
       }
+
       if (jobDetails.status === JobStatus.cancelled) {
         test.busy = false;
         const testRun = testController.createTestRun(new vscode.TestRunRequest([test]));
@@ -206,7 +226,7 @@ function jobName(job: components['schemas']['IJob']): string {
   return `${job.kind}/${job.type}/${job.repo}`;
 }
 
-function jobUri(job: components['schemas']['IJob']): vscode.Uri {
+export function jobUri(job: components['schemas']['IJob']): vscode.Uri {
   return vscode.Uri.parse(
     `${getKaasBaseUrl()}/app/organization/${job.organizationName}/${job.vaultName}/job/${job.id}`
   );

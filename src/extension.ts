@@ -88,12 +88,18 @@ export async function activate(context: vscode.ExtensionContext) {
   // Helper function to find the correct job from children based on test item name
   function findJobFromChildren(
     parentJob: components['schemas']['IJob'],
-    testItemLabel: string
+    testItem: vscode.TestItem
   ): components['schemas']['IJob'] {
+    const testItemId = testItem.id;
+    const testItemLabel = testItem.label;
     // If the job has children, try to find one that matches the test item name
     if (parentJob.children && parentJob.children.length > 0) {
       for (const childJob of parentJob.children) {
-        if (childJob.profileName === testItemLabel) {
+        if (
+          childJob.args?.includes(`--match-test "${testItemId}("`) || // --match-test for kontrol
+          childJob.args?.includes(`--match-test "${testItemId.split('.').pop() ?? testItemId}("`) || // --match-test for foundry
+          childJob.profileName === testItemLabel // profile name match
+        ) {
           return childJob;
         }
       }
@@ -123,7 +129,7 @@ export async function activate(context: vscode.ExtensionContext) {
         try {
           // Get the job details to construct the proper job URL
           const parentJob = await getJobStatusByJobId(client, jobId);
-          const job = findJobFromChildren(parentJob, testItem.label);
+          const job = findJobFromChildren(parentJob, testItem);
           const jobUrl = jobUri(job).toString();
 
           createAuthenticatedWebview(
@@ -151,7 +157,7 @@ export async function activate(context: vscode.ExtensionContext) {
       try {
         // Get the job details to construct the proper report URI
         const parentJob = await getJobStatusByJobId(client, jobId);
-        const job = findJobFromChildren(parentJob, testItem.label);
+        const job = findJobFromChildren(parentJob, testItem);
         const reportUrl = jobReportUri(job).toString();
 
         createAuthenticatedWebview(
@@ -178,7 +184,7 @@ export async function activate(context: vscode.ExtensionContext) {
       try {
         // Get the job details to construct the proper cache URI
         const parentJob = await getJobStatusByJobId(client, jobId);
-        const job = findJobFromChildren(parentJob, testItem.label);
+        const job = findJobFromChildren(parentJob, testItem);
 
         if (!job.cacheHash) {
           vscode.window.showInformationMessage(

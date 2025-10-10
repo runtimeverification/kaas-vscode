@@ -1,6 +1,4 @@
-import * as childProcess from 'child_process';
 import { Client } from 'openapi-fetch';
-import * as path from 'path';
 import { parse } from 'smol-toml';
 import * as vscode from 'vscode';
 import { getKaasBaseUrl } from './config';
@@ -21,63 +19,15 @@ interface FoundryToml {
   };
 }
 
-export async function runFoundryTest(test: vscode.TestItem, testRun: vscode.TestRun) {
-  const testPath = test.uri?.fsPath;
-  if (!testPath) {
-    testRun.failed(test, new vscode.TestMessage('Test path not found.'));
-    return;
-  }
-
-  try {
-    // Extract just the function name from test.id (ContractName.functionName -> functionName)
-    const functionName = test.id.split('.').pop() || test.id;
-    const command = `forge test --match-test "${functionName}(" -vv`;
-
-    const { stdout, stderr } = await new Promise<{ stdout: string; stderr: string }>(
-      (resolve, reject) => {
-        const process = childProcess.exec(command, { cwd: path.dirname(testPath) });
-        let stdout = '';
-        let stderr = '';
-
-        if (process.stdout) {
-          process.stdout.on('data', (data: string) => (stdout += data));
-        }
-        if (process.stderr) {
-          process.stderr.on('data', (data: string) => (stderr += data));
-        }
-
-        process.on('close', (code: number) => {
-          if (code === 0) {
-            resolve({ stdout, stderr });
-          } else {
-            reject(new Error(`Test failed with code ${code}: ${stderr}`));
-          }
-        });
-      }
-    );
-
-    if (stdout.includes('test result: ok')) {
-      testRun.passed(test);
-    } else {
-      testRun.failed(test, new vscode.TestMessage(stderr));
-    }
-  } catch (error) {
-    testRun.failed(
-      test,
-      new vscode.TestMessage(error instanceof Error ? error.message : String(error))
-    );
-  }
-}
-
 export async function discoverFoundryTestsAndPopulate(
   workspaceFolder: vscode.WorkspaceFolder,
   testController: vscode.TestController,
   testsRoot: vscode.TestItem
 ) {
   // Check if there is a 'test' directory
-  const testDir = path.join(workspaceFolder.uri.fsPath, 'test');
+  const testDir = vscode.Uri.joinPath(workspaceFolder.uri, 'test');
   try {
-    await vscode.workspace.fs.stat(vscode.Uri.file(testDir));
+    await vscode.workspace.fs.stat(testDir);
   } catch {
     return; // No test directory, so skip this folder
   }
@@ -118,10 +68,10 @@ export async function discoverFoundryTests(
   workspaceFolder: vscode.WorkspaceFolder
 ): Promise<FoundryTest[]> {
   const tests: FoundryTest[] = [];
-  const testDir = path.join(workspaceFolder.uri.fsPath, 'test');
+  const testDir = vscode.Uri.joinPath(workspaceFolder.uri, 'test');
 
   try {
-    if (await vscode.workspace.fs.stat(vscode.Uri.file(testDir))) {
+    if (await vscode.workspace.fs.stat(testDir)) {
       const files = await vscode.workspace.findFiles(
         new vscode.RelativePattern(workspaceFolder, 'test/**/*.t.sol')
       );
@@ -136,9 +86,7 @@ export async function discoverFoundryTests(
 
         // Extract contract name from the file
         const contractMatch = contentStr.match(/contract\s+([a-zA-Z0-9_]+)Test/);
-        const contractName = contractMatch
-          ? `${contractMatch[1]}Test`
-          : path.basename(file.fsPath, '.t.sol');
+        const contractName = contractMatch ? `${contractMatch[1]}Test` : 'UnknownContract';
 
         while ((match = testRegex.exec(contentStr)) !== null) {
           const fullTestName = `${match[1]}_${match[2]}`; // Keep the full function name with prefix
